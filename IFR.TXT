@@ -1,0 +1,70 @@
+SER 001
+
+COLL IX = G - /MBI – / MBI CPN A 090 – SPD H 10 –
+/SPN STN 270 – /MBI – 0 ANS 5 –
+/DEN STN 270 – /MBI – 1 –
+/ANZ STN 270 – /MBI – 1 ANS 5 –
+/RNA STN 270 – /MBI – 2 –
+/BGT STN 270 – /MBI – 2 ANS 5 –
+/IDR STN 270 – /MBI – 3 –
+/ALE STN 270 – /MBI – 3 ANS 5 –
+/TKS STN 270 – /MBI – 4 –
+/SKY STN 165 – /MBI – 3 ANS 8 –
+/SPR STN 090 – /SKY – 2 –
+= 1213
+
+SER 002
+
+COLL IX = G - /SPR – / SPR CPN A 090 – SPD H 10 –
+/MBI STN 270 – /SPR – 0 ANS 5 –
+/SPN STN 270 – /SPR – 1 –
+/DEN STN 270 – /SPR – 1 ANS 5 –
+/ANZ STN 270 – /SPR – 2 –
+/RNA STN 270 – /SPR – 2 ANS 5 –
+/BGT STN 270 – /SPR – 3 –
+/IDR STN 270 – /SPR – 3 ANS 5 –
+/ALE STN 270 – /SPR – 4 –
+/TKS STN 270 – /SPR – 4 ANS 5 –
+= 1213
+
+SER 003
+
+COLL IX = G - /RNA – / RNA CPN A 000 – SPD H 10 –
+/BGT STN 180 – /RNA – 1 ANS 5 –
+/MBI STN 000 – /RNA – 3 –
+/SPN STN 045 – /RNA – 3 –
+/DEN STN 045 – /RNA – 3 –
+/ANZ STN 045 – /RNA – 3 –
+/TKS STN 045 – /RNA – 3 –
+/SPR STN 045 – /RNA – 3 –
+/IDR STN 045 – /RNA – 3 –
+/ALE STN 045 – /RNA – 3 –
+= 1213
+
+SER 004
+
+COLL IX = G - /RNA – / RNA CPN A 315 – SPD H 10 –
+/SPN STN 135 – /RNA – 1 ANS 5 –
+/ANZ STN 135 – /RNA – 3 –
+/DEN STN 135 – /RNA – 4 ANS 5 –
+/TKS STN 135 – /RNA – 6 –
+/SPR STN 225 – /RNA – 2 –
+/IDR STN 315 – /SPR – 1 ANS 5 –
+/BGT STN 315 – /SPR – 3 –
+/ALE STN 315 – /SPR – 4 ANS 5 –
+/MBI STN 315 – /SPR – 6 –
+= 1213
+
+SER 005
+
+COLL IX = G - /RNA – / RNA CPN A 210 – SPD H 10 –
+/BGT STN 180 – /RNA – 1 ANS 5 –
+/MBI STN 000 – /RNA – 3 –
+/SPN STN 045 – /RNA – 3 –
+/DEN STN 045 – /RNA – 3 –
+/ANZ STN 045 – /RNA – 3 –
+/TKS STN 045 – /RNA – 3 –
+/SPR STN 045 – /RNA – 3 –
+/IDR STN 045 – /RNA – 3 –
+/ALE STN 045 – /RNA – 3 –
+= 1213
