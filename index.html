@@ -2135,14 +2135,20 @@
             while ((match = startRegex.exec(signal)) !== null) {
                 const shipName = match[1];
                 const descriptorStart = match.index + match[0].length;
-                const remainder = signal.slice(descriptorStart);
-                const refMatch = remainder.match(/^(.*?)(?:-\s*)?\/\s*([A-Z0-9]+)\s*-\s*/i);
-                if (!refMatch) continue;
+                const nextShipIdx = signal.slice(descriptorStart).search(/\/\s*[A-Z0-9]+\s+STN\s+/i);
+                const segmentEnd = nextShipIdx === -1 ? signal.length : descriptorStart + nextShipIdx;
+                const segment = signal.slice(descriptorStart, segmentEnd).trim();
+                const refMarker = segment.search(/\/\s*[A-Z0-9]+\s*-/i);
+                if (refMarker === -1) continue;
 
-                const descriptorRaw = refMatch[1].replace(/-+$/, "").trim();
+                const descriptorRaw = segment.slice(0, refMarker).replace(/-+$/, "").trim();
+                const refSection = segment.slice(refMarker);
+                const refNameMatch = refSection.match(/^\/\s*([A-Z0-9]+)\s*-\s*(.*)$/i);
+                if (!refNameMatch) continue;
+
                 const descriptor = resolveStationDescriptor(descriptorRaw);
-                const refName = refMatch[2].trim();
-                const distSlice = signal.slice(descriptorStart + refMatch[0].length);
+                const refName = refNameMatch[1].trim();
+                const distSlice = refNameMatch[2].trim();
                 const distNM = parseSignalDistance(distSlice);
                 const distance = !isNaN(distNM) ? distNM : (descriptor && typeof descriptor.distanceOverride === "number" ? descriptor.distanceOverride : 0);
                 const bearing = descriptor ? descriptor.bearing : parseInt(descriptorRaw, 10);
@@ -2167,8 +2173,6 @@
                     descriptorLabel: descriptor ? descriptor.label : `Bearing ${bearing}`,
                     becomesGuide: descriptor ? descriptor.becomesGuide === true : false
                 });
-
-                startRegex.lastIndex = descriptorStart + refMatch[0].length;
             }
 
             return actions;
