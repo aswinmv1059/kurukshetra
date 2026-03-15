@@ -4126,7 +4126,7 @@
                 const isSlippingSignal = /\bBB\s*-\s*WED\b/i.test(signalPart);
 
                 if (isSlippingSignal) {
-                    // DE rule for slipping: if addressee (before DE) is own ship → permission; else → message from sender
+                    // BB-WED slipping signal — own ship addressee vs other
                     const addrToken = actionPart.trim().split(/\s+/).pop();
                     if (addrToken === ownName) {
                         globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. HAVE SLIPPED. ";
@@ -4135,6 +4135,7 @@
                         globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${senderFullName}. HAVE SLIPPED. `;
                     }
                 } else if (isCollective) {
+                    // Broadcast to collective — full address chain
                     const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
                     globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
                     if (infoPart) {
@@ -4143,22 +4144,13 @@
                     }
                     globalVoicePrefix += ". ";
                 } else if (isOwnShipSender) {
-                    const expandedAddressee = SHIP_NAMES_MAP[addresseeRaw] || addresseeRaw;
-                    globalVoicePrefix = `BRIDGE TP PERMISSION TO PASS ${expandedAddressee}. THIS IS ${sender}`;
-                    if (infoPart) {
-                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                        globalVoicePrefix += ` INFO ${infoExpanded}`;
-                    }
-                    globalVoicePrefix += ". ";
+                    // DE followed by OWN SHIP → "BRIDGE TP PERMISSION TO PASS"
+                    globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
                 } else {
-                    const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
-                    if (infoPart) {
-                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                        globalVoicePrefix += ` INFO ${infoExpanded}`;
-                    }
-                    globalVoicePrefix += ". ";
+                    // DE followed by OTHER SHIP → "BRIDGE TP MESSAGE FROM [ship name]"
+                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender}. `;
                 }
+
 
                 // If infoPart was already appended above in each branch, skip the old block
                 // (infoPart handling moved into each branch above)
