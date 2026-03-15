@@ -802,6 +802,150 @@
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
         }
 
+        #istSummary {
+            margin-top: 12px;
+            padding: 10px;
+            border: 1px solid rgba(0, 204, 255, 0.25);
+            background: rgba(0, 24, 32, 0.65);
+            color: #9edfff;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            border-radius: 6px;
+            font-family: var(--font-code);
+        }
+
+        #istSerialFilter {
+            margin-top: 10px;
+        }
+
+        #istMessageList {
+            margin-top: 10px;
+            max-height: 260px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ist-item {
+            border: 1px solid rgba(0, 255, 153, 0.18);
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 6px;
+            padding: 9px;
+        }
+
+        .ist-item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+        }
+
+        .ist-item-code {
+            color: #ffcc66;
+            font-weight: 700;
+        }
+
+        .ist-item-summary {
+            color: var(--text-main);
+            font-size: 0.8rem;
+            line-height: 1.45;
+            margin-bottom: 7px;
+        }
+
+        .ist-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ist-item-actions button {
+            margin-top: 0;
+            font-size: 0.72rem;
+            padding: 6px 10px;
+            min-height: 0;
+            letter-spacing: 1px;
+        }
+
+        #istModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 10, 16, 0.82);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 24px;
+        }
+
+        #istModal.open {
+            display: flex;
+        }
+
+        .ist-modal-card {
+            width: min(760px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 153, 0.22);
+            background: linear-gradient(180deg, rgba(3, 18, 26, 0.98), rgba(1, 10, 16, 0.98));
+            border-radius: 10px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+            padding: 18px;
+        }
+
+        .ist-modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ist-modal-top h3 {
+            margin: 0;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .ist-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .ist-modal-field {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .ist-modal-field strong {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .ist-modal-body {
+            color: var(--text-main);
+            font-size: 0.84rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            user-select: text;
+        }
+
+        .ist-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
         /* LIGHT MODE OVERRIDES */
         body.light {
             --bg-deep: #eef2f3;
@@ -1357,6 +1501,15 @@
                 OPERATION</button>
             <button id="btnLoadOp" style="border:1px solid #00ccff; color:#00ccff;">LOAD OPERATION</button>
             <input type="file" id="fileInputLoad" style="display:none" accept=".json" onchange="loadOperation(event)">
+            <button id="btnImportIst" style="border:1px solid #ffcc66; color:#ffcc66;">IMPORT IST LOG</button>
+            <input type="file" id="fileInputIst" style="display:none" accept=".txt,.log,.f,.sl,.csv,text/plain" onchange="loadIstLog(event)">
+            <div id="istSummary">No IST log loaded.</div>
+            <select id="istSerialFilter">
+                <option value="ALL">ALL SERIALS</option>
+            </select>
+            <div id="istMessageList">
+                <div style="color:#666; font-style:italic;">-- Imported IST messages will appear here --</div>
+            </div>
 
 
 
@@ -1433,6 +1586,33 @@
         </div>
     </div>
 
+    <div id="istModal">
+        <div class="ist-modal-card">
+            <div class="ist-modal-top">
+                <h3 id="istModalTitle">FLAG MESSAGE</h3>
+                <button id="btnCloseIstModal" style="margin-top:0; width:auto; min-width:120px;">CLOSE</button>
+            </div>
+            <div class="ist-modal-grid">
+                <div class="ist-modal-field"><strong>SERIAL</strong><span id="istModalSerial">--</span></div>
+                <div class="ist-modal-field"><strong>TIME</strong><span id="istModalTime">--</span></div>
+                <div class="ist-modal-field"><strong>SOURCE</strong><span id="istModalSource">--</span></div>
+                <div class="ist-modal-field"><strong>TYPE</strong><span id="istModalType">--</span></div>
+            </div>
+            <div class="ist-modal-field">
+                <strong>INTERPRETATION</strong>
+                <div class="ist-modal-body" id="istModalInterpretation">--</div>
+            </div>
+            <div class="ist-modal-field" style="margin-top:12px;">
+                <strong>FLAG MESSAGE</strong>
+                <div class="ist-modal-body" id="istModalRaw">--</div>
+            </div>
+            <div class="ist-modal-actions">
+                <button id="btnIstLoadSignal" style="margin-top:0;">LOAD TO COMMAND BAR</button>
+                <button id="btnIstExecuteSignal" style="margin-top:0; border-color:#ffcc66; color:#ffcc66;">EXECUTE SIGNAL</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         /* ---------- UNDO/REDO STACKS ---------- */
         const undoStack = { A: [], B: [] };
@@ -1474,6 +1654,30 @@
         /* ---------- SERIALS REGISTRY ---------- */
         let SERIALS_REGISTRY = []; // [{ser, exercise, otc, ocs},...]
 
+        const IST_STATE = {
+            sourceName: "",
+            messages: [],
+            activeSerial: "ALL",
+            selectedMessageId: null
+        };
+
+        const STATION_CODE_MAP = {
+            A: { bearing: 0, label: "Ahead station", voiceLabel: "AHEAD STATION" },
+            B: { bearing: 180, label: "Astern station", voiceLabel: "ASTERN STATION" },
+            C: { bearing: 0, label: "Van station", voiceLabel: "VAN STATION" },
+            D: { bearing: 180, label: "Rear station", voiceLabel: "REAR STATION" }
+        };
+
+        const SPECIAL_STATION_MAP = {
+            L1: { label: "Abeam station", distance: 0.1, portBearing: 270, stbdBearing: 90 },
+            L2: { label: "Alongside station", distance: 0.05, portBearing: 270, stbdBearing: 90 },
+            L3: { label: "Astern station", distance: 0.1, portBearing: 180, stbdBearing: 180 },
+            L4: { label: "Lifeguard station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
+            L5: { label: "Quarter station", distance: 0.15, portBearing: 225, stbdBearing: 135 },
+            L6: { label: "Standby station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
+            L7: { label: "Standby station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
+            L8: { label: "Vertrep station", distance: 0.05, portBearing: 0, stbdBearing: 0 }
+        };
 
 
         /* ---------- STATE PER BOARD ---------- */
@@ -1834,6 +2038,324 @@
                 gn.style.color = g ? "#ff3333" : "var(--primary)";
             }
         }
+
+        function parseSignalDistance(rawText) {
+            if (!rawText) return NaN;
+            const normalized = rawText.toUpperCase().replace(/\bO\b/g, "0").replace(/\s+/g, " ").trim();
+            const match = normalized.match(/([0-9]+(?:\s+ANS\s+[0-9]+)?(?:\.\d+)?)/);
+            if (!match) return NaN;
+            const numeric = match[1].replace(/\s+ANS\s+/g, ".").replace(/\s+/g, "");
+            return parseFloat(numeric);
+        }
+
+        function formatSignalDistanceForVoice(distance) {
+            if (typeof distance !== "number" || isNaN(distance)) return "";
+            const cables = Math.round(distance * 10);
+            if (Math.abs(distance - (cables / 10)) < 0.001 && cables > 0 && cables <= 20) {
+                return `${digitizeRaw(String(cables))} CABLE`;
+            }
+            return `${String(distance).replace(".", " DECIMAL ")} MILES`;
+        }
+
+        function formatStationActionVoice(action) {
+            const shipFull = action.s;
+            const refFull = action.r;
+            const distanceVoice = formatSignalDistanceForVoice(action.d);
+            const descriptor = (action.descriptorLabel || "").toUpperCase();
+
+            if (descriptor.includes("ASTERN")) {
+                return `${shipFull} STN ${distanceVoice} ASTERN OF ${refFull}`;
+            }
+            if (descriptor.includes("AHEAD")) {
+                return `${shipFull} STN ${distanceVoice} AHEAD OF ${refFull}`;
+            }
+            if (descriptor.includes("PORT")) {
+                return `${shipFull} STN ${distanceVoice} ON PORT OF ${refFull}`;
+            }
+            if (descriptor.includes("STARBOARD") || descriptor.includes("STBD")) {
+                return `${shipFull} STN ${distanceVoice} ON STBD OF ${refFull}`;
+            }
+            return `${shipFull} STATION ${action.rawBrg}, ${distanceVoice} FROM ${refFull}`;
+        }
+
+        function resolveStationDescriptor(rawDescriptor) {
+            const descriptor = (rawDescriptor || "").toUpperCase().replace(/\s+/g, " ").trim();
+            if (!descriptor) return null;
+
+            if (/^\d{1,3}$/.test(descriptor)) {
+                return { bearing: parseInt(descriptor, 10), label: `Bearing ${descriptor}`, voiceLabel: digitizeRaw(descriptor) };
+            }
+
+            if (STATION_CODE_MAP[descriptor]) {
+                return { ...STATION_CODE_MAP[descriptor] };
+            }
+
+            const beamMatch = descriptor.match(/^(PORT|STBD|STARBOARD)\s+(\d+)(?:\s+ANS\s+(\d+))?$/);
+            if (beamMatch) {
+                const side = beamMatch[1] === "PORT" ? "PORT" : "STBD";
+                const whole = parseInt(beamMatch[2], 10);
+                const fraction = beamMatch[3] ? parseInt(beamMatch[3], 10) : 0;
+                const degrees = Math.round((whole + (fraction / 10)) * 10);
+                const bearing = side === "PORT" ? normDeg(360 - degrees) : normDeg(degrees);
+                return {
+                    bearing,
+                    label: `${side === "PORT" ? "Port" : "Starboard"} ${whole}${fraction ? "." + fraction : ""}`,
+                    voiceLabel: `${side === "PORT" ? "PORT" : "STARBOARD"} ${digitizeRaw(whole.toString())}${fraction ? " ANSWER " + digitizeRaw(fraction.toString()) : ""}`
+                };
+            }
+
+            const specialMatch = descriptor.match(/^(L[1-8])\s+(PORT|STBD|STARBOARD)$/);
+            if (specialMatch) {
+                const stationCode = specialMatch[1];
+                const side = specialMatch[2] === "PORT" ? "PORT" : "STBD";
+                const profile = SPECIAL_STATION_MAP[stationCode];
+                if (!profile) return null;
+                return {
+                    bearing: side === "PORT" ? profile.portBearing : profile.stbdBearing,
+                    label: `${profile.label} ${side === "PORT" ? "port" : "starboard"}`,
+                    voiceLabel: `${stationCode.replace("L", "LIMA ")} ${side === "PORT" ? "PORT" : "STARBOARD"}`,
+                    distanceOverride: profile.distance,
+                    inferred: true
+                };
+            }
+
+            if (descriptor === "G") {
+                return { bearing: 0, label: "Guide station", voiceLabel: "GUIDE STATION", becomesGuide: true };
+            }
+
+            return null;
+        }
+
+        function extractStationActionsFromSignal(signalText, SHIPS, state, processedShips = new Set()) {
+            const actions = [];
+            const signal = (signalText || "").toUpperCase().replace(/\bO ANS\b/g, "0 ANS");
+            const startRegex = /\/\s*([A-Z0-9]+)\s+STN\s+/gi;
+            let match;
+
+            while ((match = startRegex.exec(signal)) !== null) {
+                const shipName = match[1];
+                const descriptorStart = match.index + match[0].length;
+                const remainder = signal.slice(descriptorStart);
+                const refMatch = remainder.match(/^(.*?)(?:-\s*)?\/\s*([A-Z0-9]+)\s*-\s*/i);
+                if (!refMatch) continue;
+
+                const descriptorRaw = refMatch[1].replace(/-+$/, "").trim();
+                const descriptor = resolveStationDescriptor(descriptorRaw);
+                const refName = refMatch[2].trim();
+                const distSlice = signal.slice(descriptorStart + refMatch[0].length);
+                const distNM = parseSignalDistance(distSlice);
+                const distance = !isNaN(distNM) ? distNM : (descriptor && typeof descriptor.distanceOverride === "number" ? descriptor.distanceOverride : 0);
+                const bearing = descriptor ? descriptor.bearing : parseInt(descriptorRaw, 10);
+
+                if (isNaN(bearing)) continue;
+
+                if (!SHIPS[shipName] && !processedShips.has(shipName)) {
+                    SHIPS[shipName] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
+                    processedShips.add(shipName);
+                }
+                if (!SHIPS[refName] && !processedShips.has(refName)) {
+                    SHIPS[refName] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
+                    processedShips.add(refName);
+                }
+
+                actions.push({
+                    s: shipName,
+                    b: bearing,
+                    r: refName,
+                    d: distance,
+                    rawBrg: descriptor ? descriptor.voiceLabel : digitizeRaw(String(bearing).padStart(3, "0")),
+                    descriptorLabel: descriptor ? descriptor.label : `Bearing ${bearing}`,
+                    becomesGuide: descriptor ? descriptor.becomesGuide === true : false
+                });
+
+                startRegex.lastIndex = descriptorStart + refMatch[0].length;
+            }
+
+            return actions;
+        }
+
+        function isExecutableImportedSignal(rawMessage) {
+            const upper = (rawMessage || "").toUpperCase();
+            return /\b(TURN|CPN|STN|SPD|XZI|XZE|XZL)\b/.test(upper) || upper.includes("G-");
+        }
+
+        function interpretImportedSignal(rawMessage, note = "") {
+            const upper = (rawMessage || "").toUpperCase();
+            const serialMatch = upper.match(/\bSER\s+(\d{4})\b/);
+            const serial = serialMatch ? serialMatch[1] : "UNSPECIFIED";
+            let type = "Operational";
+            let summary = note || "Operational signal logged.";
+
+            if (/\bEX\s*3\s*-\s*9\b/.test(upper) && serialMatch) {
+                type = "Serial";
+                summary = `Serial ${serial} commenced or designated active.`;
+            } else if (/\bEX\s*3\s*-\s*4\b/.test(upper) && serialMatch) {
+                type = "Serial";
+                summary = `Preparatory or dissemination message for serial ${serial}.`;
+            } else if (/\bRUN\s+\d+\s+COMMENCED\b/.test(upper) || /\bRUN\s+\d+\s+COMPLETED\b/.test(upper)) {
+                type = "Run";
+                summary = note || rawMessage.replace(/\s+/g, " ").trim();
+            } else if (isExecutableImportedSignal(upper)) {
+                type = "Manoeuvre";
+                summary = note || "Executable manoeuvring signal for the current board state.";
+            } else if (/\bWTA\b|\bTA\b|\bWED\b|\bWNA\b|\bBB\b|\bBH\b/.test(upper)) {
+                type = "Signal";
+                summary = note || "Tactical signal requiring operator interpretation or acknowledgement.";
+            }
+
+            return { type, summary, serial };
+        }
+
+        function renderIstSerialOptions() {
+            const select = document.getElementById("istSerialFilter");
+            if (!select) return;
+            const serials = Array.from(new Set(IST_STATE.messages.map(msg => msg.serial).filter(Boolean).sort()));
+            select.innerHTML = `<option value="ALL">ALL SERIALS</option>${serials.map(serial => `<option value="${serial}">${serial}</option>`).join("")}`;
+            select.value = IST_STATE.activeSerial || "ALL";
+        }
+
+        function renderIstSummary() {
+            const summary = document.getElementById("istSummary");
+            if (!summary) return;
+            if (!IST_STATE.messages.length) {
+                summary.textContent = "No IST log loaded.";
+                return;
+            }
+            const executableCount = IST_STATE.messages.filter(msg => msg.executable).length;
+            summary.innerHTML = `SOURCE: ${IST_STATE.sourceName || "LOCAL FILE"}<br>TOTAL MESSAGES: ${IST_STATE.messages.length}<br>EXECUTABLE MANOEUVRES: ${executableCount}`;
+        }
+
+        function renderIstMessageList() {
+            const list = document.getElementById("istMessageList");
+            if (!list) return;
+            const filtered = IST_STATE.messages.filter(msg => IST_STATE.activeSerial === "ALL" || msg.serial === IST_STATE.activeSerial);
+            if (!filtered.length) {
+                list.innerHTML = `<div style="color:#666; font-style:italic;">-- No messages for selected serial --</div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(msg => {
+                const serialLabel = msg.serial && msg.serial !== "UNSPECIFIED" ? `SER ${msg.serial}` : "GENERAL";
+                return `
+                    <div class="ist-item">
+                        <div class="ist-item-head">
+                            <span class="ist-item-code">${serialLabel}</span>
+                            <span>${msg.time || "--"} | ${msg.type}</span>
+                        </div>
+                        <div class="ist-item-summary">${msg.summary}</div>
+                        <div class="ist-item-actions">
+                            <button type="button" onclick="openIstMessage('${msg.id}')">DETAIL</button>
+                            ${msg.executable ? `<button type="button" onclick="loadImportedSignal('${msg.id}')">LOAD</button><button type="button" onclick="executeImportedSignal('${msg.id}')" style="border-color:#ffcc66; color:#ffcc66;">EXECUTE</button>` : ""}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function parseIstLogText(text, sourceName = "") {
+            const lines = (text || "").split(/\r?\n/);
+            const messages = [];
+            let current = null;
+
+            const flushCurrent = () => {
+                if (!current || !current.raw) return;
+                const raw = current.raw.replace(/\s+/g, " ").trim();
+                if (!raw) return;
+                const interpreted = interpretImportedSignal(raw, current.note);
+                messages.push({
+                    id: `ist_${messages.length}_${Date.now()}`,
+                    sourceName,
+                    raw,
+                    note: current.note || "",
+                    time: current.time || (raw.match(/=\s*(\d{3,4})\s*$/) || [])[1] || "",
+                    serial: interpreted.serial,
+                    type: interpreted.type,
+                    summary: interpreted.summary,
+                    executable: isExecutableImportedSignal(raw)
+                });
+            };
+
+            const isSignalLine = (line) => {
+                if (!line) return false;
+                const upper = line.toUpperCase();
+                if (/^(DTG|FROM|TO|INFO|REF|SER\s+|---+|===+|AIR MOVE|NOTE|READ BACK|RUNS AS FOLLOWS|COMMUNICATION AS FOLLOWS)/.test(upper)) return false;
+                return upper.includes(" DE ") || upper.startsWith("COLL") || upper.startsWith("FLAG") || upper.startsWith("NC ") || upper.startsWith("SVC FOR ") || (upper.includes("=") && /[A-Z]/.test(upper));
+            };
+
+            lines.forEach((line) => {
+                const trimmed = line.replace(/\t/g, " ").trim();
+                if (!trimmed) return;
+
+                if (/^\(.*\)$/.test(trimmed) && current) {
+                    current.note = trimmed.replace(/^\(|\)$/g, "").trim();
+                    return;
+                }
+
+                if (isSignalLine(trimmed)) {
+                    flushCurrent();
+                    current = { raw: trimmed, note: "", time: "" };
+                    return;
+                }
+
+                if (current && !/^(DTG|FROM|TO|INFO|REF|---+|===+)/.test(trimmed.toUpperCase())) {
+                    current.raw += " " + trimmed;
+                }
+            });
+
+            flushCurrent();
+            return messages;
+        }
+
+        function loadIstLog(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                IST_STATE.sourceName = file.name;
+                IST_STATE.messages = parseIstLogText(String(evt.target.result || ""), file.name);
+                IST_STATE.activeSerial = "ALL";
+                renderIstSummary();
+                renderIstSerialOptions();
+                renderIstMessageList();
+                document.getElementById("fileInputIst").value = "";
+            };
+            reader.readAsText(file);
+        }
+
+        function openIstMessage(messageId) {
+            const msg = IST_STATE.messages.find(entry => entry.id === messageId);
+            if (!msg) return;
+            IST_STATE.selectedMessageId = messageId;
+            document.getElementById("istModalTitle").textContent = msg.serial && msg.serial !== "UNSPECIFIED" ? `FLAG MESSAGE SER ${msg.serial}` : "FLAG MESSAGE";
+            document.getElementById("istModalSerial").textContent = msg.serial || "--";
+            document.getElementById("istModalTime").textContent = msg.time || "--";
+            document.getElementById("istModalSource").textContent = msg.sourceName || "--";
+            document.getElementById("istModalType").textContent = msg.type || "--";
+            document.getElementById("istModalInterpretation").textContent = msg.summary || msg.note || "No interpretation available.";
+            document.getElementById("istModalRaw").textContent = msg.raw || "--";
+            document.getElementById("btnIstLoadSignal").disabled = !msg.executable;
+            document.getElementById("btnIstExecuteSignal").disabled = !msg.executable;
+            document.getElementById("istModal").classList.add("open");
+        }
+
+        function closeIstMessage() {
+            document.getElementById("istModal").classList.remove("open");
+        }
+
+        function loadImportedSignal(messageId) {
+            const msg = IST_STATE.messages.find(entry => entry.id === messageId);
+            if (!msg || !msg.executable) return;
+            document.getElementById("commandInput").value = msg.raw;
+            closeIstMessage();
+        }
+
+        function executeImportedSignal(messageId) {
+            const msg = IST_STATE.messages.find(entry => entry.id === messageId);
+            if (!msg || !msg.executable) return;
+            document.getElementById("commandInput").value = msg.raw;
+            closeIstMessage();
+            handleCommandAndCombat();
+        }
         /* ---------- SAVE / LOAD OPERATIONS ---------- */
         function saveOperation() {
             const data = {
@@ -2026,6 +2548,21 @@
             document.getElementById("btnRedo").addEventListener("click", () => redo());
             document.getElementById("btnSaveOp").addEventListener("click", saveOperation);
             document.getElementById("btnLoadOp").addEventListener("click", () => document.getElementById('fileInputLoad').click());
+            document.getElementById("btnImportIst").addEventListener("click", () => document.getElementById('fileInputIst').click());
+            document.getElementById("istSerialFilter").addEventListener("change", (e) => {
+                IST_STATE.activeSerial = e.target.value;
+                renderIstMessageList();
+            });
+            document.getElementById("btnCloseIstModal").addEventListener("click", closeIstMessage);
+            document.getElementById("btnIstLoadSignal").addEventListener("click", () => {
+                if (IST_STATE.selectedMessageId) loadImportedSignal(IST_STATE.selectedMessageId);
+            });
+            document.getElementById("btnIstExecuteSignal").addEventListener("click", () => {
+                if (IST_STATE.selectedMessageId) executeImportedSignal(IST_STATE.selectedMessageId);
+            });
+            document.getElementById("istModal").addEventListener("mousedown", (e) => {
+                if (e.target && e.target.id === "istModal") closeIstMessage();
+            });
 
             // Ensure all text inputs are uppercase real-time
             document.querySelectorAll('input[type="text"], input:not([type]), textarea').forEach(inp => {
@@ -2046,6 +2583,9 @@
 
             document.getElementById("modeSelect").value = currentMode;
             applyModeLayout();
+            renderIstSummary();
+            renderIstSerialOptions();
+            renderIstMessageList();
             resizeCanvas("A");
             resizeCanvas("B");
             drawAllBoards();
@@ -4021,7 +4561,7 @@
         function processCommand() {
             const inp = document.getElementById("commandInput");
             // Normalize multi-line input into a single line for regex parsers, but preserve the core signal structure
-            const rawInp = inp.value.trim().replace(/[\r\n\u2028]/g, " ").replace(/[\u2013\u2014\u2015]/g, "-");
+            const rawInp = inp.value.trim().replace(/[\r\n\u2028]/g, " ").replace(/[\u2013\u2014\u2015]/g, "-").replace(/\bO ANS\b/g, "0 ANS");
             if (!rawInp) return;
 
             if (manoeuvringSerialOn && currentMode === "FORMATION") {
@@ -4171,6 +4711,9 @@
                     const otcCallsign = otcEntry ? otcEntry.otc.toUpperCase() : "";
                     const otcFull = otcCallsign ? (SHIP_NAMES_MAP[otcCallsign] || otcCallsign) : "OTC";
                     globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${otcFull}. `;
+                } else if (isCollective) {
+                    const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
                 } else if (isOwnShipSender) {
                     // Own ship is after DE → permission prefix
                     globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
@@ -4195,7 +4738,7 @@
                 // (infoPart handling moved into each branch above)
             } else {
                 // Default if no address part
-                globalVoicePrefix = "ALL POSITION TP MESSAGE FROM FLAG TO COLLECTIVE. ";
+                globalVoicePrefix = "BRIDGE TP MESSAGE FROM FLAG TO COLLECTIVE. ";
             }
 
             // 3. CLEAN SIGNAL PART FOR EXECUTION
@@ -4208,7 +4751,7 @@
             const hasRIX = rawUpper.includes(" RIX ");
             // SB...IX pattern (Standby... Execute) counts as Immediate Execution
             const hasSB_IX = (rawUpper.includes("SB") && rawUpper.includes("IX"));
-            const pendingExecution = hasIX && !hasRIX && !hasSB_IX && !rawUpper.includes("COLL");
+            const pendingExecution = hasIX && !hasRIX && !hasSB_IX;
 
             // Handle "SB...IX" -> Skip only if it's a standalone execution command, not part of a complex signal
             if (hasSB_IX && !cleanSignal.includes("COLL") && !cleanSignal.includes("STN")) {
@@ -4303,6 +4846,13 @@
             if (cleanSignal.includes("STN") || cleanSignal.includes("-") || cleanSignal.includes("COLL")) {
                 let multiProcessed = false;
                 const processedShips = new Set();
+                const explicitShipRefs = Array.from(cleanSignal.matchAll(/\/\s*([A-Z0-9]+)/g)).map(match => match[1]);
+                explicitShipRefs.forEach((shipName) => {
+                    if (!SHIPS[shipName] && !processedShips.has(shipName)) {
+                        SHIPS[shipName] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
+                        processedShips.add(shipName);
+                    }
+                });
                 // Note: We stripped "IX" so existing check for "IX =" might fail if strict.
                 // But valid signals like "/KMT STN..." don't need IX to run.
 
@@ -4354,41 +4904,8 @@
                     }
                 }
 
-                // Stationing Loop (Allow spaces after / and handle ANS in distance)
-                const stnRegex = /\/\s*(\S+)\s+STN\s+(\d{1,3})\s*-\s*\/\s*(\S+)\s*-\s*([^-]+?)(?:-|$)/gi;
-                let m;
-                const stnActions = [];
-
-                while ((m = stnRegex.exec(cleanSignal)) !== null) {
-                    const shipName = m[1];
-                    const refName = m[3];
-                    let rawDist = m[4].trim();
-                    let distNM = 0;
-                    if (rawDist.includes("ANS")) {
-                        let clean = rawDist.replace("ANS", ".").replace(/\s+/g, "");
-                        if (clean.startsWith(".")) clean = "0" + clean;
-                        distNM = parseFloat(clean);
-                    } else {
-                        distNM = parseFloat(rawDist);
-                    }
-                    if (isNaN(distNM)) distNM = 0;
-
-                    if (!SHIPS[shipName] && !processedShips.has(shipName)) {
-                        SHIPS[shipName] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
-                        processedShips.add(shipName);
-                    }
-                    if (!SHIPS[refName] && !processedShips.has(refName)) {
-                        SHIPS[refName] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
-                        processedShips.add(refName);
-                    }
-
-                    stnActions.push({
-                        s: shipName,
-                        b: parseInt(m[2], 10),
-                        r: refName,
-                        d: distNM,
-                        rawBrg: digitizeRaw(m[2])
-                    });
+                const stnActions = extractStationActionsFromSignal(cleanSignal, SHIPS, state, processedShips);
+                if (stnActions.length > 0) {
                     multiProcessed = true;
                 }
 
@@ -4449,30 +4966,8 @@
                     introMsg += ". ";
                 }
 
-                // 2. Build Chain of Command for Station Filtering
-                const relevantShips = new Set();
-                relevantShips.add(ownName);
-
-                let curr = ownName;
-                for (let k = 0; k < 10; k++) {
-                    const action = stnActions.find(a => a.s === curr);
-                    if (action) {
-                        relevantShips.add(action.r);
-                        curr = action.r;
-                    } else {
-                        break;
-                    }
-                }
-                if (state.GUIDE) relevantShips.add(state.GUIDE);
-
                 stnActions.forEach(act => {
-                    // Filter: Only announce if in Chain of Command
-                    if (relevantShips.has(act.s)) {
-                        const shipFull = SHIP_NAMES_MAP[act.s] || act.s;
-                        const refFull = SHIP_NAMES_MAP[act.r] || act.r;
-                        const distFull = act.d.toString().replace('.', ' DECIMAL ');
-                        voiceParts.push(`${shipFull} STATION ${act.rawBrg}, ${distFull} MILES FROM ${refFull}`);
-                    }
+                    voiceParts.push(formatStationActionVoice(act));
                 });
 
                 if (stnActions.length > 0 || introMsg || multiProcessed) {
@@ -4480,37 +4975,38 @@
                     const isCompound = /G\s*-?\s*\/\w+/i.test(cleanSignal) ||
                         /\/\w+\s+CPN\b/i.test(cleanSignal) ||
                         /\bSPD\s+[A-Z]?\s*\d+/i.test(cleanSignal) ||
-                        /\/([A-Z]+)\s+STN\s+([AB])/i.test(cleanSignal);
+                        /\/([A-Z]+)\s+STN\s+([AB]|PORT\s+\d+|STBD\s+\d+|L[1-8]\s+(?:PORT|STBD))/i.test(cleanSignal);
 
-                    if (isCompound) {
-                        const detailedMsg = generateDetailedMessage(hasRIX || hasSB_IX ? 'IMMEDIATE' : 'PENDING');
-                        speakCommand(detailedMsg);
-                    } else if (voiceParts.length > 0 || introMsg) {
-                        const voiceBody = introMsg + voiceParts.join(". ");
+                    if (voiceParts.length > 0 || introMsg) {
+                        const stationVoice = pendingExecution
+                            ? voiceParts.map(part => `${part} PENDING FOR EXECUTION`)
+                            : voiceParts;
+                        const voiceBody = introMsg + stationVoice.join(". ");
+
                         let finalMsg = globalVoicePrefix;
-                        if (hasRIX || hasSB_IX || rawUpper.includes("COLL")) {
+                        if (hasRIX || hasSB_IX) {
                             finalMsg += "IMMEDIATE EXECUTE. ";
                         } else if (pendingExecution) {
                             finalMsg += "PENDING FOR EXECUTION. ";
                         }
                         finalMsg += voiceBody;
-                        if (pendingExecution) {
-                            finalMsg += ". UPON EXECUTION, SHIPS TO TAKE STATION AS ORDERED.";
-                        }
                         speakCommand(finalMsg);
                     } else if (!pendingExecution && multiProcessed) {
                         speakCommand(globalVoicePrefix + "Signal Executed.");
                     }
 
                     const isTrueMode = document.getElementById("trueBearingToggle") ? document.getElementById("trueBearingToggle").checked : true;
-                    // Execution Condition
+                    // Plot the full station state on the board even for IX signals so the user can visualize
+                    // the pending manoeuvre without waiting for a second execution pass.
                     for (let k = 0; k < 4; k++) {
                         stnActions.forEach(act => {
-                            if (!pendingExecution || processedShips.has(act.s)) {
-                                executeStationSignal(act.s, act.b, act.r, act.d, board, isTrueMode);
+                            executeStationSignal(act.s, act.b, act.r, act.d, board, isTrueMode);
+                            if (act.becomesGuide) {
+                                state.GUIDE = act.s;
                             }
                         });
                     }
+                    updateGuideLabel(board);
                 }
 
                 if (multiProcessed) {
@@ -5397,27 +5893,42 @@
                 stnRef = parts[2];
             } else if (parts[1] === "STN") {
                 stnShip = parts[0];
-                stnData = parts[2];
-                stnRef = parts[3];
+                const refIndex = parts.findIndex((part, idx) => idx > 1 && part.startsWith("/"));
+                stnData = refIndex > 2 ? parts.slice(2, refIndex).join(" ") : parts[2];
+                stnRef = refIndex !== -1 ? parts[refIndex] : parts[3];
             }
 
             if (stnShip && stnData) {
+                let descriptor = resolveStationDescriptor(stnData.replace(/^-+|-+$/g, "").trim());
+                let bearingVal = descriptor ? descriptor.bearing : NaN;
+                let distVal = parseSignalDistance(cleanSignal) || 0;
+
                 if (stnData.includes("-")) {
                     const [b, d] = stnData.split("-");
-                    const bearingVal = parseInt(b, 10);
-                    const distVal = parseFloat(d);
+                    bearingVal = parseInt(b, 10);
+                    distVal = parseSignalDistance(d);
+                } else if (descriptor && typeof descriptor.distanceOverride === "number" && !distVal) {
+                    distVal = descriptor.distanceOverride;
+                }
+
+                if (!isNaN(bearingVal)) {
                     const refName = stnRef ? stnRef.replace("/", "") : (state.GUIDE || Object.keys(SHIPS)[0]);
 
                     const shipFull = SHIP_NAMES_MAP[stnShip] || stnShip;
                     const refFull = SHIP_NAMES_MAP[refName] || refName;
+                    const voiceStation = descriptor ? descriptor.voiceLabel : digitizeRaw(String(bearingVal).padStart(3, "0"));
 
                     buildVoice(
                         "All position TP message from flag to collective",
-                        `Station ${digitizeRaw(b)} ${sayNatural(distVal)}`,
-                        `${shipFull} take station ${digitizeRaw(b)} from ${refFull} distance ${sayNatural(distVal)} miles.`
+                        `Station ${voiceStation} ${sayNatural(distVal)}`,
+                        `${shipFull} take station ${voiceStation} from ${refFull} distance ${sayNatural(distVal)} miles.`
                     );
 
                     moveShipRelative(stnShip, refName, bearingVal, distVal, board);
+                    if (descriptor && descriptor.becomesGuide) {
+                        state.GUIDE = stnShip;
+                        updateGuideLabel(board);
+                    }
                     setTimeout(() => ensureFleetInView(board), 800);
                     inp.value = ""; return;
                 }
