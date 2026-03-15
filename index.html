@@ -1139,33 +1139,48 @@
     <!-- TOP BAR -->
     <div id="topBar">
         <div class="neon-ribbon"></div>
-        <div id="topBarTitle">
-            <div id="appTitle">KURUKSHETRA</div>
-            <div id="appSubtitle">AUTOMATED MANOEUVRING BOARD (PROTOTYPE)</div>
+        <div id="topBarTitle" style="display:flex; flex-direction:column; justify-content:center;">
+            <div id="appTitle" style="font-size:1.3rem; margin-bottom:0;">KURUKSHETRA</div>
+            <div id="appSubtitle" style="font-size:0.65rem; opacity:0.7;">TACTICAL OPERATIONS CONTROL</div>
         </div>
-        <div id="statusChip">SYSTEM READY</div>
 
-        <div style="flex:1;"></div>
+        <!-- System Indicators (Grouped) -->
+        <div style="display:flex; align-items:center; gap:10px; margin-left:40px;">
+            <div id="statusChip" style="margin-left:0; font-size:0.6rem; padding:4px 10px; height:fit-content;">SYSTEM
+                READY</div>
+            <div id="guideIndicator"
+                style="font-size:0.75rem; padding:4px 12px; height:fit-content; background:rgba(0,255,153,0.05);">GUIDE:
+                <span id="guideName" style="font-weight:700;">/NONE</span></div>
 
-        <div id="guideIndicator">GUIDE: <span id="guideName">/NONE</span></div>
+            <div id="guardRosterDisplay"
+                style="margin-left:5px; padding:3px 10px; border-style:dashed; border-width:1px;">
+                <div
+                    style="color:rgba(0,255,153,0.6); font-size:0.55rem; letter-spacing:1px; text-transform:uppercase; font-weight:700;">
+                    GUARD ROSTER</div>
+                <div id="rosterDetails" style="font-size:0.7rem; gap:10px;"></div>
+            </div>
+        </div>
 
-        <div id="guardRosterDisplay">
+        <!-- Right Side Utility -->
+        <div style="margin-left:auto; display:flex; align-items:center; gap:20px;">
+            <!-- Serials Action -->
+            <button id="btnSerials" onclick="openSerialsModal()"
+                style="background:rgba(0,255,153,0.08); border:1px solid var(--primary); color:var(--primary); padding:6px 18px; font-size:0.75rem; letter-spacing:1.5px; cursor:pointer; border-radius:4px; font-family:var(--font-code); text-transform:uppercase; transition:0.2s; display:flex; align-items:center; gap:8px; box-shadow:0 0 15px rgba(0,255,153,0.1);">
+                <span style="font-size:1.1rem; filter:drop-shadow(0 0 2px var(--primary));">&#9875;</span> SERIALS
+            </button>
+
+            <!-- Interface Mode -->
             <div
-                style="color: var(--text-muted); font-size: 0.6rem; letter-spacing: 1px; margin-bottom: 2px; text-transform: uppercase;">
-                ACTIVE GUARD ROSTER</div>
-            <div id="rosterDetails"></div>
+                style="display:flex; align-items:center; gap:12px; padding-left:15px; border-left:1px solid rgba(255,255,255,0.1);">
+                <span
+                    style="color:var(--text-muted); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-weight:700;">UI
+                    MODE</span>
+                <label class="switch" style="width:38px; height:20px; margin-left:0;">
+                    <input type="checkbox" id="modeToggle" checked>
+                    <span class="slider" style="border-radius:20px;"></span>
+                </label>
+            </div>
         </div>
-
-        <!-- Serials Button (persistent access to exercise serial registry) -->
-        <button id="btnSerials" onclick="openSerialsModal()"
-            style="background:rgba(0,255,153,0.08);border:1px solid var(--primary);color:var(--primary);padding:6px 16px;font-size:0.72rem;letter-spacing:1.5px;cursor:pointer;border-radius:4px;font-family:var(--font-code);text-transform:uppercase;flex-shrink:0;">&#9875;
-            SERIALS</button>
-
-        <!-- Day/Night toggle -->
-        <label class="switch">
-            <input type="checkbox" id="modeToggle" checked>
-            <span class="slider"></span>
-        </label>
     </div>
 
     <!-- SERIALS MODAL -->
@@ -2851,12 +2866,14 @@
             const details = document.getElementById('rosterDetails');
             if (!container || !details) return;
 
-            const hasTable = GUARD_ROSTER && GUARD_ROSTER.table && GUARD_ROSTER.table.length > 0;
-            const hasExtras = GUARD_ROSTER && GUARD_ROSTER.extras && GUARD_ROSTER.extras.length > 0;
+            const hasTable = GUARD_ROSTER && GUARD_ROSTER.table && Array.isArray(GUARD_ROSTER.table) && GUARD_ROSTER.table.length > 0;
+            const hasExtras = GUARD_ROSTER && GUARD_ROSTER.extras && Array.isArray(GUARD_ROSTER.extras) && GUARD_ROSTER.extras.length > 0;
 
             if (!hasTable && !hasExtras) {
                 container.style.display = 'none';
                 return;
+            } else {
+                container.style.display = 'flex';
             }
 
             const now = new Date();
@@ -3008,6 +3025,7 @@
                 .replace(/\bFIVE\b/g, "FIVE")
                 .replace(/\bANS\b/gi, "ANSWER")
                 .replace(/\bKRI\b/g, "K R I")
+                .replace(/\bSPD\b/gi, " SPEED ")
                 .replace(/\bDEGREE\b/g, "DEGREE")
                 .replace(/\bDEGREES\b/g, "DEGREES");
 
@@ -4093,12 +4111,22 @@
                 const ixMatch = senderRaw.match(/^(.+?)\s+(RIX|IX)\s*$/i);
                 if (ixMatch) {
                     senderRaw = ixMatch[1].trim();
-                    outerExecuteMode = ixMatch[2].toUpperCase() === "RIX" ? "IMMEDIATE" : "PENDING";
+                    const mode = ixMatch[2].toUpperCase();
+                    // User Rule: RIX is Immediate, IX is Pending
+                    outerExecuteMode = (mode === "RIX") ? "IMMEDIATE" : "PENDING";
                 }
+
+                // Content-based Immediate override: "SB...IX" in signal part also means Immediate
+                // format: ADDRESSES DE SENDER RIX = CONTENT SB...IX
+                if (signalPart.match(/\bSB\b.*\bIX\b/i)) {
+                    outerExecuteMode = "IMMEDIATE";
+                }
+
                 // Also check addresseeRaw for IX/RIX (some formats put it there)
                 const ixAddrMatch = addresseeRaw.match(/\b(RIX|IX)\b/i);
                 if (ixAddrMatch) {
-                    outerExecuteMode = ixAddrMatch[1].toUpperCase() === "RIX" ? "IMMEDIATE" : "PENDING";
+                    const mode = ixAddrMatch[1].toUpperCase();
+                    outerExecuteMode = (mode === "RIX") ? "IMMEDIATE" : "PENDING";
                     addresseeRaw = addresseeRaw.replace(/\b(RIX|IX)\b/gi, "").trim();
                 }
 
