@@ -1150,7 +1150,8 @@
                 READY</div>
             <div id="guideIndicator"
                 style="font-size:0.75rem; padding:4px 12px; height:fit-content; background:rgba(0,255,153,0.05);">GUIDE:
-                <span id="guideName" style="font-weight:700;">/NONE</span></div>
+                <span id="guideName" style="font-weight:700;">/NONE</span>
+            </div>
 
             <div id="guardRosterDisplay"
                 style="margin-left:5px; padding:3px 10px; border-style:dashed; border-width:1px;">
@@ -5621,15 +5622,18 @@
                 const spdVal = spdMatch ? spdMatch[1] : null;
 
                 // --- STN (station): /SHIP STN [A/B] - /REFSHIP - DIST ---
-                // Captures ship, direction, reference ship, and distance token
+                // Captures ship, direction, reference ship (optional), and distance token
+                // regex refined to be more robust against spacing/dashes
                 const stnMatch = cleanSignal.match(
-                    /\/([A-Z]+)\s+STN\s+([AB])\s*-\s*\/([A-Z]+)\s*-\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/i
+                    /\/([A-Z]+)\s+STN\s+([AB])\s*(?:-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/i
                 );
                 let stnShipName = null, stnDir = null, stnRefName = null, stnDistText = null;
                 if (stnMatch) {
                     stnShipName = SHIP_NAMES_MAP[stnMatch[1].toUpperCase()] || stnMatch[1].toUpperCase();
                     stnDir = stnMatch[2].toUpperCase() === "A" ? "AHEAD" : "ASTERN";
-                    stnRefName = SHIP_NAMES_MAP[stnMatch[3].toUpperCase()] || stnMatch[3].toUpperCase();
+                    // If ref ship is missing, assume it's the Guide from earlier in signal
+                    const refCS = stnMatch[3] ? stnMatch[3].toUpperCase() : guideCallsign;
+                    stnRefName = SHIP_NAMES_MAP[refCS] || refCS;
                     stnDistText = parseANS(stnMatch[4].trim());
                 }
 
@@ -5643,8 +5647,12 @@
                 } else if (spdVal !== null) {
                     msg += `PROCEED AT SPEED ${digitizeRaw(spdVal)}. `;
                 }
-                if (stnShipName && stnDir && stnRefName && stnDistText) {
-                    msg += `${stnShipName} STATION ${stnDistText} ${stnDir} OF ${stnRefName}. `;
+
+                // Final STN check
+                if (stnShipName && stnDir && stnDistText) {
+                    msg += `${stnShipName} STATION ${stnDistText} ${stnDir} `;
+                    if (stnRefName) msg += `OF ${stnRefName}. `;
+                    else msg += ". ";
                 }
                 msg += execSuffix;
 
