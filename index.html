@@ -4225,82 +4225,54 @@
             // Helper to generate the detailed message
             const generateDetailedMessage = (mode) => {
                 let msg = globalVoicePrefix;
-                if (mode === 'PENDING') msg += "Pending for execution. ";
-                else msg += "Immediate execution. ";
+                const status = (mode === 'PENDING') ? "PENDING FOR EXECUTION." : "IMMEDIATE EXECUTE.";
 
+                // --- 1. Guide ---
+                const guideMatch = cleanSignal.match(/G\s*-?\s*\/([A-Z]+)/i);
+                const guideCS = guideMatch ? guideMatch[1].toUpperCase() : null;
+                const guideShip = guideCS ? (SHIP_NAMES_MAP[guideCS] || guideCS) : null;
+                if (guideShip) msg += `GUIDE OF THE FORMATION IS ${guideShip}. `;
 
-                // 1. EXTRACT GUIDE
-                const gMatch = cleanSignal.match(/G\s*-\s*\/\s*([A-Z]+)/);
-                if (gMatch) {
-                    const gName = gMatch[1];
-                    const gFull = SHIP_NAMES_MAP[gName] || gName;
-                    msg += `Guide of the formation is ${gFull}. `;
+                // --- 2. Generic Shift/Station Handler (Scan all ships) ---
+                // Matches patterns like: /KMT STN B - /KVT - O ANS 5
+                const stnMatches = cleanSignal.matchAll(/\/([A-Z]+)\s+STN\s+([AB]|\d{1,3})\s*(?:-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/gi);
+                for (const match of stnMatches) {
+                    const shipName = SHIP_NAMES_MAP[match[1].toUpperCase()] || match[1].toUpperCase();
+                    let dir = match[2].toUpperCase();
+                    if (dir === "A") dir = "AHEAD";
+                    else if (dir === "B") dir = "ASTERN";
+                    else dir = "ON BEARING " + digitize(parseInt(dir, 10));
 
-                    // 1b. Guide Action
-                    const cpnRegex = new RegExp(`\/${gName}\\s+CPN\\s+A\\s+(\\d{3})`);
-                    const cpnMatch = cleanSignal.match(cpnRegex);
-                    const spdMatch = cleanSignal.match(/SPD\s+H\s+(\d+)/);
+                    const refCS = match[3] ? match[3].toUpperCase() : guideCS;
+                    const refShip = refCS ? (SHIP_NAMES_MAP[refCS] || refCS) : null;
+                    const distText = parseANS(match[4].trim());
 
-                    if (cpnMatch || spdMatch) {
-                        msg += `${gFull} to `;
-                        if (cpnMatch) msg += `steer course ${digitizeRaw(cpnMatch[1])} `;
-                        if (spdMatch) {
-                            if (cpnMatch) msg += "and ";
-                            // Use digitizeRaw for "One Two" instead of "Twelve"
-                            msg += `proceed at speed ${digitizeRaw(spdMatch[1])}. `;
-                        } else {
-                            msg += ". ";
-                        }
-                    }
+                    msg += `${shipName} STATION ${distText} ${dir} `;
+                    if (refShip) msg += `OF ${refShip}. `;
+                    else msg += ". ";
                 }
 
-                // 2. EXTRACT OWN SHIP DATA FIRST (to get Ref)
-                const own = window.OWN_SHIP_NAME || "KMT";
-                const stnRegexVoice = new RegExp(`\/\\s*${own}\\s+STN\\s+(\\d+)\\s*-\\s*\/\\s*([A-Z]+)\\s*-\\s*([\\d.\\sANS]+)`);
-                const stnMatch = cleanSignal.match(stnRegexVoice);
-
-                let ownMsg = "";
-                let ownRefRaw = null;
-
-                if (stnMatch) {
-                    const brg = stnMatch[1];
-                    ownRefRaw = stnMatch[2]; // Capture for next step
-                    const dist = stnMatch[3];
-                    const ownFull = SHIP_NAMES_MAP[own] || own;
-                    const refFull = SHIP_NAMES_MAP[ownRefRaw] || ownRefRaw;
-
-                    ownMsg = `${ownFull} Station ${digitizeRaw(brg)} ${sayNatural(dist)} mile from ${refFull}. `;
+                // --- 3. Course (CPN) & Speed (SPD) ---
+                const cpnMatches = cleanSignal.matchAll(/\/([A-Z]+)[^/]*\bCPN\s*[A-Z]?\s*(\d{1,3})/gi);
+                for (const match of cpnMatches) {
+                    const shipName = SHIP_NAMES_MAP[match[1].toUpperCase()] || match[1].toUpperCase();
+                    const courseVal = parseInt(match[2], 10);
+                    msg += `${shipName} TO STEER COURSE ${digitize(courseVal)}. `;
                 }
 
-                // 3. REFERENCE SHIP STATION (Announce First)
-                if (ownRefRaw) {
-                    const refRegex = new RegExp(`\/\\s*${ownRefRaw}\\s+STN\\s+(\\d+)\\s*-\\s*\/\\s*([A-Z]+)\\s*-\\s*([\\d.\\sANS]+)`);
-                    const refMatch = cleanSignal.match(refRegex);
-                    if (refMatch) {
-                        const rBrg = refMatch[1];
-                        const rRef = refMatch[2];
-                        const rDist = refMatch[3];
-                        const rNameFull = SHIP_NAMES_MAP[ownRefRaw] || ownRefRaw;
-                        const rRefFull = SHIP_NAMES_MAP[rRef] || rRef;
-
-                        msg += `${rNameFull}, Station ${digitizeRaw(rBrg)} ${sayNatural(rDist)} mile from ${rRefFull}. `;
-                    }
+                const spdMatch = cleanSignal.match(/\bSPD\s+[A-Z]?\s*(\d+)/i);
+                if (spdMatch) {
+                    msg += `PROCEED AT SPEED ${digitizeRaw(spdMatch[1])}. `;
                 }
 
-                // 4. APPEND OWN SHIP MSG
-                if (ownMsg) {
-                    msg += ownMsg;
-                }
-
-                // 5. CORPEN DELTA (Specific Case)
-                const cpnDMatch = cleanSignal.match(/CPN\s+D\s+(\d{1,3})/);
+                // --- 4. Corpen Delta (Legacy support) ---
+                const cpnDMatch = cleanSignal.match(/CPN\s+D\s+(\d{1,3})/i);
                 if (cpnDMatch) {
                     const cStr = digitize(parseInt(cpnDMatch[1], 10));
-                    const isDiv = cleanSignal.includes("DIV");
-                    msg += `Corpen Delta ${cStr}${isDiv ? " Division" : ""}. `;
-                    msg += `Upon execution, each line ${isDiv ? "in Division or Sub Division " : ""}to wheel simultaneously to new course ${cStr} maintaining relative bearing and distance from the guide. All other ships to follow in the wake of their guide. `;
+                    msg += `CORPEN DELTA ${cStr}. `;
                 }
 
+                msg += status;
                 return msg;
             };
 
@@ -4324,6 +4296,7 @@
             if (!pendingExecution || isComplexBulk) {
                 pushUndo(board);
             }
+
 
             // --- COLLECTIVE / BULK SIGNAL MODE ---
             // Re-using logic but on cleanSignal
@@ -4502,34 +4475,35 @@
                     }
                 });
 
-                if (stnActions.length > 0 || introMsg) {
-                    if (voiceParts.length > 0 || introMsg) {
+                if (stnActions.length > 0 || introMsg || multiProcessed) {
+                    // Check if it's a compound signal (Guide, Course, Speed, or complex Stationing)
+                    const isCompound = /G\s*-?\s*\/\w+/i.test(cleanSignal) ||
+                        /\/\w+\s+CPN\b/i.test(cleanSignal) ||
+                        /\bSPD\s+[A-Z]?\s*\d+/i.test(cleanSignal) ||
+                        /\/([A-Z]+)\s+STN\s+([AB])/i.test(cleanSignal);
+
+                    if (isCompound) {
+                        const detailedMsg = generateDetailedMessage(hasRIX || hasSB_IX ? 'IMMEDIATE' : 'PENDING');
+                        speakCommand(detailedMsg);
+                    } else if (voiceParts.length > 0 || introMsg) {
                         const voiceBody = introMsg + voiceParts.join(". ");
-
                         let finalMsg = globalVoicePrefix;
-
-                        // Execution Preamble
                         if (hasRIX || hasSB_IX || rawUpper.includes("COLL")) {
                             finalMsg += "IMMEDIATE EXECUTE. ";
                         } else if (pendingExecution) {
                             finalMsg += "PENDING FOR EXECUTION. ";
                         }
-
                         finalMsg += voiceBody;
-
                         if (pendingExecution) {
                             finalMsg += ". UPON EXECUTION, SHIPS TO TAKE STATION AS ORDERED.";
                         }
-
                         speakCommand(finalMsg);
-
                     } else if (!pendingExecution && multiProcessed) {
                         speakCommand(globalVoicePrefix + "Signal Executed.");
                     }
 
                     const isTrueMode = document.getElementById("trueBearingToggle") ? document.getElementById("trueBearingToggle").checked : true;
-                    // Execution Condition: Do not execute acts if pending, UNLESS ship is new (Scenario Setup)
-                    // We run this loop multiple times to handle deep nested stationing (e.g. SYD rel SVT rel VSK rel GUIDE)
+                    // Execution Condition
                     for (let k = 0; k < 4; k++) {
                         stnActions.forEach(act => {
                             if (!pendingExecution || processedShips.has(act.s)) {
@@ -5595,69 +5569,6 @@
                 inp.value = ""; return;
             }
 
-            // ============================================================
-            // COMPOUND FORMATION ORDER: G / CPN / SPD / STN
-            // Format: COLL DE WWTVZG IX = G- /KVT - /KVT CPN A 190 - SPD H 12 - /KMT STN B - /KVT - O ANS 5
-            // ============================================================
-            if (/G\s*-?\s*\/\w+/i.test(cleanSignal) ||
-                /\/\w+\s+CPN\b/i.test(cleanSignal) ||
-                /\/\w+\s+STN\s+[AB]\b/i.test(cleanSignal)) {
-
-                const execSuffix = outerExecuteMode === "PENDING"
-                    ? "PENDING FOR EXECUTION."
-                    : "IMMEDIATE EXECUTE.";
-
-                // --- Guide ---
-                const guideMatch = cleanSignal.match(/G\s*-?\s*\/([A-Z]+)/i);
-                const guideCallsign = guideMatch ? guideMatch[1].toUpperCase() : null;
-                const guideShipName = guideCallsign ? (SHIP_NAMES_MAP[guideCallsign] || guideCallsign) : null;
-
-                // --- CPN (course order): /SHIP CPN [dir] COURSE ---
-                const cpnMatch = cleanSignal.match(/\/([A-Z]+)\s+CPN\s*[A-Z]?\s*(\d{1,3})/i);
-                const cpnCallsign = cpnMatch ? cpnMatch[1].toUpperCase() : null;
-                const cpnShipName = cpnCallsign ? (SHIP_NAMES_MAP[cpnCallsign] || cpnCallsign) : null;
-                const cpnCourse = cpnMatch ? parseInt(cpnMatch[2], 10) : null;
-
-                // --- SPD (speed order): SPD [qualifier] SPEED ---
-                const spdMatch = cleanSignal.match(/SPD\s+[A-Z]\s*(\d+)/i);
-                const spdVal = spdMatch ? spdMatch[1] : null;
-
-                // --- STN (station): /SHIP STN [A/B] - /REFSHIP - DIST ---
-                const stnMatch = cleanSignal.match(
-                    /\/([A-Z]+)\s+STN\s+([AB])(?:\s*-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/i
-                );
-                let stnShipName = null, stnDir = null, stnRefName = null, stnDistText = null;
-                if (stnMatch) {
-                    stnShipName = SHIP_NAMES_MAP[stnMatch[1].toUpperCase()] || stnMatch[1].toUpperCase();
-                    stnDir = stnMatch[2].toUpperCase() === "A" ? "AHEAD" : "ASTERN";
-                    const refCS = stnMatch[3] ? stnMatch[3].toUpperCase() : guideCallsign;
-                    stnRefName = SHIP_NAMES_MAP[refCS] || refCS;
-                    stnDistText = parseANS(stnMatch[4].trim());
-                }
-
-                // Build voice message
-                let msg = globalVoicePrefix;
-                if (guideShipName) msg += `GUIDE OF THE FORMATION IS ${guideShipName}. `;
-                if (cpnShipName && cpnCourse !== null) {
-                    msg += `${cpnShipName} TO STEER COURSE ${digitize(cpnCourse)}`;
-                    if (spdVal !== null) msg += ` AND PROCEED AT SPEED ${digitizeRaw(spdVal)}`;
-                    msg += ". ";
-                } else if (spdVal !== null) {
-                    msg += `PROCEED AT SPEED ${digitizeRaw(spdVal)}. `;
-                }
-
-                // Final STN check
-                if (stnShipName && stnDir && stnDistText) {
-                    msg += `${stnShipName} STATION ${stnDistText} ${stnDir} `;
-                    if (stnRefName) msg += `OF ${stnRefName}. `;
-                    else msg += ". ";
-                }
-                msg += execSuffix;
-
-                speakCommand(msg);
-                inp.value = ""; return;
-            }
-
             // --- COLL = (CONTENT) = TIME: no DE, speak content with OTC prefix ---
             // e.g. "COLL = SHIPS TO MAINTAIN SPEED 12 = 1001"
             // e.g. "COLL = (SHIPS TO MAINTAIN SPEED 12) = 1001"
@@ -5672,7 +5583,6 @@
             }
 
             alert("COMMAND NOT RECOGNIZED");
-
         }
 
         // ANS distance notation parser
