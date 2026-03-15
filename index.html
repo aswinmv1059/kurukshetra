@@ -4147,9 +4147,10 @@
                     // Own ship is after DE → permission prefix
                     globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
                 } else if (isCollective) {
-                    // Broadcast from other ship (with DE) to collective/all present
-                    const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                    globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
+                    // Use actionPart (e.g. "NC") not addresseeRaw ("NC INFO COLL") for the TO clause
+                    // addresseeRaw already contains INFO COLL — expanding it whole would duplicate INFO COLLECTIVE
+                    const expandedTo = actionPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                    globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedTo}`;
                     if (infoPart) {
                         const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
                         globalVoicePrefix += ` INFO ${infoExpanded}`;
