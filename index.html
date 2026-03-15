@@ -1156,11 +1156,120 @@
             <div id="rosterDetails"></div>
         </div>
 
+        <!-- Serials Button -->
+        <button id="btnSerials" onclick="openSerialsModal()"
+            style="background:rgba(0,255,153,0.08);border:1px solid var(--primary);color:var(--primary);padding:6px 14px;font-size:0.75rem;letter-spacing:1.5px;cursor:pointer;border-radius:4px;font-family:var(--font-code);text-transform:uppercase;">SERIALS</button>
+
+        <!-- Helo Operations Button -->
+        <button id="btnHelo" onclick="openHeloOverlay()"
+            style="background:rgba(255,179,71,0.08);border:1px solid var(--accent-warm);color:var(--accent-warm);padding:6px 14px;font-size:0.75rem;letter-spacing:1.5px;cursor:pointer;border-radius:4px;font-family:var(--font-code);text-transform:uppercase;">FLAG
+            H</button>
+
         <!-- Day/Night toggle -->
         <label class="switch">
             <input type="checkbox" id="modeToggle" checked>
             <span class="slider"></span>
         </label>
+    </div>
+
+    <!-- SERIALS MODAL -->
+    <div id="serialsModal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;">
+        <div
+            style="background:#0a1520;border:1px solid var(--primary);border-radius:8px;padding:24px;width:700px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:0 0 40px rgba(0,255,153,0.15);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <div style="color:var(--primary);font-family:var(--font-code);font-size:1.1rem;letter-spacing:2px;">⚓
+                    EXERCISE SERIALS REGISTRY</div>
+                <button onclick="closeSerialsModal()"
+                    style="background:none;border:1px solid #555;color:#aaa;padding:4px 12px;cursor:pointer;border-radius:4px;">✕
+                    CLOSE</button>
+            </div>
+            <div
+                style="display:grid;grid-template-columns:1fr 2fr 1fr 1fr;gap:8px;margin-bottom:10px;color:#666;font-size:0.7rem;letter-spacing:1px;font-family:var(--font-code);">
+                <span>SERIAL NO.</span><span>EXERCISE NAME</span><span>OTC SHIP</span><span>OCS SHIP</span>
+            </div>
+            <div id="serialsList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;"></div>
+            <div id="serialsAddRow"
+                style="display:grid;grid-template-columns:1fr 2fr 1fr 1fr auto;gap:8px;align-items:center;">
+                <input id="srlSerial" placeholder="e.g. 1303"
+                    style="background:rgba(0,0,0,0.5);border:1px solid #333;color:var(--primary);padding:6px 8px;border-radius:4px;font-family:var(--font-code);font-size:0.8rem;"
+                    maxlength="8">
+                <input id="srlExercise" placeholder="EXERCISE NAME"
+                    style="background:rgba(0,0,0,0.5);border:1px solid #333;color:var(--primary);padding:6px 8px;border-radius:4px;font-family:var(--font-code);font-size:0.8rem;">
+                <input id="srlOTC" placeholder="OTC CALLSIGN"
+                    style="background:rgba(0,0,0,0.5);border:1px solid #333;color:var(--primary);padding:6px 8px;border-radius:4px;font-family:var(--font-code);font-size:0.8rem;text-transform:uppercase;"
+                    maxlength="8">
+                <input id="srlOCS" placeholder="OCS CALLSIGN"
+                    style="background:rgba(0,0,0,0.5);border:1px solid #333;color:var(--primary);padding:6px 8px;border-radius:4px;font-family:var(--font-code);font-size:0.8rem;text-transform:uppercase;"
+                    maxlength="8">
+                <button onclick="addSerial()"
+                    style="background:var(--primary-dim);border:1px solid var(--primary);color:var(--primary);padding:6px 14px;cursor:pointer;border-radius:4px;font-family:var(--font-code);white-space:nowrap;">+
+                    ADD</button>
+            </div>
+            <div style="color:#555;font-size:0.7rem;margin-top:8px;">Max 20 serials. OTC callsign applies to all
+                serials.</div>
+        </div>
+    </div>
+
+    <!-- HELO OPERATIONS OVERLAY -->
+    <div id="heloOverlay"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;">
+        <div
+            style="background:#0a0f1a;border:2px solid #ffb347;border-radius:12px;padding:30px 36px;max-width:600px;width:94vw;box-shadow:0 0 60px rgba(255,179,71,0.3);position:relative;">
+            <button onclick="closeHeloOverlay()"
+                style="position:absolute;top:14px;right:14px;background:none;border:1px solid #555;color:#aaa;padding:4px 12px;cursor:pointer;border-radius:4px;font-size:0.9rem;">✕</button>
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
+                <!-- FLAG H Symbol -->
+                <div id="flagHSymbol" style="width:70px;height:90px;position:relative;flex-shrink:0;">
+                    <svg viewBox="0 0 70 90" width="70" height="90">
+                        <rect x="2" y="2" width="30" height="40" fill="#ffffff" stroke="#999" stroke-width="1" />
+                        <rect x="32" y="2" width="30" height="40" fill="#e63946" stroke="#999" stroke-width="1" />
+                        <line x1="2" y1="22" x2="62" y2="22" stroke="#999" stroke-width="1" />
+                        <line x1="32" y1="2" x2="32" y2="42" stroke="#999" stroke-width="1" />
+                        <line x1="5" y1="2" x2="5" y2="85" stroke="#888" stroke-width="2" />
+                    </svg>
+                </div>
+                <div>
+                    <div
+                        style="color:#ffb347;font-family:var(--font-code);font-size:1.2rem;letter-spacing:3px;font-weight:700;">
+                        HELO OPERATIONS — FLAG HOTEL</div>
+                    <div id="heloStatusLine"
+                        style="color:#fff;font-family:var(--font-code);font-size:0.85rem;margin-top:6px;letter-spacing:1px;">
+                    </div>
+                </div>
+            </div>
+            <div
+                style="border-top:1px solid rgba(255,179,71,0.3);padding-top:16px;display:flex;flex-direction:column;gap:16px;">
+                <div
+                    style="background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:6px;padding:14px;">
+                    <div
+                        style="color:#ffb347;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        🚁 HELO APPROACHING</div>
+                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
+                            style="color:#ffb347;font-weight:700;">AT THE DIP</span> when helicopter is approaching the
+                        ship.</div>
+                </div>
+                <div
+                    style="background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:6px;padding:14px;">
+                    <div
+                        style="color:#ffb347;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        🚁 HELO OPERATING</div>
+                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
+                            style="color:#00ff99;font-weight:700;">HOISTED</span> when operating helicopter.</div>
+                </div>
+                <div
+                    style="background:rgba(220,50,50,0.07);border:1px solid rgba(220,50,50,0.3);border-radius:6px;padding:14px;">
+                    <div
+                        style="color:#e63946;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        ⚠ HELO EMERGENCY</div>
+                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">
+                        <b style="color:#e63946;">EMERG H</b> WILL BE HOISTED<br>
+                        R/T FAILURE: FIRE ONE <span style="color:#22cc55;font-weight:700;">GREEN</span> VERY SHOT —
+                        <b>STARBOARD</b> OR <b>PORT</b> as applicable
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MAIN AREA -->
@@ -1326,7 +1435,8 @@
             "SVT": "SAVITRI", "SHK": "SHAKTI", "SLK": "SHALKI", "SVL": "SHIVALIK",
             "SKR": "SINDHUKESARI", "SKT": "SINDHUKIRTI", "SST": "SINDHUSHASTRA", "SVY": "SINDHUVIJAY",
             "SKY": "SUKANYA", "SDH": "SUMEDHA", "SMA": "SUMITRA", "TMG": "TARMUGLI",
-            "TYU": "TIHAYU", "UDG": "UDAYGIRI", "WWTV": "WORKUP",
+            "TYU": "TIHAYU", "UDG": "UDAYGIRI", "WWTV": "WORKUP", "WWTVZG": "WORKUP",
+            "NC": "NAVY CONTROL",
             "VPS": "VPNS 17", "GGC": "ROKS GANG GAM CHAN", "WRM": "HMAS WARRANMUNGA", "PKN": "USS PINCKEY",
             "MVM": "PN MIGUEL MALVAR", "MMV": "PN MIGUEL MALVAR", "SOM": "BNS SOMUDRA AVIJAN", "AMT": "SAS AMATOLA", "YDC": "JS YUDACHI",
             "VSK": "VISAKHAPATNAM",
@@ -1338,6 +1448,10 @@
             "FLAG": "FLAG", "COLL": "COLLECTIVE", "ANS": "ANSWER",
             "CPN": "CORPEN", "STN": "STATION", "FORM": "FORMATION", "SPD": "SPEED"
         };
+
+        /* ---------- SERIALS REGISTRY ---------- */
+        let SERIALS_REGISTRY = []; // [{ser, exercise, otc, ocs},...]
+
 
 
         /* ---------- STATE PER BOARD ---------- */
@@ -3947,6 +4061,7 @@
 
             let executionTargets = null; // null means ALL/COLLECTIVE
             let globalVoicePrefix = "";
+            let outerSenderRaw = "FLAG"; // sender callsign, accessible to all signal handlers
 
             if (addressPart) {
                 const deRegex = /^(.*?)\s+DE\s+(.*)$/i;
@@ -3965,6 +4080,7 @@
                     addresseeRaw = addressPart; // e.g. "KMT"
                     senderRaw = "FLAG";
                 }
+                outerSenderRaw = senderRaw; // hoist to outer scope
 
                 const sender = SHIP_NAMES_MAP[senderRaw] || senderRaw;
 
@@ -3985,23 +4101,46 @@
                 const isOwnShipSender = (senderRaw === ownName);
                 const isCollective = addresseeRaw.includes("COLL");
 
-                if (isCollective) {
+                // Determine if this is a "slipping" signal (BB-WED)
+                const isSlippingSignal = /\bBB\s*-\s*WED\b/i.test(signalPart);
+
+                if (isSlippingSignal) {
+                    // DE rule for slipping: if addressee (before DE) is own ship → permission; else → message from sender
+                    const addrToken = actionPart.trim().split(/\s+/).pop();
+                    if (addrToken === ownName) {
+                        globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. HAVE SLIPPED. ";
+                    } else {
+                        const senderFullName = SHIP_NAMES_MAP[senderRaw] || senderRaw;
+                        globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${senderFullName}. HAVE SLIPPED. `;
+                    }
+                } else if (isCollective) {
                     const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
                     globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
+                    if (infoPart) {
+                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                        globalVoicePrefix += ` INFO ${infoExpanded}`;
+                    }
+                    globalVoicePrefix += ". ";
                 } else if (isOwnShipSender) {
                     const expandedAddressee = SHIP_NAMES_MAP[addresseeRaw] || addresseeRaw;
                     globalVoicePrefix = `BRIDGE TP PERMISSION TO PASS ${expandedAddressee}. THIS IS ${sender}`;
+                    if (infoPart) {
+                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                        globalVoicePrefix += ` INFO ${infoExpanded}`;
+                    }
+                    globalVoicePrefix += ". ";
                 } else {
-                    const expandedAddressee = SHIP_NAMES_MAP[addresseeRaw] || addresseeRaw;
-                    globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
+                    const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
+                    if (infoPart) {
+                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                        globalVoicePrefix += ` INFO ${infoExpanded}`;
+                    }
+                    globalVoicePrefix += ". ";
                 }
 
-                if (infoPart) {
-                    const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                    globalVoicePrefix += ` INFO ${infoExpanded}`;
-                }
-
-                globalVoicePrefix += ". ";
+                // If infoPart was already appended above in each branch, skip the old block
+                // (infoPart handling moved into each branch above)
             } else {
                 // Default if no address part
                 globalVoicePrefix = "ALL POSITION TP MESSAGE FROM FLAG TO COLLECTIVE. ";
@@ -5283,6 +5422,128 @@
                 inp.value = ""; return;
             }
 
+            // ============================================================
+            // TACTICAL SIGNAL HANDLERS — WORKUP / NC / INTP SIGNALS
+            // ============================================================
+
+            // --- BB-WED (Slipping Signal): Have Slipped ---
+            // Format: NC INFO COLL DE KMT = BB - WED 50 = 0910
+            if (/\bBB\s*-\s*WED\b/i.test(cleanSignal)) {
+                const wedMatch = cleanSignal.match(/BB\s*-\s*WED\s*(\d+)/i);
+                const wedNum = wedMatch ? wedMatch[1] : "";
+                speakCommand(globalVoicePrefix);
+                inp.value = ""; return;
+            }
+
+            // --- AT ITB (Joined Task Group) ---
+            if (/\bAT\s+ITB\b/i.test(cleanSignal)) {
+                speakCommand(globalVoicePrefix + "AT ITB.");
+                inp.value = ""; return;
+            }
+
+            // --- AT OTB (Left Task Group) ---
+            if (/\bAT\s+OTB\b/i.test(cleanSignal)) {
+                speakCommand(globalVoicePrefix + "AT OTB.");
+                inp.value = ""; return;
+            }
+
+            // --- WNA 3 - GYRO ERROR (Format: WNA 3 - 53/54/55) ---
+            // Pronounce gyro error High/Low/Nil based on WNA value
+            if (/\bWNA\s+3\b/i.test(cleanSignal)) {
+                const gyroMatch = cleanSignal.match(/WNA\s+3\s*-?\s*([\d\/]+)/i);
+                let gyroLevel = "NIL";
+                if (gyroMatch) {
+                    const gCodes = gyroMatch[1].split("/");
+                    const gc = parseInt(gCodes[gCodes.length - 1], 10);
+                    if (gc <= 53) gyroLevel = "LOW";
+                    else if (gc === 54) gyroLevel = "HIGH";
+                    else gyroLevel = "NIL";
+                }
+                speakCommand(globalVoicePrefix + `GYRO ERROR ${gyroLevel}.`);
+                inp.value = ""; return;
+            }
+
+            // --- WTA 26 - SIGHTED SHIP ON BEARING (Format: WTA 26 - 53 - 000 DSG /KVT) ---
+            if (/\bWTA\s+26\b/i.test(cleanSignal)) {
+                const brgMatch = cleanSignal.match(/WTA\s+26\s*-\s*\d+\s*-\s*(\d{1,3})/i);
+                const dsgMatch = cleanSignal.match(/DSG\s*\/?(\w+)/i);
+                let brgStr = brgMatch ? digitize(parseInt(brgMatch[1], 10)) : "UNKNOWN";
+                let dsgShip = dsgMatch ? (SHIP_NAMES_MAP[dsgMatch[1]] || dsgMatch[1]) : "";
+                let msg = globalVoicePrefix + `SIGHTED SHIP ON BEARING ${brgStr}.`;
+                if (dsgShip) msg += ` DESIGNATED TO ${dsgShip}.`;
+                speakCommand(msg);
+                inp.value = ""; return;
+            }
+
+            // --- WTA 101 - Avoiding Action (COLL DE WWTVZG = WTA 101 - 51) ---
+            if (/\bWTA\s+101\b/i.test(cleanSignal)) {
+                speakCommand(globalVoicePrefix + "SHIPS TO TAKE INDIVIDUAL AVOIDING ACTION AGAINST SHIPPING, FISHING, SAILING CRAFTS, NETS AND BUOYS.");
+                inp.value = ""; return;
+            }
+
+            // --- BH TA 88 - Permission to Proceed as Previously Directed ---
+            // Format: KVT DE KMT = BH TA 88 - 3 = time  (own ship sends → BRIDGE TP PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED)
+            // Format: KMT DE KVT = C - time = time  (other sends → BRIDGE TP MESSAGE FROM KVT, KMT TO PROCEED AS PREVIOUSLY DIRECTED)
+            if (/\bBH\s+TA\s+88\b/i.test(cleanSignal)) {
+                speakCommand(globalVoicePrefix + "PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED.");
+                inp.value = ""; return;
+            }
+
+            // --- C (Comply / Proceed as Previously Directed from another ship) ---
+            // Format: KMT DE KVT = C - time = time
+            if (/^C\s*$/.test(cleanSignal.trim()) || /^C\s*-\s*\d+$/.test(cleanSignal.trim())) {
+                // globalVoicePrefix already set as BRIDGE TP MESSAGE FROM KVT
+                speakCommand(globalVoicePrefix + "KMT TO PROCEED AS PREVIOUSLY DIRECTED.");
+                inp.value = ""; return;
+            }
+
+            // --- CO 16 - Take Charge and Conduct OSTDEP (WWTVZG INFO COLL DE KMT = CO 16 - 1 DSG OSTDEP 16/26) ---
+            if (/\bCO\s+16\b/i.test(cleanSignal)) {
+                const dsgMatch = cleanSignal.match(/DSG\s+(OSTDEP\s*[\d\/]+)/i);
+                const ostdep = dsgMatch ? dsgMatch[1].trim() : "";
+                let msg = globalVoicePrefix + "WORKUP TO TAKE CHARGE AND CONDUCT";
+                if (ostdep) msg += " " + ostdep;
+                msg += ".";
+                speakCommand(msg);
+                inp.value = ""; return;
+            }
+
+            // --- EX 3 / EX3 - Exercise Signal (with Serial) ---
+            // Format: COLL DE WWTVZG = EX 3 - 9 DSG SER 1303
+            // Format: COLL DE WWTVZG = EX3 - 9 DSG SER 2204 - TA92 - 2
+            if (/\bEX\s*3\b/i.test(cleanSignal)) {
+                const serMatch = cleanSignal.match(/SER\s+(\w+)/i);
+                const serNum = serMatch ? serMatch[1] : null;
+                const exCodeMatch = cleanSignal.match(/EX\s*3\s*-\s*(\d+)/i);
+                const exCode = exCodeMatch ? exCodeMatch[1] : "9";
+
+                // Look up serial in registry
+                let exerciseName = "HELO CONTROL EXERCISE";
+                let otcName = "";
+                if (serNum && SERIALS_REGISTRY.length > 0) {
+                    const found = SERIALS_REGISTRY.find(s => s.ser === serNum);
+                    if (found) {
+                        exerciseName = found.exercise || exerciseName;
+                        otcName = found.otc || "";
+                    }
+                }
+
+                const otcFull = otcName ? (SHIP_NAMES_MAP[otcName] || otcName) : (SHIP_NAMES_MAP[outerSenderRaw] || outerSenderRaw);
+
+                // TA92-2 pattern → KMT to conduct HELO operations independently
+                const ta92Match = cleanSignal.match(/TA\s*92\s*-\s*2/i);
+                let msg = "";
+                if (ta92Match) {
+                    const ownFull = SHIP_NAMES_MAP[(window.OWN_SHIP_NAME || "KMT").toUpperCase()] || (window.OWN_SHIP_NAME || "KMT");
+                    msg = globalVoicePrefix + `${ownFull} TO CONDUCT HELO OPERATIONS INDEPENDENTLY.`;
+                } else {
+                    const serStr = serNum ? " SERIAL " + digitizeRaw(serNum) + " THAT IS" : "";
+                    msg = `BRIDGE TP MESSAGE FROM ${otcFull} TO COLLECTIVE.${serStr} ${exerciseName} COMMENCED.`;
+                }
+                speakCommand(msg);
+                inp.value = ""; return;
+            }
+
             alert("COMMAND NOT RECOGNIZED");
         }
 
@@ -5446,6 +5707,87 @@
 
 
 
+
+        /* ---------- SERIALS MODAL ---------- */
+        function openSerialsModal() {
+            renderSerials();
+            const modal = document.getElementById("serialsModal");
+            modal.style.display = "flex";
+        }
+
+        function closeSerialsModal() {
+            document.getElementById("serialsModal").style.display = "none";
+        }
+
+        function renderSerials() {
+            const list = document.getElementById("serialsList");
+            if (!list) return;
+            list.innerHTML = "";
+            if (SERIALS_REGISTRY.length === 0) {
+                list.innerHTML = '<div style="color:#555;font-family:var(--font-code);font-size:0.8rem;padding:8px 0;">No serials added yet.</div>';
+                return;
+            }
+            SERIALS_REGISTRY.forEach((s, idx) => {
+                const row = document.createElement("div");
+                row.style.cssText = "display:grid;grid-template-columns:1fr 2fr 1fr 1fr auto;gap:8px;align-items:center;background:rgba(0,255,153,0.03);border:1px solid rgba(0,255,153,0.1);border-radius:4px;padding:6px 8px;";
+                row.innerHTML = `
+                    <span style="color:var(--primary);font-family:var(--font-code);font-size:0.85rem;">${s.ser}</span>
+                    <span style="color:#ccc;font-size:0.82rem;">${s.exercise}</span>
+                    <span style="color:#aaa;font-family:var(--font-code);font-size:0.8rem;">${s.otc}</span>
+                    <span style="color:#aaa;font-family:var(--font-code);font-size:0.8rem;">${s.ocs}</span>
+                    <button onclick="removeSerial(${idx})" style="background:none;border:1px solid #553;color:#a33;padding:2px 8px;cursor:pointer;border-radius:3px;font-size:0.75rem;">✕</button>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function addSerial() {
+            if (SERIALS_REGISTRY.length >= 20) {
+                alert("Maximum 20 serials allowed.");
+                return;
+            }
+            const ser = document.getElementById("srlSerial").value.trim().toUpperCase();
+            const exercise = document.getElementById("srlExercise").value.trim().toUpperCase();
+            const otc = document.getElementById("srlOTC").value.trim().toUpperCase();
+            const ocs = document.getElementById("srlOCS").value.trim().toUpperCase();
+            if (!ser || !exercise) { alert("Serial number and exercise name are required."); return; }
+            SERIALS_REGISTRY.push({ ser, exercise, otc, ocs });
+            document.getElementById("srlSerial").value = "";
+            document.getElementById("srlExercise").value = "";
+            document.getElementById("srlOTC").value = otc; // OTC stays same for all
+            document.getElementById("srlOCS").value = "";
+            renderSerials();
+        }
+
+        function removeSerial(idx) {
+            SERIALS_REGISTRY.splice(idx, 1);
+            renderSerials();
+        }
+
+        /* ---------- HELO OPERATIONS OVERLAY ---------- */
+        function openHeloOverlay() {
+            const overlay = document.getElementById("heloOverlay");
+            overlay.style.display = "flex";
+        }
+
+        function closeHeloOverlay() {
+            document.getElementById("heloOverlay").style.display = "none";
+        }
+
+        // Close modals on ESC
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                closeSerialsModal();
+                closeHeloOverlay();
+            }
+        });
+
+        window.openSerialsModal = openSerialsModal;
+        window.closeSerialsModal = closeSerialsModal;
+        window.addSerial = addSerial;
+        window.removeSerial = removeSerial;
+        window.openHeloOverlay = openHeloOverlay;
+        window.closeHeloOverlay = closeHeloOverlay;
 
         window.addEventListener("load", function () {
             const introBg = document.getElementById("introBg");
