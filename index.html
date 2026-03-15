@@ -4069,6 +4069,7 @@
             let globalVoicePrefix = "";
             let outerSenderRaw = "FLAG"; // sender callsign, accessible to all signal handlers
             let outerExecuteMode = "IMMEDIATE"; // IX = PENDING, RIX = IMMEDIATE, default immediate
+            let outerCollNoDE = false; // true when signal is COLL = CONTENT = TIME (no DE/sender)
 
             if (addressPart) {
                 const deRegex = /^(.*?)\s+DE\s+(.*)$/i;
@@ -4129,11 +4130,24 @@
                 // DE + own ship  → BRIDGE TP PERMISSION TO PASS
                 // DE + other ship → BRIDGE TP MESSAGE FROM [ship]
                 // Collective from other ship → ALL POSITION TP MESSAGE FROM ... TO COLLECTIVE
-                if (isOwnShipSender) {
+                // No DE + COLL only → BRIDGE TP MESSAGE FROM [OTC from serials]
+
+                const hasDE = /\bDE\b/i.test(addressPart);
+                const isCollNoDE = isCollective && !hasDE; // COLL = content = time (no sender)
+                outerCollNoDE = isCollNoDE;
+
+                if (isCollNoDE) {
+                    // COLL = (content) = time with no sender specified
+                    // Look up OTC from SERIALS_REGISTRY (same OTC for all serials)
+                    const otcEntry = SERIALS_REGISTRY.find(s => s.otc && s.otc.trim() !== "") || null;
+                    const otcCallsign = otcEntry ? otcEntry.otc.toUpperCase() : "";
+                    const otcFull = otcCallsign ? (SHIP_NAMES_MAP[otcCallsign] || otcCallsign) : "OTC";
+                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${otcFull}. `;
+                } else if (isOwnShipSender) {
                     // Own ship is after DE → permission prefix
                     globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
                 } else if (isCollective) {
-                    // Broadcast from other ship to collective/all present
+                    // Broadcast from other ship (with DE) to collective/all present
                     const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
                     globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
                     if (infoPart) {
@@ -5609,7 +5623,21 @@
                 inp.value = ""; return;
             }
 
+            // --- COLL = (CONTENT) = TIME: no DE, speak content with OTC prefix ---
+            // e.g. "COLL = SHIPS TO MAINTAIN SPEED 12 = 1001"
+            // e.g. "COLL = (SHIPS TO MAINTAIN SPEED 12) = 1001"
+            if (outerCollNoDE && cleanSignal) {
+                // Strip trailing time (= HHMM or = HHMMZ) that may be in cleanSignal
+                let content = cleanSignal.replace(/\s*=\s*\d{3,4}Z?\s*$/, "").trim();
+                // Unwrap outer parentheses if fully wrapped: (text) → text
+                content = content.replace(/^\((.+)\)$/, "$1").trim();
+                // Speak: globalVoicePrefix already set to "BRIDGE TP MESSAGE FROM [OTC]. "
+                speakCommand(globalVoicePrefix + content + ".");
+                inp.value = ""; return;
+            }
+
             alert("COMMAND NOT RECOGNIZED");
+
         }
 
         // ANS distance notation parser
