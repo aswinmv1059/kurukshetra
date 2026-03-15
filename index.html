@@ -4125,17 +4125,15 @@
                 // Determine if this is a "slipping" signal (BB-WED)
                 const isSlippingSignal = /\bBB\s*-\s*WED\b/i.test(signalPart);
 
-                if (isSlippingSignal) {
-                    // BB-WED slipping signal — own ship addressee vs other
-                    const addrToken = actionPart.trim().split(/\s+/).pop();
-                    if (addrToken === ownName) {
-                        globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. HAVE SLIPPED. ";
-                    } else {
-                        const senderFullName = SHIP_NAMES_MAP[senderRaw] || senderRaw;
-                        globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${senderFullName}. HAVE SLIPPED. `;
-                    }
+                // Universal DE rule — applies to ALL signals:
+                // DE + own ship  → BRIDGE TP PERMISSION TO PASS
+                // DE + other ship → BRIDGE TP MESSAGE FROM [ship]
+                // Collective from other ship → ALL POSITION TP MESSAGE FROM ... TO COLLECTIVE
+                if (isOwnShipSender) {
+                    // Own ship is after DE → permission prefix
+                    globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
                 } else if (isCollective) {
-                    // Broadcast to collective — full address chain
+                    // Broadcast from other ship to collective/all present
                     const expandedAddressee = addresseeRaw.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
                     globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedAddressee}`;
                     if (infoPart) {
@@ -4143,14 +4141,10 @@
                         globalVoicePrefix += ` INFO ${infoExpanded}`;
                     }
                     globalVoicePrefix += ". ";
-                } else if (isOwnShipSender) {
-                    // DE followed by OWN SHIP → "BRIDGE TP PERMISSION TO PASS"
-                    globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
                 } else {
-                    // DE followed by OTHER SHIP → "BRIDGE TP MESSAGE FROM [ship name]"
+                    // Other ship is after DE → message-from prefix
                     globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender}. `;
                 }
-
 
                 // If infoPart was already appended above in each branch, skip the old block
                 // (infoPart handling moved into each branch above)
@@ -5441,10 +5435,9 @@
 
             // --- BB-WED (Slipping Signal): Have Slipped ---
             // Format: NC INFO COLL DE KMT = BB - WED 50 = 0910
+            // Universal DE rule applies: own ship after DE → permission prefix; other ship → message-from prefix
             if (/\bBB\s*-\s*WED\b/i.test(cleanSignal)) {
-                const wedMatch = cleanSignal.match(/BB\s*-\s*WED\s*(\d+)/i);
-                const wedNum = wedMatch ? wedMatch[1] : "";
-                speakCommand(globalVoicePrefix);
+                speakCommand(globalVoicePrefix + "HAVE SLIPPED.");
                 inp.value = ""; return;
             }
 
