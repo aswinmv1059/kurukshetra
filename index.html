@@ -4167,7 +4167,6 @@
 
                 if (isCollNoDE) {
                     // COLL = (content) = time with no sender specified
-                    // Look up OTC from SERIALS_REGISTRY (same OTC for all serials)
                     const otcEntry = SERIALS_REGISTRY.find(s => s.otc && s.otc.trim() !== "") || null;
                     const otcCallsign = otcEntry ? otcEntry.otc.toUpperCase() : "";
                     const otcFull = otcCallsign ? (SHIP_NAMES_MAP[otcCallsign] || otcCallsign) : "OTC";
@@ -4175,19 +4174,21 @@
                 } else if (isOwnShipSender) {
                     // Own ship is after DE → permission prefix
                     globalVoicePrefix = "BRIDGE TP PERMISSION TO PASS. ";
-                } else if (isCollective) {
-                    // Use actionPart (e.g. "NC") not addresseeRaw ("NC INFO COLL") for the TO clause
-                    // addresseeRaw already contains INFO COLL — expanding it whole would duplicate INFO COLLECTIVE
-                    const expandedTo = actionPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                    globalVoicePrefix = `ALL POSITION TP MESSAGE FROM ${sender} TO ${expandedTo}`;
-                    if (infoPart) {
-                        const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
-                        globalVoicePrefix += ` INFO ${infoExpanded}`;
-                    }
-                    globalVoicePrefix += ". ";
                 } else {
-                    // Other ship is after DE → message-from prefix
-                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender}. `;
+                    // Universal DE Rule: Other ship is after DE → "BRIDGE TP MESSAGE FROM ..."
+                    // This now includes collective (COLL) recipients
+                    let toPart = "";
+                    if (isCollective) {
+                        toPart = " TO COLLECTIVE";
+                        if (infoPart) {
+                            const infoExpanded = infoPart.split(" ").map(w => SHIP_NAMES_MAP[w] || w).join(" ");
+                            toPart += ` INFO ${infoExpanded}`;
+                        }
+                    } else {
+                        // Single ship address
+                        toPart = ""; // We don't say the target ship name here as per user's "BRIDGE TP MESSAGE FROM [sender]" rule
+                    }
+                    globalVoicePrefix = `BRIDGE TP MESSAGE FROM ${sender}${toPart}. `;
                 }
 
                 // If infoPart was already appended above in each branch, skip the old block
@@ -5622,16 +5623,13 @@
                 const spdVal = spdMatch ? spdMatch[1] : null;
 
                 // --- STN (station): /SHIP STN [A/B] - /REFSHIP - DIST ---
-                // Captures ship, direction, reference ship (optional), and distance token
-                // regex refined to be more robust against spacing/dashes
                 const stnMatch = cleanSignal.match(
-                    /\/([A-Z]+)\s+STN\s+([AB])\s*(?:-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/i
+                    /\/([A-Z]+)\s+STN\s+([AB])(?:\s*-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/i
                 );
                 let stnShipName = null, stnDir = null, stnRefName = null, stnDistText = null;
                 if (stnMatch) {
                     stnShipName = SHIP_NAMES_MAP[stnMatch[1].toUpperCase()] || stnMatch[1].toUpperCase();
                     stnDir = stnMatch[2].toUpperCase() === "A" ? "AHEAD" : "ASTERN";
-                    // If ref ship is missing, assume it's the Guide from earlier in signal
                     const refCS = stnMatch[3] ? stnMatch[3].toUpperCase() : guideCallsign;
                     stnRefName = SHIP_NAMES_MAP[refCS] || refCS;
                     stnDistText = parseANS(stnMatch[4].trim());
