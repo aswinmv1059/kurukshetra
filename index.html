@@ -2156,9 +2156,6 @@
                             return `<line x1="167" y1="96" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#000080" stroke-width="1.5"/>`;
                         }).join("")}
                         <rect x="33" y="24" width="5" height="150" fill="#9aa8b2"/>
-                        <line x1="292" y1="30" x2="322" y2="175" stroke="#c64a3a" stroke-width="4"/>
-                        <line x1="292" y1="74" x2="318" y2="184" stroke="#c64a3a" stroke-width="4"/>
-                        <line x1="292" y1="118" x2="314" y2="193" stroke="#c64a3a" stroke-width="4"/>
                     </svg>
                 `;
             }
@@ -6106,6 +6103,15 @@
             // ============================================================
             // TACTICAL SIGNAL HANDLERS — WORKUP / NC / INTP SIGNALS
             // ============================================================
+
+            // --- BB-WED 48-52-10 (Delay in getting underway due tug non-availability) ---
+            if (/\bBB\s*-\s*WED\s*48\s*-\s*52\s*-\s*10\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const delayPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
+                speakCommand(delayPrefix + "ANTICIPATE DELAY OF ONE ZERO MINS IN GETTING UNDERWAY VIEW NON AVAILABILITY OF TUGS.");
+                inp.value = ""; return;
+            }
 
             // --- BB-WED (Slipping Signal): Have Slipped ---
             // Format: NC INFO COLL DE KMT = BB - WED 50 = 0910
