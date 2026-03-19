@@ -6004,13 +6004,19 @@
 
             // --- AT ITB (Joined Task Group) ---
             if (/\bAT\s+ITB\b/i.test(cleanSignal)) {
-                speakCommand(globalVoicePrefix + "AT ITB.");
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const itbPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
+                speakCommand(itbPrefix + "AT ITB.");
                 inp.value = ""; return;
             }
 
             // --- AT OTB (Left Task Group) ---
             if (/\bAT\s+OTB\b/i.test(cleanSignal)) {
-                speakCommand(globalVoicePrefix + "AT OTB.");
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const otbPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
+                speakCommand(otbPrefix + "AT OTB.");
                 inp.value = ""; return;
             }
 
