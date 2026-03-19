@@ -1459,6 +1459,18 @@
                 </select>
             </div>
 
+            <div class="control-group">
+                <span class="label-text">Command Location</span>
+                <select id="commandLocationSelect">
+                    <option value="BRIDGE">Bridge</option>
+                    <option value="OPS ROOM">Ops Room</option>
+                    <option value="BRIDGE TOP">Bridge Top</option>
+                    <option value="ALL POSITION">All Position</option>
+                    <option value="SCR">SCR</option>
+                    <option value="EW POST">EW Post</option>
+                </select>
+            </div>
+
             <!-- MANOEUVRING SERIAL TOGGLE -->
             <div class="control-group" style="display:flex; justify-content:space-between; align-items:center;">
                 <span class="label-text">Manoeuvring Serial</span>
@@ -2048,6 +2060,24 @@
             return parseFloat(numeric);
         }
 
+        function getCommandLocationLabel() {
+            const el = document.getElementById("commandLocationSelect");
+            return el ? (el.value || "BRIDGE") : "BRIDGE";
+        }
+
+        function buildCommandLocationPrefix(senderRaw, isOwnShipSender) {
+            const location = getCommandLocationLabel();
+            const senderName = SHIP_NAMES_MAP[senderRaw] || senderRaw;
+            if (isOwnShipSender) {
+                return `${location} TP REQUEST PERMISSION TO PASS. `;
+            }
+            return `${location} TP MESSAGE FROM ${senderName}. `;
+        }
+
+        function showActionPopup(message) {
+            alert(message);
+        }
+
         function formatSignalDistanceForVoice(distance) {
             if (typeof distance !== "number" || isNaN(distance)) return "";
             const cables = Math.round(distance * 10);
@@ -2058,22 +2088,22 @@
         }
 
         function formatStationActionVoice(action) {
-            const shipFull = action.s;
-            const refFull = action.r;
+            const shipFull = SHIP_NAMES_MAP[action.s] || action.s;
+            const refFull = SHIP_NAMES_MAP[action.r] || action.r;
             const distanceVoice = formatSignalDistanceForVoice(action.d);
             const descriptor = (action.descriptorLabel || "").toUpperCase();
 
             if (descriptor.includes("ASTERN")) {
-                return `${shipFull} STN ${distanceVoice} ASTERN OF ${refFull}`;
+                return `${shipFull} STATION ${distanceVoice} ASTERN OF ${refFull}`;
             }
             if (descriptor.includes("AHEAD")) {
-                return `${shipFull} STN ${distanceVoice} AHEAD OF ${refFull}`;
+                return `${shipFull} STATION ${distanceVoice} AHEAD OF ${refFull}`;
             }
             if (descriptor.includes("PORT")) {
-                return `${shipFull} STN ${distanceVoice} ON PORT OF ${refFull}`;
+                return `${shipFull} STATION ${distanceVoice} ON PORT OF ${refFull}`;
             }
             if (descriptor.includes("STARBOARD") || descriptor.includes("STBD")) {
-                return `${shipFull} STN ${distanceVoice} ON STBD OF ${refFull}`;
+                return `${shipFull} STATION ${distanceVoice} ON STBD OF ${refFull}`;
             }
             return `${shipFull} STATION ${action.rawBrg}, ${distanceVoice} FROM ${refFull}`;
         }
@@ -4772,32 +4802,14 @@
             // Helper to generate the detailed message
             const generateDetailedMessage = (mode) => {
                 let msg = globalVoicePrefix;
-                const status = (mode === 'PENDING') ? "PENDING FOR EXECUTION." : "IMMEDIATE EXECUTE.";
+                const status = (mode === 'PENDING') ? "PENDING FOR EXECUTION. " : "IMMEDIATE EXECUTE. ";
 
                 // --- 1. Guide ---
                 const guideMatch = cleanSignal.match(/G\s*-?\s*\/([A-Z]+)/i);
                 const guideCS = guideMatch ? guideMatch[1].toUpperCase() : null;
                 const guideShip = guideCS ? (SHIP_NAMES_MAP[guideCS] || guideCS) : null;
+                msg += status;
                 if (guideShip) msg += `GUIDE OF THE FORMATION IS ${guideShip}. `;
-
-                // --- 2. Generic Shift/Station Handler (Scan all ships) ---
-                // Matches patterns like: /KMT STN B - /KVT - O ANS 5
-                const stnMatches = cleanSignal.matchAll(/\/([A-Z]+)\s+STN\s+([AB]|\d{1,3})\s*(?:-?\s*\/([A-Z]+))?\s*-?\s*([0O]\s+ANS\s+\d+|\d+\s+ANS\s+\d+|\d+\.\d+|\d+)/gi);
-                for (const match of stnMatches) {
-                    const shipName = SHIP_NAMES_MAP[match[1].toUpperCase()] || match[1].toUpperCase();
-                    let dir = match[2].toUpperCase();
-                    if (dir === "A") dir = "AHEAD";
-                    else if (dir === "B") dir = "ASTERN";
-                    else dir = "ON BEARING " + digitize(parseInt(dir, 10));
-
-                    const refCS = match[3] ? match[3].toUpperCase() : guideCS;
-                    const refShip = refCS ? (SHIP_NAMES_MAP[refCS] || refCS) : null;
-                    const distText = parseANS(match[4].trim());
-
-                    msg += `${shipName} STATION ${distText} ${dir} `;
-                    if (refShip) msg += `OF ${refShip}. `;
-                    else msg += ". ";
-                }
 
                 // --- 3. Course (CPN) & Speed (SPD) ---
                 const cpnMatches = cleanSignal.matchAll(/\/([A-Z]+)[^/]*\bCPN\s*[A-Z]?\s*(\d{1,3})/gi);
@@ -4812,6 +4824,16 @@
                     msg += `PROCEED AT SPEED ${digitizeRaw(spdMatch[1])}. `;
                 }
 
+                const detailedStationActions = extractStationActionsFromSignal(cleanSignal, SHIPS, state, new Set());
+                detailedStationActions.forEach((act) => {
+                    const stationText = formatStationActionVoice(act);
+                    if (mode === 'PENDING') {
+                        msg += `${stationText} PENDING FOR EXECUTION. `;
+                    } else {
+                        msg += `${stationText}. `;
+                    }
+                });
+
                 // --- 4. Corpen Delta (Legacy support) ---
                 const cpnDMatch = cleanSignal.match(/CPN\s+D\s+(\d{1,3})/i);
                 if (cpnDMatch) {
@@ -4819,8 +4841,7 @@
                     msg += `CORPEN DELTA ${cStr}. `;
                 }
 
-                msg += status;
-                return msg;
+                return msg.trim();
             };
 
             const isComplexBulk = cleanSignal.split("-").length > 3 || cleanSignal.includes("STN");
@@ -5971,7 +5992,13 @@
             // Format: NC INFO COLL DE KMT = BB - WED 50 = 0910
             // Universal DE rule applies: own ship after DE → permission prefix; other ship → message-from prefix
             if (/\bBB\s*-\s*WED\b/i.test(cleanSignal)) {
-                speakCommand(globalVoicePrefix + "HAVE SLIPPED.");
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const slippingPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
+                speakCommand(slippingPrefix + "HAVE SLIPPED.");
+                if (senderIsOwnShip) {
+                    showActionPopup("DOWN NATIONAL FLAG");
+                }
                 inp.value = ""; return;
             }
 
