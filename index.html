@@ -57,9 +57,9 @@
             --neon-blue: #21d4ff;
             --neon-green: #00ff99;
             --bg-deep: #050608;
-            --bg-panel: rgba(10, 15, 20, 0.85);
-            --border-subtle: rgba(0, 255, 153, 0.2);
-            --border-strong: rgba(0, 255, 153, 0.6);
+            --bg-panel: rgba(10, 18, 24, 0.46);
+            --border-subtle: rgba(150, 234, 255, 0.18);
+            --border-strong: rgba(80, 255, 197, 0.45);
             --text-main: #e6fff5;
             --text-muted: #6b8c82;
             --alert: #ff3333;
@@ -68,11 +68,11 @@
             --font-code: 'Share Tech Mono', monospace;
             --font-cinematic: 'Rajdhani', sans-serif;
 
-            --bg-glass: rgba(10, 15, 12, 0.9);
-            --bg-glass-heavy: rgba(10, 15, 12, 0.95);
-            --bg-screen: rgba(0, 40, 30, 0.85);
-            --glow-soft: 0 0 12px rgba(0, 255, 153, 0.15);
-            --glow-strong: 0 0 30px rgba(0, 255, 153, 0.35);
+            --bg-glass: rgba(10, 18, 28, 0.48);
+            --bg-glass-heavy: rgba(7, 15, 24, 0.58);
+            --bg-screen: rgba(6, 20, 28, 0.44);
+            --glow-soft: 0 10px 30px rgba(0, 0, 0, 0.18);
+            --glow-strong: 0 18px 50px rgba(0, 0, 0, 0.28);
             --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -94,6 +94,23 @@
             flex-direction: column;
             background-image:
                 radial-gradient(circle at 50% 50%, rgba(0, 40, 20, 0.2) 0%, transparent 70%);
+        }
+
+        body,
+        #topBar,
+        #leftPanel,
+        #bottomPanel,
+        .boardWrapper,
+        #dataBox,
+        #guardRosterDisplay,
+        #guideIndicator,
+        #statusChip,
+        button,
+        input,
+        select,
+        textarea {
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
         }
 
         body::before,
@@ -258,13 +275,13 @@
             display: flex;
             align-items: center;
             padding: 0 25px;
-            background: var(--bg-glass);
+            background: linear-gradient(180deg, rgba(16, 28, 38, 0.56), rgba(8, 18, 28, 0.34));
             backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            border-bottom: 1px solid rgba(0, 255, 153, 0.15);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+            border-bottom: 1px solid rgba(150, 234, 255, 0.14);
             position: relative;
         }
 
@@ -445,7 +462,7 @@
         /* LEFT PANEL */
         #leftPanel {
             width: 360px;
-            background: var(--bg-glass-heavy);
+            background: linear-gradient(180deg, rgba(14, 26, 36, 0.62), rgba(8, 18, 28, 0.48));
             backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -455,8 +472,8 @@
             overflow-y: auto;
             z-index: 50;
             transition: transform 0.3s ease;
-            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 153, 0.06);
-            border-right: 1px solid rgba(0, 255, 153, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 18px 0 40px rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(150, 234, 255, 0.12);
         }
 
         h3 {
@@ -504,7 +521,7 @@
         input,
         select {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(12, 24, 34, 0.38);
             border: 1px solid var(--border-subtle);
             color: var(--primary);
             padding: 10px;
@@ -515,7 +532,7 @@
             border-radius: 4px;
             transition: 0.2s;
             text-transform: uppercase;
-            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 24px rgba(0,0,0,0.12);
         }
 
         input:focus,
@@ -668,12 +685,14 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: rgba(0, 5, 10, 0.6);
+            background:
+                linear-gradient(180deg, rgba(16, 28, 38, 0.52), rgba(7, 15, 24, 0.30)),
+                radial-gradient(circle at 18% 14%, rgba(33, 212, 255, 0.10), transparent 36%);
             border: 1px solid var(--border-subtle);
             border-radius: 8px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 255, 153, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 24px 40px rgba(0, 0, 0, 0.18);
             transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
         }
 
@@ -737,7 +756,7 @@
         /* BOTTOM COMMAND PANEL */
         #bottomPanel {
             height: 90px;
-            background: var(--bg-glass);
+            background: linear-gradient(180deg, rgba(16, 28, 38, 0.58), rgba(8, 18, 28, 0.38));
             backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             display: flex;
@@ -745,8 +764,8 @@
             padding: 0 25px;
             gap: 15px;
             z-index: 100;
-            border-top: 1px solid rgba(0, 255, 153, 0.15);
-            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(150, 234, 255, 0.14);
+            box-shadow: 0 -14px 36px rgba(0, 0, 0, 0.2);
         }
 
         #commandInput {
@@ -754,7 +773,7 @@
             height: 64px;
             font-size: 1.1rem;
             letter-spacing: 1px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(12, 24, 34, 0.40);
             color: var(--text-main);
             padding: 8px 12px;
             text-align: left;
@@ -988,6 +1007,15 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+        }
+
+        #flagPopupArt img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+            background: #f4f5f6;
         }
 
         #flagPopupMessage {
@@ -1554,9 +1582,15 @@
                 <input id="newShipName" placeholder="ENTER SHIP CALLSIGN..." autocomplete="off">
             </div>
             <button id="btnAddShip" style="margin-top:0;">ADD NEW SHIP</button>
-            <button id="btnPopulateMulti"
-                style="margin-top:8px; border:1px solid #ff9900; color:#ff9900; background:rgba(255,153,0,0.05);">POPULATE
-                MULTINATIONAL FLEET</button>
+
+            <h3>Name Mapping</h3>
+            <div class="control-group">
+                <input id="signalCodeInput" placeholder="ENTER 3 LETTER GROUP..." autocomplete="off" maxlength="12">
+            </div>
+            <div class="control-group">
+                <input id="signalNameInput" placeholder="ENTER FULL NAME..." autocomplete="off" maxlength="64">
+            </div>
+            <button id="btnAddSignalName" style="margin-top:0;">SAVE NAME MAPPING</button>
 
             <div style="height:15px;"></div>
 
@@ -1564,17 +1598,6 @@
                 OPERATION</button>
             <button id="btnLoadOp" style="border:1px solid #00ccff; color:#00ccff;">LOAD OPERATION</button>
             <input type="file" id="fileInputLoad" style="display:none" accept=".json" onchange="loadOperation(event)">
-            <button id="btnImportIst" style="border:1px solid #ffcc66; color:#ffcc66;">IMPORT IST LOG</button>
-            <input type="file" id="fileInputIst" style="display:none" accept=".txt,.log,.f,.sl,.csv,text/plain" onchange="loadIstLog(event)">
-            <div id="istSummary">No IST log loaded.</div>
-            <select id="istSerialFilter">
-                <option value="ALL">ALL SERIALS</option>
-            </select>
-            <div id="istMessageList">
-                <div style="color:#666; font-style:italic;">-- Imported IST messages will appear here --</div>
-            </div>
-
-
 
             <div id="commLog"
                 style="margin-top: 15px; height: 250px; background: rgba(0,0,0,0.8); border: 1px solid #333; border-left: 2px solid #ff9900; padding: 10px; overflow-y: auto; font-family: monospace; font-size: 13px; color: #ccc; user-select: text; -webkit-user-select: text; pointer-events: auto;">
@@ -1649,33 +1672,6 @@
         </div>
     </div>
 
-    <div id="istModal">
-        <div class="ist-modal-card">
-            <div class="ist-modal-top">
-                <h3 id="istModalTitle">FLAG MESSAGE</h3>
-                <button id="btnCloseIstModal" style="margin-top:0; width:auto; min-width:120px;">CLOSE</button>
-            </div>
-            <div class="ist-modal-grid">
-                <div class="ist-modal-field"><strong>SERIAL</strong><span id="istModalSerial">--</span></div>
-                <div class="ist-modal-field"><strong>TIME</strong><span id="istModalTime">--</span></div>
-                <div class="ist-modal-field"><strong>SOURCE</strong><span id="istModalSource">--</span></div>
-                <div class="ist-modal-field"><strong>TYPE</strong><span id="istModalType">--</span></div>
-            </div>
-            <div class="ist-modal-field">
-                <strong>INTERPRETATION</strong>
-                <div class="ist-modal-body" id="istModalInterpretation">--</div>
-            </div>
-            <div class="ist-modal-field" style="margin-top:12px;">
-                <strong>FLAG MESSAGE</strong>
-                <div class="ist-modal-body" id="istModalRaw">--</div>
-            </div>
-            <div class="ist-modal-actions">
-                <button id="btnIstLoadSignal" style="margin-top:0;">LOAD TO COMMAND BAR</button>
-                <button id="btnIstExecuteSignal" style="margin-top:0; border-color:#ffcc66; color:#ffcc66;">EXECUTE SIGNAL</button>
-            </div>
-        </div>
-    </div>
-
     <div id="flagPopup">
         <div class="flag-popup-card">
             <h3 id="flagPopupTitle">FLAG ACTION</h3>
@@ -1720,8 +1716,15 @@
             "HRV": "MCGS HURAVEE", "LVN": "IRIS LAVAN", "BSR": "IRIS BUSHEHR",
             "SGR": "SLNS SAGARA",
             "FLAG": "FLAG", "COLL": "COLLECTIVE", "ANS": "ANSWER",
-            "CPN": "CORPEN", "STN": "STATION", "FORM": "FORMATION", "SPD": "SPEED"
+            "CPN": "CORPEN", "STN": "STATION", "FORM": "FORMATION", "SPD": "SPEED",
+            "STBD": "STARBOARD"
         };
+        const SIGNAL_NAME_MAP_LS_KEY = "kurukshetra_signal_name_map_v1";
+        const SIGNAL_REQUESTS_LS_KEY = "kurukshetra_signal_requests_v1";
+        const SIGNAL_CODE_PATTERN = /^[A-Z0-9]{2,12}$/;
+        const SIGNAL_NAME_PATTERN = /^[A-Z0-9][A-Z0-9 /&().-]{1,63}$/;
+        let CUSTOM_SIGNAL_NAMES = {};
+        let SIGNAL_REQUEST_LOG = {};
 
         /* ---------- SERIALS REGISTRY ---------- */
         let SERIALS_REGISTRY = []; // [{ser, exercise, otc, ocs},...]
@@ -1734,10 +1737,10 @@
         };
 
         const STATION_CODE_MAP = {
-            A: { bearing: 0, label: "Ahead station", voiceLabel: "AHEAD STATION" },
-            B: { bearing: 180, label: "Astern station", voiceLabel: "ASTERN STATION" },
-            C: { bearing: 0, label: "Van station", voiceLabel: "VAN STATION" },
-            D: { bearing: 180, label: "Rear station", voiceLabel: "REAR STATION" }
+            A: { bearing: 0, label: "Ahead station", voiceLabel: "AHEAD STATION", relativeToReference: true },
+            B: { bearing: 180, label: "Astern station", voiceLabel: "ASTERN STATION", relativeToReference: true },
+            C: { bearing: 0, label: "Van station", voiceLabel: "VAN STATION", relativeToReference: true },
+            D: { bearing: 180, label: "Rear station", voiceLabel: "REAR STATION", relativeToReference: true }
         };
 
         const SPECIAL_STATION_MAP = {
@@ -1746,8 +1749,8 @@
             L3: { label: "Astern station", distance: 0.1, portBearing: 180, stbdBearing: 180 },
             L4: { label: "Lifeguard station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
             L5: { label: "Quarter station", distance: 0.15, portBearing: 225, stbdBearing: 135 },
-            L6: { label: "Standby station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
-            L7: { label: "Standby station", distance: 0.2, portBearing: 225, stbdBearing: 135 },
+            L6: { label: "Standby station astern", distance: 0.2, portBearing: 180, stbdBearing: 180 },
+            L7: { label: "Standby station", distance: 0.2, portBearing: 270, stbdBearing: 90 },
             L8: { label: "Vertrep station", distance: 0.05, portBearing: 0, stbdBearing: 0 }
         };
 
@@ -2126,6 +2129,216 @@
             return el ? (el.value || "BRIDGE") : "BRIDGE";
         }
 
+        function getCombinedSignalNameMap() {
+            return { ...SHIP_NAMES_MAP, ...CUSTOM_SIGNAL_NAMES };
+        }
+
+        function normalizeSignalCodeInput(value) {
+            return String(value || "").toUpperCase().replace(/\s+/g, "").trim();
+        }
+
+        function normalizeSignalNameInput(value) {
+            return String(value || "").toUpperCase().replace(/\s+/g, " ").trim();
+        }
+
+        function sanitizeSignalNameMap(rawMap) {
+            if (!rawMap || typeof rawMap !== "object" || Array.isArray(rawMap)) return {};
+            const sanitized = {};
+            Object.entries(rawMap).forEach(([rawCode, rawName]) => {
+                const code = normalizeSignalCodeInput(rawCode);
+                const name = normalizeSignalNameInput(rawName);
+                if (!SIGNAL_CODE_PATTERN.test(code)) return;
+                if (!SIGNAL_NAME_PATTERN.test(name)) return;
+                sanitized[code] = name;
+            });
+            return sanitized;
+        }
+
+        function validateSignalNameEntry(rawCode, rawName) {
+            const code = normalizeSignalCodeInput(rawCode);
+            const name = normalizeSignalNameInput(rawName);
+            if (!code || !name) {
+                return { ok: false, error: "SIGNAL GROUP AND FULL NAME ARE REQUIRED" };
+            }
+            if (!SIGNAL_CODE_PATTERN.test(code)) {
+                return { ok: false, error: "SIGNAL GROUP MUST BE 2 TO 12 LETTERS OR NUMBERS" };
+            }
+            if (!SIGNAL_NAME_PATTERN.test(name)) {
+                return { ok: false, error: "FULL NAME CAN ONLY USE LETTERS, NUMBERS, SPACES, /, &, (), . AND -" };
+            }
+            return { ok: true, code, name };
+        }
+
+        function resolveSignalName(token) {
+            const key = String(token || "").toUpperCase().trim();
+            if (!key) return "";
+            const combined = getCombinedSignalNameMap();
+            return combined[key] || key;
+        }
+
+        function expandSpeechMessage(message) {
+            let expanded = String(message || "");
+            const combined = getCombinedSignalNameMap();
+            const skipSpeechExpansion = new Set(["AND"]);
+            const keys = Object.keys(combined)
+                .filter((key) => !skipSpeechExpansion.has(key))
+                .sort((a, b) => b.length - a.length);
+            keys.forEach((key) => {
+                const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                expanded = expanded.replace(new RegExp(`\\b${escaped}\\b`, "gi"), combined[key]);
+            });
+            return expanded.replace(/\s+/g, " ").trim();
+        }
+
+        async function loadCustomSignalNames() {
+            let diskNames = {};
+            if (window.kurukshetraSettings?.loadSignalNames) {
+                try {
+                    const response = await window.kurukshetraSettings.loadSignalNames();
+                    diskNames = sanitizeSignalNameMap(response?.data || {});
+                } catch {
+                    diskNames = {};
+                }
+            }
+
+            let localNames = {};
+            try {
+                const raw = localStorage.getItem(SIGNAL_NAME_MAP_LS_KEY);
+                localNames = raw ? sanitizeSignalNameMap(JSON.parse(raw)) : {};
+            } catch {
+                localNames = {};
+            }
+
+            CUSTOM_SIGNAL_NAMES = { ...diskNames, ...localNames };
+
+            if (window.kurukshetraSettings?.saveSignalNames) {
+                try {
+                    await window.kurukshetraSettings.saveSignalNames(CUSTOM_SIGNAL_NAMES);
+                } catch {
+                    // Keep renderer usable even if file persistence is temporarily unavailable.
+                }
+            }
+        }
+
+        async function saveCustomSignalNames() {
+            localStorage.setItem(SIGNAL_NAME_MAP_LS_KEY, JSON.stringify(CUSTOM_SIGNAL_NAMES));
+            if (!window.kurukshetraSettings?.saveSignalNames) return { ok: true };
+            try {
+                return await window.kurukshetraSettings.saveSignalNames(CUSTOM_SIGNAL_NAMES);
+            } catch {
+                return { ok: false };
+            }
+        }
+
+        function renderCustomSignalNames() {
+            const list = document.getElementById("signalNameMapList");
+            if (!list) return;
+            const entries = Object.entries(CUSTOM_SIGNAL_NAMES).sort((a, b) => a[0].localeCompare(b[0]));
+            list.replaceChildren();
+            if (!entries.length) {
+                const emptyState = document.createElement("div");
+                emptyState.style.color = "#7f98a3";
+                emptyState.textContent = "-- Custom signal names will appear here --";
+                list.appendChild(emptyState);
+                return;
+            }
+            entries.forEach(([code, name]) => {
+                const row = document.createElement("div");
+                row.style.display = "flex";
+                row.style.justifyContent = "space-between";
+                row.style.alignItems = "center";
+                row.style.gap = "8px";
+                row.style.padding = "6px 0";
+                row.style.borderBottom = "1px solid rgba(255,255,255,0.06)";
+
+                const textWrap = document.createElement("span");
+                const codeSpan = document.createElement("span");
+                codeSpan.style.color = "var(--primary)";
+                codeSpan.textContent = code;
+                const arrowSpan = document.createElement("span");
+                arrowSpan.style.color = "#9fb6c1";
+                arrowSpan.textContent = " → ";
+                const nameSpan = document.createElement("span");
+                nameSpan.style.color = "var(--text-main)";
+                nameSpan.textContent = name;
+                textWrap.appendChild(codeSpan);
+                textWrap.appendChild(arrowSpan);
+                textWrap.appendChild(nameSpan);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.textContent = "REMOVE";
+                removeBtn.style.width = "auto";
+                removeBtn.style.minWidth = "68px";
+                removeBtn.style.marginTop = "0";
+                removeBtn.style.padding = "6px 10px";
+                removeBtn.style.fontSize = "0.68rem";
+                removeBtn.addEventListener("click", () => {
+                    removeCustomSignalName(code);
+                });
+
+                row.appendChild(textWrap);
+                row.appendChild(removeBtn);
+                list.appendChild(row);
+            });
+        }
+
+        async function addCustomSignalName() {
+            const codeInput = document.getElementById("signalCodeInput");
+            const nameInput = document.getElementById("signalNameInput");
+            const validation = validateSignalNameEntry(codeInput?.value, nameInput?.value);
+            if (!validation.ok) {
+                alert(validation.error);
+                return;
+            }
+            const { code, name } = validation;
+            CUSTOM_SIGNAL_NAMES[code] = name;
+            const saveStatus = await saveCustomSignalNames();
+            if (saveStatus && saveStatus.ok === false) {
+                alert("NAME MAPPING COULD NOT BE WRITTEN TO DISK");
+                return;
+            }
+            renderCustomSignalNames();
+            codeInput.value = "";
+            nameInput.value = "";
+            codeInput.focus();
+        }
+
+        async function removeCustomSignalName(code) {
+            delete CUSTOM_SIGNAL_NAMES[normalizeSignalCodeInput(code)];
+            const saveStatus = await saveCustomSignalNames();
+            if (saveStatus && saveStatus.ok === false) {
+                alert("NAME MAPPING COULD NOT BE WRITTEN TO DISK");
+                return;
+            }
+            renderCustomSignalNames();
+        }
+
+        function loadSignalRequestLog() {
+            try {
+                const raw = localStorage.getItem(SIGNAL_REQUESTS_LS_KEY);
+                SIGNAL_REQUEST_LOG = raw ? JSON.parse(raw) : {};
+            } catch {
+                SIGNAL_REQUEST_LOG = {};
+            }
+        }
+
+        function saveSignalRequestLog() {
+            localStorage.setItem(SIGNAL_REQUESTS_LS_KEY, JSON.stringify(SIGNAL_REQUEST_LOG));
+        }
+
+        function rememberSignalRequest(referenceTime, payload) {
+            const ref = String(referenceTime || "").toUpperCase().trim();
+            if (!ref) return;
+            SIGNAL_REQUEST_LOG[ref] = payload;
+            saveSignalRequestLog();
+        }
+
+        function lookupSignalRequest(referenceTime) {
+            const ref = String(referenceTime || "").toUpperCase().trim();
+            return ref ? SIGNAL_REQUEST_LOG[ref] : null;
+        }
+
         function markPositionChangeRequested() {
             positionChangeRequested = true;
         }
@@ -2159,6 +2372,26 @@
                     </svg>
                 `;
             }
+            if (flagKey === "warning_alert") {
+                return `
+                    <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Warning alert">
+                        <rect x="0" y="0" width="360" height="220" rx="12" fill="#0f1419"/>
+                        <polygon points="180,28 322,190 38,190" fill="#ffb347" stroke="#ff7a00" stroke-width="8"/>
+                        <polygon points="180,56 294,182 66,182" fill="#151d24"/>
+                        <rect x="170" y="88" width="20" height="54" rx="10" fill="#ffb347"/>
+                        <circle cx="180" cy="160" r="10" fill="#ffb347"/>
+                    </svg>
+                `;
+            }
+            if (flagKey === "naval_ensign_sea_position") {
+                return `<img src="assets/Naval_Ensign_of_India.svg" alt="Naval ensign" />`;
+            }
+            if (flagKey === "answer_pennant") {
+                return `<img src="assets/answering-500x500-2.gif" alt="Answer pennant" />`;
+            }
+            if (flagKey === "romeo_flag") {
+                return `<img src="assets/Romeo_flag.svg.png" alt="Romeo flag" />`;
+            }
             return `
                 <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Signal flag">
                     <rect x="0" y="0" width="360" height="220" rx="12" fill="#0b1116"/>
@@ -2180,13 +2413,30 @@
             const art = document.getElementById("flagPopupArt");
             const body = document.getElementById("flagPopupMessage");
             if (!popup || !title || !art || !body) {
-                alert(message);
                 return;
             }
             title.textContent = options.title || "FLAG ACTION";
             body.textContent = message;
             art.innerHTML = getFlagGraphicMarkup(options.flagKey || "");
             popup.classList.add("open");
+        }
+
+        function notifyOwnShipStationExecuted(shipName, action = null) {
+            const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+            const normalizedShip = String(shipName || "").replace("/", "").trim().toUpperCase();
+            if (!ownShip || normalizedShip !== ownShip) return;
+            const descriptor = String(action?.descriptorLabel || "").toUpperCase();
+            if (descriptor.includes("STANDBY STATION")) {
+                showActionPopup("ROMEO AT THE DIP (ENGAGED SIDE)", {
+                    title: "STANDBY STATION EXECUTED",
+                    flagKey: "romeo_flag"
+                });
+                return;
+            }
+            showActionPopup("HOIST ANSWER PENNANT", {
+                title: "STATION EXECUTED",
+                flagKey: "answer_pennant"
+            });
         }
 
         function formatSignalDistanceForVoice(distance) {
@@ -2204,11 +2454,32 @@
             const distanceVoice = formatSignalDistanceForVoice(action.d);
             const descriptor = (action.descriptorLabel || "").toUpperCase();
 
+            if (descriptor.includes("STANDBY STATION ASTERN")) {
+                return `${shipFull} TO TAKE STANDBY STATION ASTERN OF ${refFull}`;
+            }
+            if (descriptor.includes("STANDBY STATION STARBOARD SIDE")) {
+                return `${shipFull} TO TAKE STANDBY STATION ON STBD SIDE OF ${refFull}`;
+            }
+            if (descriptor.includes("STANDBY STATION PORT SIDE")) {
+                return `${shipFull} TO TAKE STANDBY STATION ON PORT SIDE OF ${refFull}`;
+            }
             if (descriptor.includes("ASTERN")) {
                 return `${shipFull} STATION ${distanceVoice} ASTERN OF ${refFull}`;
             }
             if (descriptor.includes("AHEAD")) {
                 return `${shipFull} STATION ${distanceVoice} AHEAD OF ${refFull}`;
+            }
+            if (descriptor.includes("STARBOARD BEAM") || descriptor.includes("STBD BEAM")) {
+                return `${shipFull} STATION STBD BEAM OF ${refFull}`;
+            }
+            if (descriptor.includes("PORT BEAM")) {
+                return `${shipFull} STATION PORT BEAM OF ${refFull}`;
+            }
+            if (descriptor.includes("STARBOARD BOW") || descriptor.includes("STBD BOW")) {
+                return `${shipFull} STATION STBD BOW OF ${refFull}`;
+            }
+            if (descriptor.includes("PORT BOW")) {
+                return `${shipFull} STATION PORT BOW OF ${refFull}`;
             }
             if (descriptor.includes("PORT")) {
                 return `${shipFull} STATION ${distanceVoice} ON PORT OF ${refFull}`;
@@ -2238,10 +2509,32 @@
                 const fraction = beamMatch[3] ? parseInt(beamMatch[3], 10) : 0;
                 const degrees = Math.round((whole + (fraction / 10)) * 10);
                 const bearing = side === "PORT" ? normDeg(360 - degrees) : normDeg(degrees);
+                let label = `${side === "PORT" ? "Port" : "Starboard"} ${whole}${fraction ? "." + fraction : ""}`;
+                let voiceLabel = `${side === "PORT" ? "PORT" : "STARBOARD"} ${digitizeRaw(whole.toString())}${fraction ? " ANSWER " + digitizeRaw(fraction.toString()) : ""}`;
+                if (whole === 9 && fraction === 0) {
+                    label = `${side === "PORT" ? "Port" : "Starboard"} beam`;
+                    voiceLabel = `${side === "PORT" ? "PORT" : "STBD"} BEAM`;
+                } else if (whole === 4 && fraction === 0) {
+                    label = `${side === "PORT" ? "Port" : "Starboard"} bow`;
+                    voiceLabel = `${side === "PORT" ? "PORT" : "STBD"} BOW`;
+                }
                 return {
                     bearing,
-                    label: `${side === "PORT" ? "Port" : "Starboard"} ${whole}${fraction ? "." + fraction : ""}`,
-                    voiceLabel: `${side === "PORT" ? "PORT" : "STARBOARD"} ${digitizeRaw(whole.toString())}${fraction ? " ANSWER " + digitizeRaw(fraction.toString()) : ""}`
+                    label,
+                    voiceLabel,
+                    relativeToReference: true
+                };
+            }
+
+            if (descriptor === "L6") {
+                const profile = SPECIAL_STATION_MAP.L6;
+                return {
+                    bearing: profile.stbdBearing,
+                    label: profile.label,
+                    voiceLabel: "STANDBY STATION ASTERN",
+                    distanceOverride: profile.distance,
+                    inferred: true,
+                    relativeToReference: true
                 };
             }
 
@@ -2251,17 +2544,24 @@
                 const side = specialMatch[2] === "PORT" ? "PORT" : "STBD";
                 const profile = SPECIAL_STATION_MAP[stationCode];
                 if (!profile) return null;
+                const label = stationCode === "L7"
+                    ? `${profile.label} ${side === "PORT" ? "port side" : "starboard side"}`
+                    : `${profile.label} ${side === "PORT" ? "port" : "starboard"}`;
+                const voiceLabel = stationCode === "L7"
+                    ? `STANDBY STATION ON ${side === "PORT" ? "PORT" : "STBD"} SIDE`
+                    : `${stationCode.replace("L", "LIMA ")} ${side === "PORT" ? "PORT" : "STARBOARD"}`;
                 return {
                     bearing: side === "PORT" ? profile.portBearing : profile.stbdBearing,
-                    label: `${profile.label} ${side === "PORT" ? "port" : "starboard"}`,
-                    voiceLabel: `${stationCode.replace("L", "LIMA ")} ${side === "PORT" ? "PORT" : "STARBOARD"}`,
+                    label,
+                    voiceLabel,
                     distanceOverride: profile.distance,
-                    inferred: true
+                    inferred: true,
+                    relativeToReference: true
                 };
             }
 
             if (descriptor === "G") {
-                return { bearing: 0, label: "Guide station", voiceLabel: "GUIDE STATION", becomesGuide: true };
+                return { bearing: 0, label: "Guide station", voiceLabel: "GUIDE STATION", becomesGuide: true, relativeToReference: true };
             }
 
             return null;
@@ -2279,17 +2579,25 @@
                 const nextShipIdx = signal.slice(descriptorStart).search(/\/\s*[A-Z0-9]+\s+STN\s+/i);
                 const segmentEnd = nextShipIdx === -1 ? signal.length : descriptorStart + nextShipIdx;
                 const segment = signal.slice(descriptorStart, segmentEnd).trim();
-                const refMarker = segment.search(/\/\s*[A-Z0-9]+\s*-/i);
-                if (refMarker === -1) continue;
+                const refMarker = segment.search(/\/\s*[A-Z0-9]+(?:\s*-)?/i);
+                let descriptorRaw = "";
+                let refName = "";
+                let distSlice = "";
 
-                const descriptorRaw = segment.slice(0, refMarker).replace(/-+$/, "").trim();
-                const refSection = segment.slice(refMarker);
-                const refNameMatch = refSection.match(/^\/\s*([A-Z0-9]+)\s*-\s*(.*)$/i);
-                if (!refNameMatch) continue;
+                if (refMarker === -1) {
+                    descriptorRaw = segment.trim().replace(/\s*-\s*$/, "").trim();
+                    refName = state.GUIDE || Object.keys(SHIPS)[0] || "";
+                    if (!refName) continue;
+                } else {
+                    descriptorRaw = segment.slice(0, refMarker).trim().replace(/\s*-\s*$/, "").trim();
+                    const refSection = segment.slice(refMarker);
+                    const refNameMatch = refSection.match(/^\/\s*([A-Z0-9]+)(?:\s*-\s*(.*))?$/i);
+                    if (!refNameMatch) continue;
+                    refName = refNameMatch[1].trim();
+                    distSlice = String(refNameMatch[2] || "").trim();
+                }
 
                 const descriptor = resolveStationDescriptor(descriptorRaw);
-                const refName = refNameMatch[1].trim();
-                const distSlice = refNameMatch[2].trim();
                 const distNM = parseSignalDistance(distSlice);
                 const distance = !isNaN(distNM) ? distNM : (descriptor && typeof descriptor.distanceOverride === "number" ? descriptor.distanceOverride : 0);
                 const bearing = descriptor ? descriptor.bearing : parseInt(descriptorRaw, 10);
@@ -2312,7 +2620,8 @@
                     d: distance,
                     rawBrg: descriptor ? descriptor.voiceLabel : digitizeRaw(String(bearing).padStart(3, "0")),
                     descriptorLabel: descriptor ? descriptor.label : `Bearing ${bearing}`,
-                    becomesGuide: descriptor ? descriptor.becomesGuide === true : false
+                    becomesGuide: descriptor ? descriptor.becomesGuide === true : false,
+                    relativeToReference: descriptor ? descriptor.relativeToReference === true : false
                 });
             }
 
@@ -2568,7 +2877,7 @@
         }
 
         /* ---------- INIT ---------- */
-        onReady(() => {
+        onReady(async () => {
             BOARD_STATES.A.canvas = document.getElementById("boardCanvasA");
             BOARD_STATES.A.ctx = BOARD_STATES.A.canvas.getContext("2d");
             BOARD_STATES.B.canvas = document.getElementById("boardCanvasB");
@@ -2678,7 +2987,6 @@
             );
             document.getElementById("btnDelete").addEventListener("click", () => deleteShip(activeBoard));
             document.getElementById("btnAddShip").addEventListener("click", () => addShipFromUI(activeBoard));
-            document.getElementById("btnPopulateMulti").addEventListener("click", () => populateMultinationalFleet(activeBoard));
             const cmdInput = document.getElementById("commandInput");
             if (cmdInput) {
                 cmdInput.addEventListener("keydown", function (e) {
@@ -2693,20 +3001,9 @@
             document.getElementById("btnRedo").addEventListener("click", () => redo());
             document.getElementById("btnSaveOp").addEventListener("click", saveOperation);
             document.getElementById("btnLoadOp").addEventListener("click", () => document.getElementById('fileInputLoad').click());
-            document.getElementById("btnImportIst").addEventListener("click", () => document.getElementById('fileInputIst').click());
-            document.getElementById("istSerialFilter").addEventListener("change", (e) => {
-                IST_STATE.activeSerial = e.target.value;
-                renderIstMessageList();
-            });
-            document.getElementById("btnCloseIstModal").addEventListener("click", closeIstMessage);
-            document.getElementById("btnIstLoadSignal").addEventListener("click", () => {
-                if (IST_STATE.selectedMessageId) loadImportedSignal(IST_STATE.selectedMessageId);
-            });
-            document.getElementById("btnIstExecuteSignal").addEventListener("click", () => {
-                if (IST_STATE.selectedMessageId) executeImportedSignal(IST_STATE.selectedMessageId);
-            });
-            document.getElementById("istModal").addEventListener("mousedown", (e) => {
-                if (e.target && e.target.id === "istModal") closeIstMessage();
+            document.getElementById("btnAddSignalName").addEventListener("click", addCustomSignalName);
+            document.getElementById("signalNameInput").addEventListener("keydown", (e) => {
+                if (e.key === "Enter") addCustomSignalName();
             });
             document.getElementById("btnCloseFlagPopup").addEventListener("click", closeActionPopup);
             document.getElementById("flagPopup").addEventListener("mousedown", (e) => {
@@ -2731,10 +3028,11 @@
             });
 
             document.getElementById("modeSelect").value = currentMode;
+            document.getElementById("commandLocationSelect").value = "BRIDGE";
+            await loadCustomSignalNames();
+            loadSignalRequestLog();
+            renderCustomSignalNames();
             applyModeLayout();
-            renderIstSummary();
-            renderIstSerialOptions();
-            renderIstMessageList();
             resizeCanvas("A");
             resizeCanvas("B");
             drawAllBoards();
@@ -3016,6 +3314,54 @@
             ctx.restore();
         }
 
+        function isLineGuideShip(name, guideName, lines, suppressGuides) {
+            if (!guideName || guideName === name) return false;
+            let isLineGuide = false;
+            let guideLine = -1;
+            let guideIdx = -1;
+
+            for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
+                const idx = lines[lineIdx].indexOf(guideName);
+                if (idx !== -1) {
+                    guideLine = lineIdx;
+                    guideIdx = idx;
+                    break;
+                }
+            }
+
+            if (guideLine !== -1) {
+                for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
+                    if (lineIdx === guideLine) continue;
+                    const matchingShip = lines[lineIdx][guideIdx];
+                    if (matchingShip && name === matchingShip) {
+                        isLineGuide = true;
+                    } else if (!matchingShip && name === lines[lineIdx][0]) {
+                        isLineGuide = true;
+                    }
+                }
+            }
+
+            if (suppressGuides) return false;
+            return isLineGuide;
+        }
+
+        function getShipDisplayColor(name, board = activeBoard, lines = null, suppressGuides = false) {
+            const state = getState(board);
+            const dark = document.body.classList.contains("dark");
+            const guideName = state.GUIDE;
+            const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+            const upperName = String(name || "").toUpperCase();
+            const boardLines = Array.isArray(lines) ? lines : getBoardLines(board);
+            const isGuide = guideName === upperName;
+            const isOwnShip = ownShip === upperName;
+            const isLineGuide = isLineGuideShip(upperName, guideName, boardLines, suppressGuides);
+
+            if (isOwnShip) return dark ? "#00ccff" : "#0066ff";
+            if (isGuide) return dark ? "#ff3333" : "#c62828";
+            if (isLineGuide) return dark ? "#ffcc00" : "#ef6c00";
+            return dark ? "#00ff99" : "#000";
+        }
+
         function drawShipArrow(board, x, y, hdg, color, name, suppressGuides, LINES) {
             const state = getState(board);
             const canvas = state.canvas;
@@ -3028,51 +3374,10 @@
 
             // --- DOCTRINE COLORS (Using Passed LINES) ---
 
-            let finalColor = dark ? "#00ff99" : "#000";
             const isGuide = (GUIDE === name);
-            let isLineGuide = false;
-
-            if (GUIDE && !isGuide) {
-                let gLine = -1, gIdx = -1;
-                for (let l = 0; l < LINES.length; l++) {
-                    let i = LINES[l].indexOf(GUIDE);
-                    if (i !== -1) { gLine = l; gIdx = i; break; }
-                }
-
-                if (gLine !== -1) {
-                    for (let l = 0; l < LINES.length; l++) {
-                        if (l === gLine) continue;
-
-                        // Doctrine: Matching Station (Index) Priority
-                        const matchingShip = LINES[l][gIdx];
-                        if (matchingShip && name === matchingShip) {
-                            isLineGuide = true;
-                        } else if (!matchingShip) {
-                            // Fallback: Top ship of the line
-                            if (name === LINES[l][0]) isLineGuide = true;
-                        }
-                    }
-                }
-            }
-
-            // Higher-order visual symbol logic
-            // If suppressGuides is true (meaning single line formation), only suppress if it's not the main GUIDE.
-            // This allows the main GUIDE to always show its highlight even if it's also a line guide in a single line.
-            if (suppressGuides && !isGuide) isLineGuide = false;
-
-            if (dark) {
-                if (isGuide) finalColor = "#ff3333"; // Vibrant Red
-                else if (isLineGuide) finalColor = "#ffcc00"; // Amber
-            } else {
-                if (isGuide) finalColor = "#c62828"; // Crimson Red for Guide
-                else if (isLineGuide) finalColor = "#ef6c00"; // Deep Orange for Line Guide
-            }
-
-            // --- OWN SHIP HIGHLIGHT ---
-            const isOwnShip = (window.OWN_SHIP_NAME === name);
-            if (isOwnShip) {
-                finalColor = dark ? "#00ccff" : "#0066ff"; // Distinct Cyan/Blue for Own Ship
-            }
+            const isOwnShip = ((window.OWN_SHIP_NAME || "").toUpperCase() === String(name || "").toUpperCase());
+            const isLineGuide = isLineGuideShip(String(name || "").toUpperCase(), GUIDE, LINES, suppressGuides);
+            const finalColor = getShipDisplayColor(name, board, LINES, suppressGuides);
 
             ctx.save();
             ctx.translate(x, y);
@@ -3223,7 +3528,7 @@
                 const nameDiv = document.createElement("div");
                 nameDiv.className = "shipName";
                 nameDiv.style.width = "40%";
-                if (state.GUIDE === n) nameDiv.style.color = "var(--alert)";
+                nameDiv.style.color = getShipDisplayColor(n, board);
                 nameDiv.textContent = n;
 
                 const courseDiv = document.createElement("div");
@@ -3397,7 +3702,7 @@
             };
             requestAnimationFrame(animate);
         }
-        function moveShipRelative(ship, ref, bearing, dist, board = activeBoard) {
+        function moveShipRelative(ship, ref, bearing, dist, board = activeBoard, isTrue = true) {
             const state = getState(board);
             const SHIPS = state.SHIPS;
             const canvas = state.canvas;
@@ -3421,8 +3726,8 @@
             const pxPerNM = getPixelsPerNM(board);
             const px = dist * pxPerNM;
 
-            // Absolute Bearing (000=North/Up)
-            const a = bearing * Math.PI / 180;
+            const absoluteBearing = isTrue ? bearing : normDeg(r.course + bearing);
+            const a = absoluteBearing * Math.PI / 180;
 
             const destX = r.x + Math.sin(a) * px;
             const destY = r.y - Math.cos(a) * px;
@@ -3694,11 +3999,12 @@
         let AIServerFailed = false;
         let currentUtterance = null;
         async function speakCommand(msg) {
+            const expandedMsg = expandSpeechMessage(msg);
             // Log to UI
             var log = document.getElementById("commLog");
             if (log) {
                 var entry = document.createElement("div");
-                entry.innerText = msg;
+                entry.innerText = expandedMsg;
                 log.appendChild(entry);
                 log.scrollTop = log.scrollHeight;
             }
@@ -3710,12 +4016,13 @@
             playRadioChirp("start");
 
             // Syllable Emphasis for clarity (Client-side text pre-processing)
-            let clarifiedMsg = msg
+            let clarifiedMsg = expandedMsg
                 .replace(/\bFORTY\b/g, "FOURTY")
                 .replace(/\bNINETY\b/g, "NINETY")
                 .replace(/\bFIFTY\b/g, "FIFTY")
                 .replace(/\bFIVE\b/g, "FIVE")
                 .replace(/\bANS\b/gi, "ANSWER")
+                .replace(/\bDE\b/gi, " THIS IS ")
                 .replace(/\bKRI\b/g, "K R I")
                 .replace(/\bSPD\b/gi, " SPEED ")
                 .replace(/\bDEGREE\b/g, "DEGREE")
@@ -4901,18 +5208,47 @@
             const hasRIX = rawUpper.includes(" RIX ");
             // SB...IX pattern (Standby... Execute) counts as Immediate Execution
             const hasSB_IX = (rawUpper.includes("SB") && rawUpper.includes("IX"));
+            const interpretationOnlyExecution = hasSB_IX;
             const pendingExecution = hasIX && !hasRIX && !hasSB_IX;
 
-            // Handle "SB...IX" -> Skip only if it's a standalone execution command, not part of a complex signal
-            if (hasSB_IX && !cleanSignal.includes("COLL") && !cleanSignal.includes("STN")) {
-                inp.value = ""; return;
-            }
-
             // Remove Execution Codes and noise
-            cleanSignal = cleanSignal.replace(/\bRIX\b/g, "").replace(/\bIX\b/g, "").replace(/\bSB\b/g, "").replace(/[—–]/g, "-").split("...").join(" ").trim();
+            cleanSignal = cleanSignal
+                .replace(/\bRIX\b/g, "")
+                .replace(/\bIX\b/g, "")
+                .replace(/\bSB\b/g, "")
+                .replace(/[—–]/g, "-")
+                .split("...").join(" ")
+                .replace(/\s*-\s*$/, "")
+                .trim();
 
             const parts = cleanSignal.replace(/\//g, " ").replace(/\s+/g, " ").split(" ").filter(x => x);
             if (parts.length < 1) return;
+
+            // --- R CPN ... EX11 ... DSG MANUAL ... BY (RAS course/speed and manual steering checks) ---
+            if (/\bR\s+CPN\b/i.test(cleanSignal) && /\bEX\s*11\b/i.test(cleanSignal) && /\bDSG\s+MANUAL\b/i.test(cleanSignal)) {
+                const rasMatch = cleanSignal.match(/\bR\s+CPN\s+(\d{1,3})\s*-\s*(\d{1,2})/i);
+                let msg = globalVoicePrefix;
+                if (timePart) {
+                    rememberSignalRequest(timePart, {
+                        type: "RAS_MANUAL_CHECK",
+                        sender: (outerSenderRaw || "").toUpperCase(),
+                        message: "SIREN AND MANUAL STEERING GEAR CHECKS COMPLETED."
+                    });
+                }
+
+                if (rasMatch) {
+                    const baseCourse = parseInt(rasMatch[1], 10);
+                    const rasCourse = normDeg(baseCourse + 40);
+                    msg += `RAS COURSE ${digitize(rasCourse)} SPEED ${digitizeRaw(rasMatch[2])}. `;
+                }
+
+                msg += "SHIPS TO TEST SIREN AND MANUAL STEERING GEAR CHECKS. ";
+                if (/\bBY\b/i.test(cleanSignal)) {
+                    msg += "REPORT COMPLETION.";
+                }
+                speakCommand(msg.trim());
+                inp.value = ""; return;
+            }
 
             // --- SPECIAL: DETAILED VOICE MODE (IX / RIX) ---
             // Helper to generate the detailed message
@@ -4945,6 +5281,8 @@
                     const stationText = formatStationActionVoice(act);
                     if (mode === 'PENDING') {
                         msg += `${stationText} PENDING FOR EXECUTION. `;
+                    } else if (mode === 'IMMEDIATE') {
+                        msg += `${stationText} IMMEDIATE EXECUTION. `;
                     } else {
                         msg += `${stationText}. `;
                     }
@@ -4961,15 +5299,23 @@
             };
 
             const isComplexBulk = cleanSignal.split("-").length > 3 || cleanSignal.includes("STN");
+            const canUseDetailedMessage = /G\s*-?\s*\/\w+/i.test(cleanSignal) ||
+                /\/\w+\s+CPN\b/i.test(cleanSignal) ||
+                /\bSPD\s+[A-Z]?\s*\d+/i.test(cleanSignal) ||
+                /\/([A-Z]+)\s+STN\b/i.test(cleanSignal);
 
             // LOGIC FOR IX (Pending) vs RIX (Immediate)
-            if (pendingExecution) {
+            if (pendingExecution && canUseDetailedMessage) {
                 const voiceMsg = generateDetailedMessage('PENDING');
                 // For complex bulk, we'll let the bulk processor below handle the voice
                 if (!isComplexBulk) {
                     speakCommand(voiceMsg);
                     inp.value = ""; return;
                 }
+            } else if (hasRIX && !isComplexBulk && canUseDetailedMessage) {
+                const voiceMsg = generateDetailedMessage('IMMEDIATE');
+                speakCommand(voiceMsg);
+                inp.value = ""; return;
             } else if (hasRIX && isComplexBulk) {
                 // RIX for Bulk: We'll let the bulk processor below handle the voice detailing
                 // so we don't get a double announcement.
@@ -4977,7 +5323,7 @@
 
             // --- UNDO CAPTURE ---
             // If the command is NOT purely pending (IX without RIX/Bulk), capture state now.
-            if (!pendingExecution || isComplexBulk) {
+            if ((!pendingExecution || isComplexBulk) && !interpretationOnlyExecution) {
                 pushUndo(board);
             }
 
@@ -5007,26 +5353,28 @@
 
                     // Guide Set logic
                     // ... (Using same logic as before, just on fragments)
-                    if (frag.match(/^\/\s*[A-Z]+$/)) {
-                        const isFollowedByNumber = (i + 1 < fragments.length) && /^\d+(\.\d+)?$/.test(fragments[i + 1]);
-                        if (!guideSetLocal && !isFollowedByNumber) {
-                            const candidate = frag.replace("/", "").trim(); // Already uppercased
-                            if (!SHIPS[candidate] && !processedShips.has(candidate)) {
-                                SHIPS[candidate] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
-                                processedShips.add(candidate);
+                        if (frag.match(/^\/\s*[A-Z]+$/)) {
+                            const isFollowedByNumber = (i + 1 < fragments.length) && /^\d+(\.\d+)?$/.test(fragments[i + 1]);
+                            if (!guideSetLocal && !isFollowedByNumber) {
+                                const candidate = frag.replace("/", "").trim(); // Already uppercased
+                                if (!interpretationOnlyExecution && !SHIPS[candidate] && !processedShips.has(candidate)) {
+                                    SHIPS[candidate] = { x: state.lastWidth / 2, y: state.lastHeight / 2, course: 0, speed: 10, color: randGreen() };
+                                    processedShips.add(candidate);
+                                }
+                                if (!interpretationOnlyExecution) {
+                                    state.GUIDE = candidate;
+                                    updateGuideLabel(board);
+                                }
+                                multiProcessed = true;
+                                guideSetLocal = true;
                             }
-                            state.GUIDE = candidate;
-                            updateGuideLabel(board);
-                            multiProcessed = true;
-                            guideSetLocal = true;
-                        }
-                    } else {
-                        // Try parsing individual settings within fragments
+                        } else {
+                            // Try parsing individual settings within fragments
                         // e.g. "SPD H 12"
                         if (frag.match(/^SPD\s+H\s+(\d+)$/)) {
                             const m = frag.match(/^SPD\s+H\s+(\d+)$/);
                             const g = state.GUIDE || Object.keys(SHIPS)[0];
-                            if (g && SHIPS[g]) SHIPS[g].speed = parseInt(m[1], 10);
+                            if (!interpretationOnlyExecution && g && SHIPS[g]) SHIPS[g].speed = parseInt(m[1], 10);
                             multiProcessed = true;
                         }
                         // e.g. "CPN A 180" or "CPN 180" - Update Guide Course First
@@ -5034,7 +5382,7 @@
                             const m = frag.match(/CPN\s+(?:A\s+)?(\d{1,3})/);
                             const newHd = parseInt(m[1], 10);
                             const g = state.GUIDE || Object.keys(SHIPS)[0];
-                            if (g && SHIPS[g]) {
+                            if (!interpretationOnlyExecution && g && SHIPS[g]) {
                                 SHIPS[g].course = normDeg(newHd);
                                 // Also update all ships initially to this course (bulk turn), 
                                 // stationing will then refine positions.
@@ -5055,24 +5403,14 @@
                 let headerCourse = null;
                 let headerSpeed = null;
 
-                // Re-scan fragments to extract Header Info (Guide/Speed/Course)
-                // We do this to ensure we capture the latest values mentioned in the command
-                fragments.forEach(frag => {
-                    if (frag.startsWith("/") && !frag.includes(" ")) {
-                        // Likely Guide Set (G- /NAME)
-                        // Check context: Usually precedes settings.
-                        // We used 'guideSetLocal' logic before, let's rely on that or state.GUIDE
-                        // Actually, we can just use state.GUIDE as the authority, but allow explicit announcement if changed.
-                    }
-                    else if (frag.match(/CPN\s+(?:A\s+)?(\d{1,3})/)) {
-                        const m = frag.match(/CPN\s+(?:A\s+)?(\d{1,3})/);
-                        headerCourse = parseInt(m[1], 10);
-                    }
-                    else if (frag.match(/SPD\s+H\s+(\d+)$/)) {
-                        const m = frag.match(/SPD\s+H\s+(\d+)$/);
-                        headerSpeed = parseInt(m[1], 10);
-                    }
-                });
+                const headerCourseMatch = cleanSignal.match(/CPN\s+(?:A\s+)?(\d{1,3})/i);
+                if (headerCourseMatch) {
+                    headerCourse = parseInt(headerCourseMatch[1], 10);
+                }
+                const headerSpeedMatch = cleanSignal.match(/\bSPD\s+[A-Z]?\s*(\d+)/i);
+                if (headerSpeedMatch) {
+                    headerSpeed = parseInt(headerSpeedMatch[1], 10);
+                }
 
                 // Detect if Guide was explicitly set in this command block
                 // roughly if 'G-' or 'GUIDE' or standalone '/NAME' was parsed as Guide
@@ -5093,13 +5431,11 @@
                 }
 
                 if (headerCourse !== null || headerSpeed !== null) {
-                    if (!introMsg.includes(gFullName)) introMsg += `${gFullName} to `;
-                    else introMsg += `to `; // "Guide is SHK. to steer..." -> "Guide is SHK. SHK to steer..." better
-
-                    // Retrying phrasing:
-                    // If we already said "Guide is SHK", we can say "SHK to steer..."
-                    if (introMsg.endsWith(`${gFullName}. `)) introMsg = introMsg + `${gFullName} to `;
-                    else if (!headerGuide) introMsg = `${gFullName} to `;
+                    if (headerGuide) {
+                        introMsg += `${gFullName} to `;
+                    } else {
+                        introMsg += `${gFullName} to `;
+                    }
 
                     if (headerCourse !== null) introMsg += `steer course ${digitize(normDeg(headerCourse))} `;
                     if (headerCourse !== null && headerSpeed !== null) introMsg += "and ";
@@ -5121,16 +5457,25 @@
                     if (voiceParts.length > 0 || introMsg) {
                         const stationVoice = pendingExecution
                             ? voiceParts.map(part => `${part} PENDING FOR EXECUTION`)
-                            : voiceParts;
-                        const voiceBody = introMsg + stationVoice.join(". ");
+                            : hasRIX
+                                ? voiceParts.map(part => `${part} IMMEDIATE EXECUTION`)
+                            : hasSB_IX
+                                ? voiceParts.map(part => `${part} EXECUTED`)
+                                : (!hasIX && !hasRIX && !hasSB_IX && stnActions.length > 0)
+                                    ? voiceParts.map(part => `${part} EXECUTED`)
+                                : voiceParts;
+                        const voiceSegments = [];
+                        if (introMsg.trim()) voiceSegments.push(introMsg.trim());
+                        voiceSegments.push(...stationVoice);
+                        const voiceBody = voiceSegments.join(". ");
 
                         let finalMsg = globalVoicePrefix;
-                        if (hasRIX || hasSB_IX) {
+                        if (hasRIX) {
                             finalMsg += "IMMEDIATE EXECUTE. ";
                         } else if (pendingExecution) {
                             finalMsg += "PENDING FOR EXECUTION. ";
                         }
-                        finalMsg += voiceBody;
+                        finalMsg += (finalMsg.endsWith(" ") ? "" : " ") + voiceBody;
                         speakCommand(finalMsg);
                     } else if (!pendingExecution && multiProcessed) {
                         speakCommand(globalVoicePrefix + "Signal Executed.");
@@ -5139,18 +5484,26 @@
                     const isTrueMode = document.getElementById("trueBearingToggle") ? document.getElementById("trueBearingToggle").checked : true;
                     // Plot the full station state on the board even for IX signals so the user can visualize
                     // the pending manoeuvre without waiting for a second execution pass.
-                    for (let k = 0; k < 4; k++) {
-                        stnActions.forEach(act => {
-                            executeStationSignal(act.s, act.b, act.r, act.d, board, isTrueMode);
-                            if (act.becomesGuide) {
-                                state.GUIDE = act.s;
-                            }
-                        });
+                    if (!interpretationOnlyExecution) {
+                        for (let k = 0; k < 4; k++) {
+                            stnActions.forEach(act => {
+                                const applyTrueBearing = act.relativeToReference ? false : isTrueMode;
+                                executeStationSignal(act.s, act.b, act.r, act.d, board, applyTrueBearing);
+                                if (act.becomesGuide) {
+                                    state.GUIDE = act.s;
+                                }
+                            });
+                        }
                     }
-                    updateGuideLabel(board);
+                    if (!pendingExecution && !interpretationOnlyExecution && stnActions.length > 0) {
+                        stnActions.forEach((act) => notifyOwnShipStationExecuted(act.s, act));
+                    }
+                    if (!interpretationOnlyExecution) {
+                        updateGuideLabel(board);
+                    }
                 }
 
-                if (multiProcessed) {
+                if (multiProcessed && !interpretationOnlyExecution) {
                     if (state.GUIDE && SHIPS[state.GUIDE]) {
                         const gc = SHIPS[state.GUIDE].course;
                         for (let n in SHIPS) {
@@ -5813,7 +6166,7 @@
                     }
                 }
 
-                pushUndo(board);
+                if (!interpretationOnlyExecution) pushUndo(board);
 
                 if (prevState && oldHeading !== null) {
                     const delta = (newHeading - oldHeading + 540) % 360 - 180;
@@ -5993,36 +6346,41 @@
                     if (f) {
                         const newC = isAbsolute ? normDeg(delta) : normDeg(side === "STBD" ? f.course + delta : f.course - delta);
                         const sideLong = side === "STBD" ? "STARBOARD" : "PORT";
-                        const newCStr = digitize(normDeg(newC));
+                        const degAmount = (nextStr === "ANS" ? ansDegrees(valInt) : valInt * 10);
+                        const degTxt = digitize(Math.round(degAmount));
 
-                        let rawBody = `Turn ${sideLong} `;
-                        if (nextStr === "ANS") {
-                            rawBody += `${sayNatural(valInt)} Ans`;
-                        } else if (valStr.length === 3) {
-                            rawBody += digitize(valInt);
-                        } else {
-                            rawBody += digitizeRaw(valStr);
+                        let finalMsg = globalVoicePrefix;
+                        if (pendingExecution) {
+                            finalMsg += "PENDING FOR EXECUTION. ";
+                        } else if (hasRIX) {
+                            finalMsg += "IMMEDIATE EXECUTE. ";
                         }
 
-                        let execDetail = "";
                         if (isAbsolute) {
-                            execDetail = `all ships are to turn together to new course ${newCStr} maintaining true bearing and distance from the guide.`;
+                            finalMsg += `ALL SHIPS ARE TO TURN TOGETHER TO NEW COURSE ${digitize(normDeg(newC))} MAINTAINING TRUE BEARING AND DISTANCE FROM THE GUIDE.`;
                         } else {
-                            const degAmount = (nextStr === "ANS" ? ansDegrees(valInt) : valInt * 10);
-                            const degTxt = sayNatural(degAmount);
-                            execDetail = `all ships are to turn together ${degTxt} degrees from present course THROUGH ${sideLong} maintaining true bearing and distance from the guide. New course will be ${newCStr}.`;
+                            finalMsg += `ALL SHIPS ARE TO TURN TOGETHER ${degTxt} DEGREES FROM PRESENT COURSE THROUGH ${sideLong} MAINTAINING TRUE BEARING AND DISTANCE FROM THE GUIDE.`;
+                            if (hasRIX) {
+                                finalMsg += " IMMEDIATE EXECUTION.";
+                            } else if (hasSB_IX || (!hasIX && !hasRIX && !hasSB_IX)) {
+                                finalMsg += " EXECUTED.";
+                            } else if (pendingExecution) {
+                                finalMsg += " PENDING FOR EXECUTION.";
+                            }
                         }
 
-                        buildVoice("All position TP message from flag to collective", rawBody, execDetail);
+                        speakCommand(finalMsg);
                     }
                 }
 
-                targets.forEach(n => {
-                    if (!SHIPS[n]) return;
-                    const cur = SHIPS[n].course;
-                    let target = isAbsolute ? normDeg(delta) : (side === "STBD" ? cur + delta : cur - delta);
-                    forcedTurn(n, normDeg(target), side, () => ensureFleetInView(board), board);
-                });
+                if (!interpretationOnlyExecution) {
+                    targets.forEach(n => {
+                        if (!SHIPS[n]) return;
+                        const cur = SHIPS[n].course;
+                        let target = isAbsolute ? normDeg(delta) : (side === "STBD" ? cur + delta : cur - delta);
+                        forcedTurn(n, normDeg(target), side, () => ensureFleetInView(board), board);
+                    });
+                }
                 inp.value = ""; return;
             }
 
@@ -6040,7 +6398,7 @@
             }
 
             if (stnShip && stnData) {
-                let descriptor = resolveStationDescriptor(stnData.replace(/^-+|-+$/g, "").trim());
+                let descriptor = resolveStationDescriptor(stnData.trim().replace(/^\s*-\s*|\s*-\s*$/g, "").trim());
                 let bearingVal = descriptor ? descriptor.bearing : NaN;
                 let distVal = parseSignalDistance(cleanSignal) || 0;
 
@@ -6065,10 +6423,16 @@
                         `${shipFull} take station ${voiceStation} from ${refFull} distance ${sayNatural(distVal)} miles.`
                     );
 
-                    moveShipRelative(stnShip, refName, bearingVal, distVal, board);
-                    if (descriptor && descriptor.becomesGuide) {
-                        state.GUIDE = stnShip;
-                        updateGuideLabel(board);
+                    const useTrueBearing = descriptor ? descriptor.relativeToReference !== true : true;
+                    if (!interpretationOnlyExecution) {
+                        moveShipRelative(stnShip, refName, bearingVal, distVal, board, useTrueBearing);
+                        notifyOwnShipStationExecuted(stnShip, {
+                            descriptorLabel: descriptor ? descriptor.label : ""
+                        });
+                        if (descriptor && descriptor.becomesGuide) {
+                            state.GUIDE = stnShip;
+                            updateGuideLabel(board);
+                        }
                     }
                     setTimeout(() => ensureFleetInView(board), 800);
                     inp.value = ""; return;
@@ -6104,12 +6468,62 @@
             // TACTICAL SIGNAL HANDLERS — WORKUP / NC / INTP SIGNALS
             // ============================================================
 
-            // --- BB-WED 48-52-10 (Delay in getting underway due tug non-availability) ---
-            if (/\bBB\s*-\s*WED\s*48\s*-\s*52\s*-\s*10\b/i.test(cleanSignal)) {
+            // --- BB-WED 48-52-X VIEW ... (Delay in getting underway for stated reason) ---
+            const gettingUnderwayDelayMatch = cleanSignal.match(/\bBB\s*-\s*WED\s*48\s*-\s*52\s*-\s*(\d+)\s+DSG\s+VIEW\s+(.+?)$/i);
+            if (gettingUnderwayDelayMatch) {
                 const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
                 const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
                 const delayPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
-                speakCommand(delayPrefix + "ANTICIPATE DELAY OF ONE ZERO MINS IN GETTING UNDERWAY VIEW NON AVAILABILITY OF TUGS.");
+                const delayMinutes = digitizeRaw(gettingUnderwayDelayMatch[1]);
+                const reason = gettingUnderwayDelayMatch[2].replace(/\s+/g, " ").trim();
+                speakCommand(delayPrefix + `ANTICIPATE DELAY OF ${delayMinutes} MINS IN GETTING UNDERWAY VIEW ${reason}.`);
+                inp.value = ""; return;
+            }
+
+            // --- BB - BT OF RAS SIGNAL (completion against saved RAS checks signal) ---
+            if (/\bBB\s*-\s*BT\s+OF\s+RAS\s+SIGNAL\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const completionText = "SIREN AND MANUAL STEERING GEAR CHECKS COMPLETED.";
+
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    const addressHeader = (addressPart || "").replace(/\s+DE\s+.*$/i, "").trim();
+                    const expandedAddress = addressHeader
+                        ? addressHeader.split(/\s+/).map(token => resolveSignalName(token)).join(" ")
+                        : resolveSignalName("WWTVZG");
+                    const ownShipName = resolveSignalName(ownShip || "KMT");
+                    speakCommand(`${location} TP PERMISSION TO PASS ${expandedAddress} THIS IS ${ownShipName}. ${completionText}`);
+                } else {
+                    const prefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    speakCommand(prefix + completionText);
+                }
+                inp.value = ""; return;
+            }
+
+            // --- BB - <BT> (reference to an earlier signal by BT) ---
+            const btReferenceMatch = cleanSignal.match(/^\s*BB\s*-\s*([A-Z0-9]{3,4})\s*$/i);
+            if (btReferenceMatch) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const referenceBt = btReferenceMatch[1].toUpperCase();
+                const storedRequest = lookupSignalRequest(referenceBt);
+                const referencedText = storedRequest && storedRequest.message
+                    ? `YOUR ${digitizeRaw(referenceBt)}. ${storedRequest.message}`
+                    : `YOUR ${digitizeRaw(referenceBt)}.`;
+
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    const addressHeader = (addressPart || "").replace(/\s+DE\s+.*$/i, "").trim();
+                    const expandedAddress = addressHeader
+                        ? addressHeader.split(/\s+/).map(token => resolveSignalName(token)).join(" ")
+                        : resolveSignalName("WWTVZG");
+                    const ownShipName = resolveSignalName(ownShip || "KMT");
+                    speakCommand(`${location} TP PERMISSION TO PASS ${expandedAddress} THIS IS ${ownShipName}. ${referencedText}`);
+                } else {
+                    const prefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    speakCommand(prefix + referencedText);
+                }
                 inp.value = ""; return;
             }
 
@@ -6145,6 +6559,12 @@
                 const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
                 const otbPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
                 speakCommand(otbPrefix + "AT OTB.");
+                if (senderIsOwnShip) {
+                    showActionPopup("SHIFT NAVAL ENSIGN TO SEA POSITION", {
+                        title: "ENSIGN ACTION",
+                        flagKey: "naval_ensign_sea_position"
+                    });
+                }
                 inp.value = ""; return;
             }
 
@@ -6166,12 +6586,14 @@
 
             // --- WTA 26 - SIGHTED SHIP ON BEARING (Format: WTA 26 - 53 - 000 DSG /KVT) ---
             if (/\bWTA\s+26\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const sightingPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
                 const brgMatch = cleanSignal.match(/WTA\s+26\s*-\s*\d+\s*-\s*(\d{1,3})/i);
                 const dsgMatch = cleanSignal.match(/DSG\s*\/?(\w+)/i);
-                let brgStr = brgMatch ? digitize(parseInt(brgMatch[1], 10)) : "UNKNOWN";
-                let dsgShip = dsgMatch ? (SHIP_NAMES_MAP[dsgMatch[1]] || dsgMatch[1]) : "";
-                let msg = globalVoicePrefix + `SIGHTED SHIP ON BEARING ${brgStr}.`;
-                if (dsgShip) msg += ` DESIGNATED TO ${dsgShip}.`;
+                const brgStr = brgMatch ? digitize(parseInt(brgMatch[1], 10)) : "UNKNOWN";
+                const dsgShip = dsgMatch ? (SHIP_NAMES_MAP[dsgMatch[1].toUpperCase()] || dsgMatch[1].toUpperCase()) : "SHIP";
+                const msg = `${sightingPrefix}SIGHTED ${dsgShip} ON BEARING ${brgStr}.`;
                 speakCommand(msg);
                 inp.value = ""; return;
             }
@@ -6179,34 +6601,180 @@
             // --- WTA 101 - Avoiding Action (COLL DE WWTVZG = WTA 101 - 51) ---
             if (/\bWTA\s+101\b/i.test(cleanSignal)) {
                 speakCommand(globalVoicePrefix + "SHIPS TO TAKE INDIVIDUAL AVOIDING ACTION AGAINST SHIPPING, FISHING, SAILING CRAFTS, NETS AND BUOYS.");
+                showActionPopup("SHIPS TO TAKE INDIVIDUAL AVOIDING ACTION AGAINST SHIPPING, FISHING, SAILING CRAFTS, STAKES, NETS AND BUOYS.", {
+                    title: "WARNING ALERT",
+                    flagKey: "warning_alert"
+                });
+                inp.value = ""; return;
+            }
+
+            // --- EX1 DSG <n> (Run commence) ---
+            if (/\bEX\s*1\b/i.test(cleanSignal)) {
+                const runMatch = cleanSignal.match(/\bEX\s*1\s+DSG\s+(\d+)/i);
+                if (runMatch) {
+                    speakCommand(`${globalVoicePrefix}RUN ${digitizeRaw(runMatch[1])} COMMENCE.`);
+                    inp.value = ""; return;
+                }
+            }
+
+            // --- /SHIP STN B -1 /REF - 228W (upon disengaging take station astern) ---
+            const disengagingAsternMatch = cleanSignal.match(/\/\s*([A-Z0-9]+)\s+STN\s+B\s*-\s*1\s*\/\s*([A-Z0-9]+)\s*-\s*228W/i);
+            if (disengagingAsternMatch) {
+                const shipName = resolveSignalName(disengagingAsternMatch[1]);
+                const refName = resolveSignalName(disengagingAsternMatch[2]);
+                speakCommand(`${globalVoicePrefix}UPON DISENGAGING ${shipName} TO TAKE STATION ONE MILE ASTERN OF ${refName}.`);
+                inp.value = ""; return;
+            }
+
+            const disengagingStarboardBeamMatch = cleanSignal.match(/\/\s*([A-Z0-9]+)\s+STN\s+STBD\s+9\s*-\s*\/\s*([A-Z0-9]+)\s*-\s*0\s+ANS\s+5\s*-\s*228W/i);
+            if (disengagingStarboardBeamMatch) {
+                const shipName = resolveSignalName(disengagingStarboardBeamMatch[1]);
+                const refName = resolveSignalName(disengagingStarboardBeamMatch[2]);
+                speakCommand(`${globalVoicePrefix}UPON DISENGAGING ${shipName} TO TAKE STATION ZERO POINT FIVE MILE STBD BEAM OF ${refName}.`);
+                inp.value = ""; return;
+            }
+
+            // --- /SHIP TA 97 /SHIP (disengage order) ---
+            const disengageShipMatch = cleanSignal.match(/\/\s*([A-Z0-9]+)\s+TA\s+97\s+\/\s*([A-Z0-9]+)/i);
+            if (disengageShipMatch) {
+                const shipName = resolveSignalName(disengageShipMatch[1]);
+                const targetName = resolveSignalName(disengageShipMatch[2]);
+                speakCommand(`${globalVoicePrefix}${shipName} DISENGAGE ${targetName}.`);
+                inp.value = ""; return;
+            }
+
+            // --- BB - TA 97 (have disengaged) ---
+            if (/\bBB\s*-\s*TA\s+97\b|\bBB\s+TA\s+97\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    const addressHeader = (addressPart || "").replace(/\s+DE\s+.*$/i, "").trim();
+                    const expandedAddress = addressHeader
+                        ? addressHeader.split(/\s+/).map(token => resolveSignalName(token)).join(" ")
+                        : resolveSignalName("WWTVZG");
+                    const ownShipName = resolveSignalName(ownShip || "KMT");
+                    speakCommand(`${location} TP PERMISSION TO PASS ${expandedAddress} THIS IS ${ownShipName}. HAVE DISENGAGED.`);
+                } else {
+                    const prefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    speakCommand(`${prefix}HAVE DISENGAGED.`);
+                }
+                inp.value = ""; return;
+            }
+
+            // --- TA 17 - You bear <bearing> ---
+            if (/\bTA\s+17\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const bearingMatch = cleanSignal.match(/\bTA\s+17\s*-\s*(\d{1,3})/i);
+                const bearingText = bearingMatch ? digitize(parseInt(bearingMatch[1], 10)) : "UNKNOWN";
+                const addresseeMatch = addressPart.match(/^(.*?)\s+DE\s+/i);
+                const addresseeRaw = addresseeMatch ? addresseeMatch[1].trim().split(/\s+/)[0].toUpperCase() : "";
+                const addresseeName = resolveSignalName(addresseeRaw);
+
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    const ownShipName = resolveSignalName(ownShip || "KMT");
+                    speakCommand(`${location} TP PERMISSION TO PASS ${addresseeName} THIS IS ${ownShipName}. YOU BEAR ${bearingText}.`);
+                } else {
+                    const prefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    speakCommand(`${prefix}YOU BEAR ${bearingText}.`);
+                }
                 inp.value = ""; return;
             }
 
             // --- BH TA 88 - Permission to Proceed as Previously Directed ---
             // Format: KVT DE KMT = BH TA 88 - 3 = time  (own ship sends → BRIDGE TP PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED)
             // Format: KMT DE KVT = C - time = time  (other sends → BRIDGE TP MESSAGE FROM KVT, KMT TO PROCEED AS PREVIOUSLY DIRECTED)
-            if (/\bBH\s+TA\s+88\b/i.test(cleanSignal)) {
-                speakCommand(globalVoicePrefix + "PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED.");
+            if (/\bBH\s*-\s*TA\s+88\b|\bBH\s+TA\s+88\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const addresseeMatch = addressPart.match(/^(.*?)\s+DE\s+/i);
+                const addresseeRaw = addresseeMatch ? addresseeMatch[1].trim().split(/\s+/)[0].toUpperCase() : "";
+                const addresseeName = SHIP_NAMES_MAP[addresseeRaw] || addresseeRaw;
+                if (timePart) {
+                    rememberSignalRequest(timePart, {
+                        type: "PROCEED_AS_PREVIOUSLY_DIRECTED",
+                        requester: ownShip,
+                        sender: (outerSenderRaw || "").toUpperCase(),
+                        addressee: addresseeRaw,
+                        message: `${resolveSignalName(ownShip)} TO PROCEED AS PREVIOUSLY DIRECTED.`
+                    });
+                }
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    speakCommand(`${location} TP PERMISSION TO PASS ${addresseeName} DE ${outerSenderRaw}. REQUEST PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED.`);
+                } else {
+                    const otherPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    speakCommand(otherPrefix + "PERMISSION TO PROCEED AS PREVIOUSLY DIRECTED.");
+                }
                 inp.value = ""; return;
             }
 
             // --- C (Comply / Proceed as Previously Directed from another ship) ---
             // Format: KMT DE KVT = C - time = time
             if (/^C\s*$/.test(cleanSignal.trim()) || /^C\s*-\s*\d+$/.test(cleanSignal.trim())) {
-                // globalVoicePrefix already set as BRIDGE TP MESSAGE FROM KVT
-                speakCommand(globalVoicePrefix + "KMT TO PROCEED AS PREVIOUSLY DIRECTED.");
+                const referenceMatch = cleanSignal.match(/^C\s*-\s*([A-Z0-9]+)$/i);
+                const referenceTime = referenceMatch ? referenceMatch[1] : "";
+                const storedRequest = lookupSignalRequest(referenceTime);
+                if (storedRequest && storedRequest.message) {
+                    speakCommand(globalVoicePrefix + storedRequest.message);
+                } else {
+                    speakCommand(globalVoicePrefix + `${resolveSignalName(window.OWN_SHIP_NAME || "KMT")} TO PROCEED AS PREVIOUSLY DIRECTED.`);
+                }
                 inp.value = ""; return;
             }
 
             // --- CO 16 - Take Charge and Conduct OSTDEP (WWTVZG INFO COLL DE KMT = CO 16 - 1 DSG OSTDEP 16/26) ---
             if (/\bCO\s+16\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
                 const dsgMatch = cleanSignal.match(/DSG\s+(OSTDEP\s*[\d\/]+)/i);
                 const ostdep = dsgMatch ? dsgMatch[1].trim() : "";
-                let msg = globalVoicePrefix + "WORKUP TO TAKE CHARGE AND CONDUCT";
+                const addresseeMatch = addressPart.match(/^(.*?)\s+DE\s+/i);
+                const addresseePart = addresseeMatch ? addresseeMatch[1].trim() : "";
+                const actionAddresseeRaw = addresseePart
+                    ? addresseePart.split(/\s+INFO\s+/i)[0].trim().split(/\s+/)[0].toUpperCase()
+                    : "";
+                const actionAddressee = actionAddresseeRaw ? resolveSignalName(actionAddresseeRaw) : resolveSignalName(outerSenderRaw || "WWTVZG");
+                let msg = "";
+                if (senderIsOwnShip) {
+                    const location = getCommandLocationLabel();
+                    const ownShipName = resolveSignalName(ownShip);
+                    msg = `${location} TP PERMISSION TO PASS ${actionAddressee} THIS IS ${ownShipName}. ${actionAddressee} TO TAKE CHARGE AND CONDUCT`;
+                } else {
+                    const commandPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    msg = commandPrefix + `${actionAddressee} TO TAKE CHARGE AND CONDUCT`;
+                }
                 if (ostdep) msg += " " + ostdep;
                 msg += ".";
                 speakCommand(msg);
                 inp.value = ""; return;
+            }
+
+            // --- YOUR ... RV POSN ... DF ... AT ... (rendezvous position report) ---
+            if (/\bYOUR\s+[A-Z0-9]+\b/i.test(cleanSignal) && /\bRV\s+POSN\b/i.test(cleanSignal) && /\bDF\b/i.test(cleanSignal) && /\bAT\b/i.test(cleanSignal)) {
+                const ownShip = (window.OWN_SHIP_NAME || "").toUpperCase();
+                const senderIsOwnShip = (outerSenderRaw || "").toUpperCase() === ownShip;
+                const rvMatch = cleanSignal.match(/YOUR\s+([A-Z0-9]+).*?RV\s+POSN\s+([0-9]{1,3}).*?DF\s+([0-9]{1,3}).*?AT\s+([0-9]{4})/i);
+                if (rvMatch) {
+                    const [, referenceSerial, rvPosn, dfValue, atTime] = rvMatch;
+                    let prefix = "";
+                    if (senderIsOwnShip) {
+                        const location = getCommandLocationLabel();
+                        const ownShipName = resolveSignalName(ownShip || "KMT");
+                        const addressHeader = (addressPart || "").replace(/\s+DE\s+.*$/i, "").trim();
+                        const expandedAddress = addressHeader
+                            ? addressHeader.split(/\s+/).map(token => resolveSignalName(token)).join(" ")
+                            : resolveSignalName(outerSenderRaw || "FLAG");
+                        prefix = `${location} TP PERMISSION TO PASS ${expandedAddress} THIS IS ${ownShipName}. `;
+                    } else {
+                        prefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", false);
+                    }
+                    const msg = `${prefix}YOUR ${digitizeRaw(referenceSerial)}. RV POSITION ${digitize(parseInt(rvPosn, 10))}. DF ${digitize(parseInt(dfValue, 10))} AT ${digitizeRaw(atTime)}.`;
+                    speakCommand(msg);
+                    inp.value = ""; return;
+                }
             }
 
             // --- EX 3 / EX3 - Exercise Signal (with Serial) ---
@@ -6217,15 +6785,18 @@
                 const serNum = serMatch ? serMatch[1] : null;
                 const exCodeMatch = cleanSignal.match(/EX\s*3\s*-\s*(\d+)/i);
                 const exCode = exCodeMatch ? exCodeMatch[1] : "9";
+                const exStatus = exCode === "4" ? "COMPLETED" : "COMMENCED";
 
                 // Look up serial in registry
-                let exerciseName = "HELO CONTROL EXERCISE";
+                let exerciseName = "";
                 let otcName = "";
+                let hasSavedSerialMeaning = false;
                 if (serNum && SERIALS_REGISTRY.length > 0) {
                     const found = SERIALS_REGISTRY.find(s => s.ser === serNum);
                     if (found) {
-                        exerciseName = found.exercise || exerciseName;
+                        exerciseName = (found.exercise || "").trim();
                         otcName = found.otc || "";
+                        hasSavedSerialMeaning = Boolean(exerciseName);
                     }
                 }
 
@@ -6238,8 +6809,9 @@
                     const ownFull = SHIP_NAMES_MAP[(window.OWN_SHIP_NAME || "KMT").toUpperCase()] || (window.OWN_SHIP_NAME || "KMT");
                     msg = globalVoicePrefix + `${ownFull} TO CONDUCT HELO OPERATIONS INDEPENDENTLY.`;
                 } else {
-                    const serStr = serNum ? " SERIAL " + digitizeRaw(serNum) + " THAT IS" : "";
-                    msg = `BRIDGE TP MESSAGE FROM ${otcFull} TO COLLECTIVE.${serStr} ${exerciseName} COMMENCED.`;
+                    const serialPhrase = serNum ? ` SERIAL ${digitizeRaw(serNum)}` : "";
+                    const exercisePhrase = hasSavedSerialMeaning ? ` THAT IS ${exerciseName}` : "";
+                    msg = `BRIDGE TP MESSAGE FROM ${otcFull} TO COLLECTIVE.${serialPhrase}${exercisePhrase} ${exStatus}.`;
                 }
                 speakCommand(msg);
                 inp.value = ""; return;
@@ -6258,7 +6830,7 @@
                 inp.value = ""; return;
             }
 
-            alert("COMMAND NOT RECOGNIZED");
+            return;
         }
 
         // ANS distance notation parser
@@ -6374,6 +6946,7 @@
 
         window.devPopulateFleet = devPopulateFleet;
         window.createSingleLineFleet = createSingleLineFleet;
+        window.removeCustomSignalName = removeCustomSignalName;
 
         /* RESTORED UTILITIES */
         function normDeg(d) {

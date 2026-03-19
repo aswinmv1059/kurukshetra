@@ -1,0 +1,54 @@
+{
+  "name": "kurukshetra-app",
+  "version": "1.0.0",
+  "description": "Kurukshetra desktop build",
+  "main": "electron/main.js",
+  "author": "aswinmv1059",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "integrity:generate": "node scripts/generate-integrity-manifest.js",
+    "start": "npm run integrity:generate && electron .",
+    "build:win": "npm run integrity:generate && electron-builder --win nsis --x64 --ia32"
+  },
+  "devDependencies": {
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.aswinmv.kurukshetra",
+    "productName": "Kurukshetra",
+    "asar": true,
+    "compression": "maximum",
+    "files": [
+      "electron/**/*",
+      "assets/**/*",
+      "css/**/*",
+      "fonts/**/*",
+      "js/**/*",
+      "index.html",
+      "combined.js",
+      "security/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

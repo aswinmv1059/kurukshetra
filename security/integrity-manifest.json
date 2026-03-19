@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-03-19T14:33:36.979Z",
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "2e44186384ae47ccca3b826558ad7414067590fefed9e8401d54828071f93ab4"
+    },
+    {
+      "path": "combined.js",
+      "sha256": "317c9ee2bea3ad8047768bbd9a742d5c3e9622075a276bc1daefa63d7752f98f"
+    },
+    {
+      "path": "css/styles.css",
+      "sha256": "48786cf0a9f413121e317400930d94162507a9ab199fce97e429579722f38c98"
+    },
+    {
+      "path": "js/app.js",
+      "sha256": "08317fb97e69fb03d5df3f0e5016ad7ef62b78e2142e55aaec2fa695ecf646c3"
+    },
+    {
+      "path": "js/board.js",
+      "sha256": "2c426125f0b245fc0579fc4a2680251a0d494713ab554c68060c2fa832adcf56"
+    },
+    {
+      "path": "js/signals.js",
+      "sha256": "90187297f255fcf4de115081ffeba049c601968b95223363c173bcad56509954"
+    },
+    {
+      "path": "js/state.js",
+      "sha256": "a0e797638bcef0a7b0a51324a4ecfe1d3ab9cf252dcc8855e0c07c674c5dc9a6"
+    },
+    {
+      "path": "js/ui.js",
+      "sha256": "07763a0ba6e9d86e111e5422b9c269f1893d5e17218c142b4248eeca55c7331a"
+    }
+  ]
+}
