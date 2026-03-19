@@ -946,6 +946,57 @@
             margin-top: 14px;
         }
 
+        #flagPopup {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(2, 8, 14, 0.82);
+            z-index: 1400;
+            padding: 24px;
+        }
+
+        #flagPopup.open {
+            display: flex;
+        }
+
+        .flag-popup-card {
+            width: min(520px, 100%);
+            border: 1px solid rgba(0, 255, 153, 0.28);
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(5, 20, 28, 0.98), rgba(2, 10, 16, 0.98));
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .flag-popup-card h3 {
+            margin: 0 0 8px 0;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        #flagPopupArt {
+            margin: 16px auto;
+            width: min(340px, 100%);
+        }
+
+        #flagPopupArt svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+        }
+
+        #flagPopupMessage {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
         /* LIGHT MODE OVERRIDES */
         body.light {
             --bg-deep: #eef2f3;
@@ -1625,6 +1676,15 @@
         </div>
     </div>
 
+    <div id="flagPopup">
+        <div class="flag-popup-card">
+            <h3 id="flagPopupTitle">FLAG ACTION</h3>
+            <div id="flagPopupArt"></div>
+            <div id="flagPopupMessage">--</div>
+            <button id="btnCloseFlagPopup" style="margin-top:0; min-width:140px;">ACKNOWLEDGE</button>
+        </div>
+    </div>
+
     <script>
         /* ---------- UNDO/REDO STACKS ---------- */
         const undoStack = { A: [], B: [] };
@@ -1709,6 +1769,7 @@
         };
         let activeBoard = "A";          // commands go here
         let currentMode = "FORMATION"; // single board by default
+        let positionChangeRequested = false;
 
         /* ---------- DOM READY ---------- */
         function onReady(fn) {
@@ -2065,6 +2126,10 @@
             return el ? (el.value || "BRIDGE") : "BRIDGE";
         }
 
+        function markPositionChangeRequested() {
+            positionChangeRequested = true;
+        }
+
         function buildCommandLocationPrefix(senderRaw, isOwnShipSender) {
             const location = getCommandLocationLabel();
             const senderName = SHIP_NAMES_MAP[senderRaw] || senderRaw;
@@ -2074,8 +2139,57 @@
             return `${location} TP MESSAGE FROM ${senderName}. `;
         }
 
-        function showActionPopup(message) {
-            alert(message);
+        function getFlagGraphicMarkup(flagKey) {
+            if (flagKey === "national_flag_down") {
+                return `
+                    <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indian national flag">
+                        <rect x="0" y="0" width="360" height="220" rx="12" fill="#0b1116"/>
+                        <rect x="42" y="30" width="250" height="44" fill="#FF9933"/>
+                        <rect x="42" y="74" width="250" height="44" fill="#FFFFFF"/>
+                        <rect x="42" y="118" width="250" height="44" fill="#138808"/>
+                        <circle cx="167" cy="96" r="17" fill="none" stroke="#000080" stroke-width="3"/>
+                        <circle cx="167" cy="96" r="2.5" fill="#000080"/>
+                        ${Array.from({ length: 24 }, (_, i) => {
+                            const angle = (Math.PI * 2 * i) / 24;
+                            const x2 = 167 + Math.cos(angle) * 15;
+                            const y2 = 96 + Math.sin(angle) * 15;
+                            return `<line x1="167" y1="96" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#000080" stroke-width="1.5"/>`;
+                        }).join("")}
+                        <rect x="33" y="24" width="5" height="150" fill="#9aa8b2"/>
+                        <line x1="292" y1="30" x2="322" y2="175" stroke="#c64a3a" stroke-width="4"/>
+                        <line x1="292" y1="74" x2="318" y2="184" stroke="#c64a3a" stroke-width="4"/>
+                        <line x1="292" y1="118" x2="314" y2="193" stroke="#c64a3a" stroke-width="4"/>
+                    </svg>
+                `;
+            }
+            return `
+                <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Signal flag">
+                    <rect x="0" y="0" width="360" height="220" rx="12" fill="#0b1116"/>
+                    <rect x="40" y="32" width="220" height="136" rx="10" fill="#103746" stroke="#1bb7d8" stroke-width="4"/>
+                    <path d="M40 32 L260 100 L40 168 Z" fill="#f4c542" opacity="0.9"/>
+                    <rect x="30" y="24" width="6" height="156" fill="#9aa8b2"/>
+                </svg>
+            `;
+        }
+
+        function closeActionPopup() {
+            const popup = document.getElementById("flagPopup");
+            if (popup) popup.classList.remove("open");
+        }
+
+        function showActionPopup(message, options = {}) {
+            const popup = document.getElementById("flagPopup");
+            const title = document.getElementById("flagPopupTitle");
+            const art = document.getElementById("flagPopupArt");
+            const body = document.getElementById("flagPopupMessage");
+            if (!popup || !title || !art || !body) {
+                alert(message);
+                return;
+            }
+            title.textContent = options.title || "FLAG ACTION";
+            body.textContent = message;
+            art.innerHTML = getFlagGraphicMarkup(options.flagKey || "");
+            popup.classList.add("open");
         }
 
         function formatSignalDistanceForVoice(distance) {
@@ -2596,6 +2710,10 @@
             });
             document.getElementById("istModal").addEventListener("mousedown", (e) => {
                 if (e.target && e.target.id === "istModal") closeIstMessage();
+            });
+            document.getElementById("btnCloseFlagPopup").addEventListener("click", closeActionPopup);
+            document.getElementById("flagPopup").addEventListener("mousedown", (e) => {
+                if (e.target && e.target.id === "flagPopup") closeActionPopup();
             });
 
             // Ensure all text inputs are uppercase real-time
@@ -3263,6 +3381,7 @@
             const state = getState(board);
             const s = state.SHIPS[name];
             if (!s) return;
+            markPositionChangeRequested();
 
             const t0 = performance.now();
             const x1 = s.x, y1 = s.y;
@@ -3285,6 +3404,7 @@
             const state = getState(board);
             const SHIPS = state.SHIPS;
             const canvas = state.canvas;
+            markPositionChangeRequested();
 
             // Clean inputs
             if (ship) ship = ship.replace("/", "").trim();
@@ -4186,6 +4306,7 @@
         function executeStationSignal(shipName, bearing, refName, distanceNM, board = activeBoard, isTrue = true) {
             const state = getState(board);
             const SHIPS = state.SHIPS;
+            markPositionChangeRequested();
 
             // Auto-create ships if they don't exist (silently, without drawing)
             if (!SHIPS[shipName]) {
@@ -4304,12 +4425,10 @@
         }
 
         function handleCommandAndCombat() {
-            if (!isCombatMode) {
-                enterCombatMode(() => {
-                    processCommand();
-                }, activeBoard);
-            } else {
-                processCommand();
+            positionChangeRequested = false;
+            processCommand();
+            if (positionChangeRequested && !isCombatMode) {
+                enterCombatMode(null, activeBoard);
             }
         }
 
@@ -5997,7 +6116,10 @@
                 const slippingPrefix = buildCommandLocationPrefix(outerSenderRaw || "FLAG", senderIsOwnShip);
                 speakCommand(slippingPrefix + "HAVE SLIPPED.");
                 if (senderIsOwnShip) {
-                    showActionPopup("DOWN NATIONAL FLAG");
+                    showActionPopup("DOWN NATIONAL FLAG", {
+                        title: "SLIPPING ACTION",
+                        flagKey: "national_flag_down"
+                    });
                 }
                 inp.value = ""; return;
             }
