@@ -4009,8 +4009,8 @@
             ctx.clearRect(0, 0, w, h);
 
             const dark = document.body.classList.contains("dark");
-            const ringColor = dark ? "rgba(255, 72, 72, 0.38)" : "rgba(0,0,0,0.15)";
-            const spokeColor = dark ? "rgba(255, 72, 72, 0.22)" : "rgba(0,0,0,0.08)";
+            const ringColor = dark ? "rgba(255, 72, 72, 0.38)" : "rgba(120, 255, 155, 0.24)";
+            const spokeColor = dark ? "rgba(255, 72, 72, 0.22)" : "rgba(120, 255, 155, 0.16)";
             const textColor = dark ? "rgba(255, 112, 112, 0.86)" : "rgba(120, 255, 155, 0.9)";
 
             const cx = w / 2;
@@ -4044,7 +4044,7 @@
                 ctx.stroke();
 
                 // Ring Labels - More visible
-                ctx.fillStyle = dark ? "rgba(255, 112, 112, 0.9)" : "rgba(120, 255, 155, 0.72)";
+                ctx.fillStyle = dark ? "rgba(255, 112, 112, 0.9)" : "rgba(120, 255, 155, 0.78)";
                 ctx.fillText(String(i) + " NM", 8, -r + 10);
             }
             // Reset line width for boundary 
@@ -4088,7 +4088,7 @@
                 ctx.stroke();
 
                 // Draw Text (Every 10 degrees)
-                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(255, 72, 72, 0.38)") : "rgba(120, 255, 155, 0.82)";
+                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(255, 72, 72, 0.38)") : ((isMajor || b % 30 === 0) ? textColor : "rgba(120, 255, 155, 0.52)");
                 ctx.fillText(String(b).padStart(3, "0"), tx, ty);
             }
             ctx.restore();
