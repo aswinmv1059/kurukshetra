@@ -1831,12 +1831,13 @@
             width: 110%;
             height: 110%;
             background-image: url('assets/navy_intro_bg.png');
+            background-color: #050608;
             background-size: cover;
             background-position: center;
-            opacity: 0;
+            opacity: 1;
             transform: scale(1.1);
-            transition: opacity 2s ease-in-out;
-            will-change: transform, opacity;
+            transition: transform 2s ease-in-out;
+            will-change: transform;
         }
 
         /* Running the Ken Burns effect via JS class to control start */
@@ -8445,7 +8446,6 @@
 
             setTimeout(() => {
                 if (introBg) {
-                    introBg.style.opacity = "1";
                     introBg.classList.add("pan-zoom-anim");
                 }
                 setTimeout(() => {
