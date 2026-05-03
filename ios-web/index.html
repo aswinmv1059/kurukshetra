@@ -61,19 +61,19 @@
             --primary: #00ff99;
             --primary-glow: rgba(0, 255, 153, 0.4);
             --primary-dim: rgba(0, 255, 153, 0.05);
-            --accent: #00ccff;
-            --accent-warm: #ffb347;
-            --accent-deep: #00a4ff;
-            --neon-pink: #ff2fb3;
-            --neon-blue: #21d4ff;
+            --accent: #00ff99;
+            --accent-warm: #7dffb8;
+            --accent-deep: #00d97f;
+            --neon-pink: #00d97f;
+            --neon-blue: #00ff99;
             --neon-green: #00ff99;
             --bg-deep: #050608;
             --bg-panel: rgba(10, 18, 24, 0.46);
             --border-subtle: rgba(150, 234, 255, 0.18);
             --border-strong: rgba(80, 255, 197, 0.45);
-            --text-main: #e6fff5;
-            --text-muted: #6b8c82;
-            --alert: #ff3333;
+            --text-main: #c9ffd9;
+            --text-muted: #5f8f6d;
+            --alert: #00ff99;
 
             --font-ui: 'Rajdhani', sans-serif;
             --font-code: 'Share Tech Mono', monospace;
@@ -348,7 +348,7 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             background: linear-gradient(120deg, rgba(33, 212, 255, 0.2), rgba(255, 47, 179, 0.2));
-            color: #eaffff;
+            color: var(--text-main);
             border: 1px solid rgba(33, 212, 255, 0.4);
             box-shadow: 0 0 16px rgba(33, 212, 255, 0.3);
         }
@@ -844,7 +844,7 @@
             padding: 10px;
             border: 1px solid rgba(0, 204, 255, 0.25);
             background: rgba(0, 24, 32, 0.65);
-            color: #9edfff;
+            color: var(--text-main);
             font-size: 0.78rem;
             line-height: 1.5;
             border-radius: 6px;
@@ -883,7 +883,7 @@
         }
 
         .ist-item-code {
-            color: #ffcc66;
+            color: var(--primary);
             font-weight: 700;
         }
 
@@ -1453,34 +1453,42 @@
 
         /* LIGHT MODE OVERRIDES */
         body.light {
-            --bg-deep: #eef2f3;
-            --bg-panel: #ffffff;
-            --bg-glass: #ffffff;
-            --bg-glass-heavy: #f8f9fa;
-            --bg-screen: #ffffff;
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
-            --primary: #00796b;
-            --primary-glow: rgba(0, 121, 107, 0.1);
-            --border-subtle: #d1d8db;
-            --border-strong: #95a5a6;
-            background-image: none;
+            --primary: #78ff9b;
+            --primary-glow: rgba(120, 255, 155, 0.28);
+            --primary-dim: rgba(120, 255, 155, 0.08);
+            --accent: #78ff9b;
+            --accent-warm: #b2ffbf;
+            --accent-deep: #3cff7f;
+            --neon-pink: #3cff7f;
+            --neon-blue: #78ff9b;
+            --neon-green: #78ff9b;
+            --bg-deep: #010402;
+            --bg-panel: rgba(4, 12, 6, 0.88);
+            --bg-glass: rgba(5, 16, 9, 0.86);
+            --bg-glass-heavy: rgba(2, 10, 5, 0.94);
+            --bg-screen: rgba(3, 20, 8, 0.82);
+            --text-main: #d6ffe0;
+            --text-muted: #6d9b76;
+            --border-subtle: rgba(120, 255, 155, 0.22);
+            --border-strong: rgba(120, 255, 155, 0.44);
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(0, 80, 25, 0.18) 0%, transparent 72%);
         }
 
         body.light input,
         body.light select {
-            background: #fff;
-            color: #2c3e50;
-            border-color: #d1d8db;
+            background: rgba(5, 16, 9, 0.78);
+            color: var(--text-main);
+            border-color: var(--border-subtle);
         }
 
         body.light .slider {
-            background-color: #ccc;
-            border-color: #bbb;
+            background-color: rgba(120, 255, 155, 0.08);
+            border-color: var(--border-subtle);
         }
 
         body.light #guideIndicator {
-            background: #e0f2f1;
+            background: rgba(120, 255, 155, 0.08);
             box-shadow: none;
         }
 
@@ -1489,16 +1497,18 @@
         }
 
         body.light .boardWrapper {
-            background: #fff;
-            border-color: #ccc;
+            background:
+                linear-gradient(180deg, rgba(8, 18, 10, 0.72), rgba(2, 10, 5, 0.45)),
+                radial-gradient(circle at 18% 14%, rgba(120, 255, 155, 0.08), transparent 36%);
+            border-color: var(--border-subtle);
         }
 
         body.light canvas {
-            background: #fff;
+            background: transparent;
         }
 
         body.light button:hover {
-            color: #fff;
+            color: #001109;
         }
 
         /* COMBAT MODE (Focus View) */
@@ -1906,8 +1916,8 @@
                 <button onclick="saveSerials()"
                     style="background:rgba(0,255,153,0.12);border:1px solid var(--primary);color:var(--primary);padding:8px 24px;cursor:pointer;border-radius:4px;font-family:var(--font-code);font-size:0.85rem;letter-spacing:1.5px;font-weight:700;">&#128190;
                     SAVE SERIALS</button>
-                <span id="serialsSaveStatus" style="color:#555;font-family:var(--font-code);font-size:0.75rem;"></span>
-                <span style="color:#444;font-size:0.7rem;margin-left:auto;">Max 20 serials &mdash; Saved automatically
+                <span id="serialsSaveStatus" style="color:var(--text-muted);font-family:var(--font-code);font-size:0.75rem;"></span>
+                <span style="color:var(--text-muted);font-size:0.7rem;margin-left:auto;">Max 20 serials &mdash; Saved automatically
                     to device</span>
             </div>
         </div>
@@ -1917,56 +1927,56 @@
     <div id="heloOverlay"
         style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;">
         <div
-            style="background:#0a0f1a;border:2px solid #ffb347;border-radius:12px;padding:30px 36px;max-width:600px;width:94vw;box-shadow:0 0 60px rgba(255,179,71,0.3);position:relative;">
+            style="background:#0a0f1a;border:2px solid var(--primary);border-radius:12px;padding:30px 36px;max-width:600px;width:94vw;box-shadow:0 0 60px rgba(0,255,153,0.22);position:relative;">
             <button onclick="closeHeloOverlay()"
-                style="position:absolute;top:14px;right:14px;background:none;border:1px solid #555;color:#aaa;padding:4px 12px;cursor:pointer;border-radius:4px;font-size:0.9rem;">✕</button>
+                style="position:absolute;top:14px;right:14px;background:none;border:1px solid var(--border-subtle);color:var(--text-muted);padding:4px 12px;cursor:pointer;border-radius:4px;font-size:0.9rem;">✕</button>
             <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
                 <!-- FLAG H Symbol -->
                 <div id="flagHSymbol" style="width:70px;height:90px;position:relative;flex-shrink:0;">
                     <svg viewBox="0 0 70 90" width="70" height="90">
-                        <rect x="2" y="2" width="30" height="40" fill="#ffffff" stroke="#999" stroke-width="1" />
-                        <rect x="32" y="2" width="30" height="40" fill="#e63946" stroke="#999" stroke-width="1" />
-                        <line x1="2" y1="22" x2="62" y2="22" stroke="#999" stroke-width="1" />
-                        <line x1="32" y1="2" x2="32" y2="42" stroke="#999" stroke-width="1" />
-                        <line x1="5" y1="2" x2="5" y2="85" stroke="#888" stroke-width="2" />
+                        <rect x="2" y="2" width="30" height="40" fill="#021208" stroke="#4f7d5d" stroke-width="1" />
+                        <rect x="32" y="2" width="30" height="40" fill="#00ff99" stroke="#4f7d5d" stroke-width="1" />
+                        <line x1="2" y1="22" x2="62" y2="22" stroke="#4f7d5d" stroke-width="1" />
+                        <line x1="32" y1="2" x2="32" y2="42" stroke="#4f7d5d" stroke-width="1" />
+                        <line x1="5" y1="2" x2="5" y2="85" stroke="#4f7d5d" stroke-width="2" />
                     </svg>
                 </div>
                 <div>
                     <div
-                        style="color:#ffb347;font-family:var(--font-code);font-size:1.2rem;letter-spacing:3px;font-weight:700;">
+                        style="color:var(--primary);font-family:var(--font-code);font-size:1.2rem;letter-spacing:3px;font-weight:700;">
                         HELO OPERATIONS — FLAG HOTEL</div>
                     <div id="heloStatusLine"
-                        style="color:#fff;font-family:var(--font-code);font-size:0.85rem;margin-top:6px;letter-spacing:1px;">
+                        style="color:var(--text-main);font-family:var(--font-code);font-size:0.85rem;margin-top:6px;letter-spacing:1px;">
                     </div>
                 </div>
             </div>
             <div
-                style="border-top:1px solid rgba(255,179,71,0.3);padding-top:16px;display:flex;flex-direction:column;gap:16px;">
+                style="border-top:1px solid rgba(0,255,153,0.22);padding-top:16px;display:flex;flex-direction:column;gap:16px;">
                 <div
-                    style="background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:6px;padding:14px;">
+                    style="background:rgba(0,255,153,0.05);border:1px solid rgba(0,255,153,0.18);border-radius:6px;padding:14px;">
                     <div
-                        style="color:#ffb347;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        style="color:var(--primary);font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
                         🚁 HELO APPROACHING</div>
-                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
-                            style="color:#ffb347;font-weight:700;">AT THE DIP</span> when helicopter is approaching the
+                    <div style="color:var(--text-main);font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
+                            style="color:var(--primary);font-weight:700;">AT THE DIP</span> when helicopter is approaching the
                         ship.</div>
                 </div>
                 <div
-                    style="background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:6px;padding:14px;">
+                    style="background:rgba(0,255,153,0.05);border:1px solid rgba(0,255,153,0.18);border-radius:6px;padding:14px;">
                     <div
-                        style="color:#ffb347;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        style="color:var(--primary);font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
                         🚁 HELO OPERATING</div>
-                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
-                            style="color:#00ff99;font-weight:700;">HOISTED</span> when operating helicopter.</div>
+                    <div style="color:var(--text-main);font-size:0.85rem;line-height:1.6;">FLAG <b>H</b> WILL BE <span
+                            style="color:var(--primary);font-weight:700;">HOISTED</span> when operating helicopter.</div>
                 </div>
                 <div
-                    style="background:rgba(220,50,50,0.07);border:1px solid rgba(220,50,50,0.3);border-radius:6px;padding:14px;">
+                    style="background:rgba(0,255,153,0.05);border:1px solid rgba(0,255,153,0.18);border-radius:6px;padding:14px;">
                     <div
-                        style="color:#e63946;font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
+                        style="color:var(--primary);font-family:var(--font-code);font-size:0.75rem;letter-spacing:2px;margin-bottom:6px;">
                         ⚠ HELO EMERGENCY</div>
-                    <div style="color:#ddd;font-size:0.85rem;line-height:1.6;">
-                        <b style="color:#e63946;">EMERG H</b> WILL BE HOISTED<br>
-                        R/T FAILURE: FIRE ONE <span style="color:#22cc55;font-weight:700;">GREEN</span> VERY SHOT —
+                    <div style="color:var(--text-main);font-size:0.85rem;line-height:1.6;">
+                        <b style="color:var(--primary);">EMERG H</b> WILL BE HOISTED<br>
+                        R/T FAILURE: FIRE ONE <span style="color:var(--primary);font-weight:700;">GREEN</span> VERY SHOT —
                         <b>STARBOARD</b> OR <b>PORT</b> as applicable
                     </div>
                 </div>
@@ -2051,14 +2061,14 @@
 
             <div style="height:15px;"></div>
 
-            <button id="btnSaveOp" style="border:1px solid #00ccff; color:#00ccff;">SAVE
+            <button id="btnSaveOp" style="border:1px solid var(--primary); color:var(--primary);">SAVE
                 OPERATION</button>
-            <button id="btnLoadOp" style="border:1px solid #00ccff; color:#00ccff;">LOAD OPERATION</button>
+            <button id="btnLoadOp" style="border:1px solid var(--primary); color:var(--primary);">LOAD OPERATION</button>
             <input type="file" id="fileInputLoad" style="display:none" accept=".json" onchange="loadOperation(event)">
 
             <div id="commLog"
-                style="margin-top: 15px; height: 250px; background: rgba(0,0,0,0.8); border: 1px solid #333; border-left: 2px solid #ff9900; padding: 10px; overflow-y: auto; font-family: monospace; font-size: 13px; color: #ccc; user-select: text; -webkit-user-select: text; pointer-events: auto;">
-                <div style="color:#666; font-style:italic;">-- Voice Log --</div>
+                style="margin-top: 15px; height: 250px; background: rgba(0,0,0,0.8); border: 1px solid #333; border-left: 2px solid var(--primary); padding: 10px; overflow-y: auto; font-family: monospace; font-size: 13px; color: var(--text-main); user-select: text; -webkit-user-select: text; pointer-events: auto;">
+                <div style="color:var(--text-muted); font-style:italic;">-- Voice Log --</div>
             </div>
 
 
@@ -2584,7 +2594,7 @@
             const gn = document.getElementById("guideName");
             if (gn) {
                 gn.innerText = g ? ("/" + g) : "/NONE";
-                gn.style.color = g ? "#ff3333" : "var(--primary)";
+                gn.style.color = "var(--primary)";
             }
         }
 
@@ -2901,9 +2911,9 @@
                 return `
                     <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Warning alert">
                         <rect x="0" y="0" width="360" height="220" rx="16" fill="#0d141b"/>
-                        <circle cx="180" cy="110" r="68" fill="#131f29" stroke="#ffb347" stroke-width="8"/>
-                        <path d="M180 70 L180 122" stroke="#ffb347" stroke-width="16" stroke-linecap="round"/>
-                        <circle cx="180" cy="150" r="10" fill="#ffb347"/>
+                        <circle cx="180" cy="110" r="68" fill="#131f29" stroke="#00ff99" stroke-width="8"/>
+                        <path d="M180 70 L180 122" stroke="#00ff99" stroke-width="16" stroke-linecap="round"/>
+                        <circle cx="180" cy="150" r="10" fill="#00ff99"/>
                     </svg>
                 `;
             }
@@ -3234,7 +3244,7 @@
             if (!list) return;
             const filtered = IST_STATE.messages.filter(msg => IST_STATE.activeSerial === "ALL" || msg.serial === IST_STATE.activeSerial);
             if (!filtered.length) {
-                list.innerHTML = `<div style="color:#666; font-style:italic;">-- No messages for selected serial --</div>`;
+                list.innerHTML = `<div style="color:var(--text-muted); font-style:italic;">-- No messages for selected serial --</div>`;
                 return;
             }
 
@@ -3249,7 +3259,7 @@
                         <div class="ist-item-summary">${msg.summary}</div>
                         <div class="ist-item-actions">
                             <button type="button" onclick="openIstMessage('${msg.id}')">DETAIL</button>
-                            ${msg.executable ? `<button type="button" onclick="loadImportedSignal('${msg.id}')">LOAD</button><button type="button" onclick="executeImportedSignal('${msg.id}')" style="border-color:#ffcc66; color:#ffcc66;">EXECUTE</button>` : ""}
+                            ${msg.executable ? `<button type="button" onclick="loadImportedSignal('${msg.id}')">LOAD</button><button type="button" onclick="executeImportedSignal('${msg.id}')" style="border-color:var(--primary); color:var(--primary);">EXECUTE</button>` : ""}
                         </div>
                     </div>
                 `;
@@ -3806,7 +3816,7 @@
             const dark = document.body.classList.contains("dark");
             const ringColor = dark ? "rgba(0, 255, 153, 0.4)" : "rgba(0,0,0,0.15)";
             const spokeColor = dark ? "rgba(0, 255, 153, 0.25)" : "rgba(0,0,0,0.08)";
-            const textColor = dark ? "rgba(0, 255, 153, 0.85)" : "#000";
+            const textColor = dark ? "rgba(0, 255, 153, 0.85)" : "rgba(120, 255, 155, 0.9)";
 
             const cx = w / 2;
             const cy = h / 2;
@@ -3839,12 +3849,12 @@
                 ctx.stroke();
 
                 // Ring Labels - More visible
-                ctx.fillStyle = dark ? "rgba(0, 255, 153, 0.9)" : "rgba(0,0,0,0.6)";
+                ctx.fillStyle = dark ? "rgba(0, 255, 153, 0.9)" : "rgba(120, 255, 155, 0.72)";
                 ctx.fillText(String(i) + " NM", 8, -r + 10);
             }
             // Reset line width for boundary 
             ctx.beginPath();
-            ctx.strokeStyle = dark ? "#00ff99" : "#000";
+            ctx.strokeStyle = dark ? "#00ff99" : "#78ff9b";
             ctx.lineWidth = 2;
             ctx.arc(0, 0, rad, 0, Math.PI * 2);
             ctx.stroke();
@@ -3883,7 +3893,7 @@
                 ctx.stroke();
 
                 // Draw Text (Every 10 degrees)
-                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(0, 255, 153, 0.4)") : "#000";
+                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(0, 255, 153, 0.4)") : "rgba(120, 255, 155, 0.82)";
                 ctx.fillText(String(b).padStart(3, "0"), tx, ty);
             }
             ctx.restore();
@@ -3933,10 +3943,10 @@
             const isOwnShip = ownShip === upperName;
             const isLineGuide = isLineGuideShip(upperName, guideName, boardLines, suppressGuides);
 
-            if (isOwnShip) return dark ? "#00ccff" : "#0066ff";
-            if (isGuide) return dark ? "#ff3333" : "#c62828";
-            if (isLineGuide) return dark ? "#ffcc00" : "#ef6c00";
-            return dark ? "#00ff99" : "#000";
+            if (isOwnShip) return dark ? "#8cffb5" : "#b8ffca";
+            if (isGuide) return dark ? "#00ff99" : "#78ff9b";
+            if (isLineGuide) return dark ? "#4dff8f" : "#9effbc";
+            return dark ? "#00d97f" : "#5dff97";
         }
 
         function drawShipArrow(board, x, y, hdg, color, name, suppressGuides, LINES) {
@@ -8159,7 +8169,7 @@
             if (!list) return;
             list.innerHTML = "";
             if (SERIALS_REGISTRY.length === 0) {
-                list.innerHTML = '<div style="color:#555;font-family:var(--font-code);font-size:0.8rem;padding:8px 0;">No serials added yet.</div>';
+                list.innerHTML = '<div style="color:var(--text-muted);font-family:var(--font-code);font-size:0.8rem;padding:8px 0;">No serials added yet.</div>';
                 return;
             }
             SERIALS_REGISTRY.forEach((s, idx) => {
@@ -8167,10 +8177,10 @@
                 row.style.cssText = "display:grid;grid-template-columns:1fr 2fr 1fr 1fr auto;gap:8px;align-items:center;background:rgba(0,255,153,0.03);border:1px solid rgba(0,255,153,0.1);border-radius:4px;padding:6px 8px;";
                 row.innerHTML = `
                     <span style="color:var(--primary);font-family:var(--font-code);font-size:0.85rem;">${s.ser}</span>
-                    <span style="color:#ccc;font-size:0.82rem;">${s.exercise}</span>
-                    <span style="color:#aaa;font-family:var(--font-code);font-size:0.8rem;">${s.otc}</span>
-                    <span style="color:#aaa;font-family:var(--font-code);font-size:0.8rem;">${s.ocs}</span>
-                    <button onclick="removeSerial(${idx})" style="background:none;border:1px solid #553;color:#a33;padding:2px 8px;cursor:pointer;border-radius:3px;font-size:0.75rem;">✕</button>
+                    <span style="color:var(--text-main);font-size:0.82rem;">${s.exercise}</span>
+                    <span style="color:var(--text-muted);font-family:var(--font-code);font-size:0.8rem;">${s.otc}</span>
+                    <span style="color:var(--text-muted);font-family:var(--font-code);font-size:0.8rem;">${s.ocs}</span>
+                    <button onclick="removeSerial(${idx})" style="background:none;border:1px solid var(--border-subtle);color:var(--primary);padding:2px 8px;cursor:pointer;border-radius:3px;font-size:0.75rem;">✕</button>
                 `;
                 list.appendChild(row);
             });
