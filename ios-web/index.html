@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="preload" as="image" href="assets/navy_intro_bg.png?v=20260503b">
+    <link rel="preload" as="image" href="assets/navy_intro_bg1.png?v=20260503c">
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' 'unsafe-inline' data:; img-src 'self' data: blob:;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -1817,7 +1817,7 @@
         #introLayer {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: #000 url('assets/navy_intro_bg1.png?v=20260503c') center center / cover no-repeat;
             z-index: 200000;
             overflow: hidden;
             display: flex;
@@ -1828,9 +1828,9 @@
         /* Cinematic Background */
         #introBg {
             position: absolute;
-            inset: -5%;
-            width: 110%;
-            height: 110%;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
             display: block;
             opacity: 1;
@@ -1997,7 +1997,7 @@
     <!-- CINEMATIC INTRO LAYER -->
     <div id="introLayer">
         <!-- Cinematic Elements -->
-        <img id="introBg" src="assets/navy_intro_bg.png?v=20260503b" alt="Kurukshetra intro background" loading="eager" decoding="sync">
+        <img id="introBg" src="assets/navy_intro_bg1.png?v=20260503c" alt="Kurukshetra intro background" loading="eager" decoding="sync">
         <div id="introOverlay"></div>
         <div id="introGrid"></div>
 
@@ -8443,14 +8443,15 @@
 
         window.addEventListener("load", function () {
             const introBg = document.getElementById("introBg");
+            const introLayer = document.getElementById("introLayer");
             const titleGroup = document.getElementById("titleGroup");
             const bootBtn = document.getElementById("bootBtn");
             const introFallbacks = [
-                "assets/navy_intro_bg.png?v=20260503b",
-                "assets/navy_intro_bg4.png?v=20260503b",
-                "assets/navy_intro_bg3.png?v=20260503b",
-                "assets/navy_intro_bg2.png?v=20260503b",
-                "assets/navy_intro_bg1.png?v=20260503b"
+                "assets/navy_intro_bg1.png?v=20260503c",
+                "assets/navy_intro_bg4.png?v=20260503c",
+                "assets/navy_intro_bg3.png?v=20260503c",
+                "assets/navy_intro_bg2.png?v=20260503c",
+                "assets/navy_intro_bg.png?v=20260503c"
             ];
 
             if (introBg) {
@@ -8459,6 +8460,9 @@
                     introIndex += 1;
                     if (introIndex < introFallbacks.length) {
                         introBg.src = introFallbacks[introIndex];
+                        if (introLayer) {
+                            introLayer.style.backgroundImage = `url('${introFallbacks[introIndex]}')`;
+                        }
                     }
                 });
             }
