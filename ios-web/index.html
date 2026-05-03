@@ -1831,15 +1831,13 @@
             width: 110%;
             height: 110%;
             z-index: 1;
-            background-image: url('assets/navy_intro_bg.png');
-            background-color: #050608;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            display: block;
             opacity: 1;
             transform: scale(1.1);
             transition: transform 2s ease-in-out;
             will-change: transform;
+            object-fit: cover;
+            object-position: center;
             filter: brightness(0.92) contrast(1.06);
         }
 
@@ -1998,7 +1996,7 @@
     <!-- CINEMATIC INTRO LAYER -->
     <div id="introLayer">
         <!-- Cinematic Elements -->
-        <div id="introBg"></div>
+        <img id="introBg" src="assets/navy_intro_bg.png" alt="Kurukshetra intro background">
         <div id="introOverlay"></div>
         <div id="introGrid"></div>
 
