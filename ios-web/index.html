@@ -472,6 +472,41 @@
             background: rgba(36, 8, 10, 0.38);
         }
 
+        body.dark #topBar {
+            background: linear-gradient(180deg, rgba(28, 8, 12, 0.62), rgba(10, 4, 6, 0.4));
+            border-bottom: 1px solid rgba(255, 88, 88, 0.16);
+        }
+
+        body.dark #leftPanel {
+            background: linear-gradient(180deg, rgba(24, 8, 12, 0.68), rgba(8, 4, 6, 0.52));
+            border-right: 1px solid rgba(255, 88, 88, 0.14);
+        }
+
+        body.dark #bottomPanel {
+            background: linear-gradient(180deg, rgba(26, 8, 12, 0.6), rgba(8, 4, 6, 0.42));
+            border-top: 1px solid rgba(255, 88, 88, 0.16);
+        }
+
+        body.dark #guideIndicator {
+            background: rgba(255, 59, 59, 0.08) !important;
+            box-shadow: 0 0 10px rgba(255, 59, 59, 0.1);
+        }
+
+        body.dark #guardRosterDisplay,
+        body.dark #btnSerials,
+        body.dark #serialsModal > div,
+        body.dark #heloOverlay > div {
+            box-shadow: 0 0 22px rgba(255, 59, 59, 0.12) !important;
+        }
+
+        body.dark #btnSerials {
+            background: rgba(255, 59, 59, 0.08) !important;
+        }
+
+        body.dark #guardRosterDisplay > div:first-child {
+            color: rgba(255, 140, 140, 0.7) !important;
+        }
+
         /* Guard Roster Display */
         #guardRosterDisplay {
             margin-left: 20px;
@@ -719,6 +754,17 @@
             box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
         }
 
+        body.dark .btn-danger {
+            border-color: rgba(255, 88, 88, 0.28);
+            background: rgba(255, 59, 59, 0.08);
+        }
+
+        body.dark .btn-danger:hover {
+            background: rgba(255, 59, 59, 0.92);
+            color: #140203;
+            box-shadow: 0 0 15px rgba(255, 59, 59, 0.3);
+        }
+
         /* Ship List */
         .shipHeader {
             display: flex;
@@ -751,6 +797,10 @@
 
         .shipItem:last-child {
             border-bottom: none;
+        }
+
+        body.dark .shipItem {
+            border-bottom: 1px solid rgba(255, 59, 59, 0.12);
         }
 
         .shipItem:hover {
@@ -960,6 +1010,11 @@
             font-family: var(--font-code);
         }
 
+        body.dark #istSummary {
+            border: 1px solid rgba(255, 88, 88, 0.22);
+            background: rgba(28, 8, 10, 0.62);
+        }
+
         #istSerialFilter {
             margin-top: 10px;
         }
@@ -978,6 +1033,12 @@
             background: rgba(0, 0, 0, 0.45);
             border-radius: 6px;
             padding: 9px;
+        }
+
+        body.dark .ist-item,
+        body.dark .ist-modal-card,
+        body.dark .flag-popup-card {
+            border-color: rgba(255, 88, 88, 0.22);
         }
 
         .ist-item-head {
@@ -1686,6 +1747,13 @@
             border-radius: 8px;
         }
 
+        body.dark #combatExitBtn {
+            border: 1px solid rgba(255, 88, 88, 0.8);
+            color: #ffd0d0;
+            background: rgba(22, 6, 8, 0.9);
+            box-shadow: 0 0 18px rgba(255, 59, 59, 0.16);
+        }
+
         body.combat-mode #combatExitBtn {
             display: inline-flex;
             align-items: center;
@@ -1794,6 +1862,10 @@
             z-index: 2;
         }
 
+        body.dark #introOverlay {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.84) 0%, rgba(30, 4, 8, 0.42) 50%, rgba(0, 0, 0, 0.92) 100%);
+        }
+
         /* Grid Overlay */
         #introGrid {
             position: absolute;
@@ -1804,6 +1876,12 @@
             background-size: 50px 50px;
             z-index: 3;
             pointer-events: none;
+        }
+
+        body.dark #introGrid {
+            background-image:
+                linear-gradient(rgba(255, 72, 72, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 72, 72, 0.03) 1px, transparent 1px);
         }
 
         /* Boot Screen Content */
@@ -1856,6 +1934,10 @@
             display: inline-block;
         }
 
+        body.dark .sub-title {
+            border: 1px solid rgba(255, 88, 88, 0.3);
+        }
+
         #bootBtn {
             padding: 15px 50px;
             font-size: 1.2rem;
@@ -1872,6 +1954,10 @@
             opacity: 0;
             /* Hidden initially */
             transform: translateY(20px);
+        }
+
+        body.dark #bootBtn {
+            box-shadow: 0 0 20px rgba(255, 59, 59, 0.1);
         }
 
         #bootBtn.show-btn {
@@ -4157,7 +4243,9 @@
         }
 
 
-        function randGreen() { return "#00ff99"; }
+        function randGreen() {
+            return document.body.classList.contains("dark") ? "#ff4d4d" : "#00ff99";
+        }
 
         function addShip(name, board = activeBoard, options = {}) {
             const { skipUndo } = options;
@@ -4499,7 +4587,7 @@
                 if (index === 0) {
                     ctx.beginPath();
                     ctx.arc(guideShip.x, guideShip.y, overlayRadius, 0, Math.PI * 2);
-                    ctx.strokeStyle = dark ? "rgba(0, 255, 153, 0.22)" : "rgba(0, 80, 60, 0.18)";
+                    ctx.strokeStyle = dark ? "rgba(255, 72, 72, 0.22)" : "rgba(0, 80, 60, 0.18)";
                     ctx.stroke();
                 }
             });
