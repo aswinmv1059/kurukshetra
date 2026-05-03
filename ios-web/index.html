@@ -91,6 +91,28 @@
             --safe-left: env(safe-area-inset-left, 0px);
         }
 
+        body.dark {
+            --primary: #ff3b3b;
+            --primary-glow: rgba(255, 59, 59, 0.42);
+            --primary-dim: rgba(255, 59, 59, 0.08);
+            --accent: #ff5656;
+            --accent-warm: #ff7b7b;
+            --accent-deep: #c91515;
+            --neon-pink: #ff6b6b;
+            --neon-blue: #8f1010;
+            --neon-green: #ff3b3b;
+            --bg-deep: #040404;
+            --bg-panel: rgba(18, 8, 8, 0.52);
+            --border-subtle: rgba(255, 88, 88, 0.2);
+            --border-strong: rgba(255, 70, 70, 0.4);
+            --text-main: #ffe1e1;
+            --text-muted: #a96d6d;
+            --alert: #ff3b3b;
+            --bg-glass: rgba(18, 8, 10, 0.54);
+            --bg-glass-heavy: rgba(12, 5, 7, 0.62);
+            --bg-screen: rgba(20, 7, 10, 0.46);
+        }
+
         /* ---------- PERSISTED UI KEYS ---------- */
 
         /* ---------- RESET & BASE ---------- */
@@ -150,6 +172,14 @@
             animation: drift 18s linear infinite;
         }
 
+        body.dark::before {
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 74, 74, 0.18), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(150, 18, 18, 0.16), transparent 45%),
+                radial-gradient(circle at 70% 85%, rgba(255, 40, 40, 0.15), transparent 45%),
+                linear-gradient(120deg, rgba(42, 4, 8, 0.4), rgba(6, 3, 4, 0.96) 60%);
+        }
+
         body::after {
             background-image:
                 linear-gradient(rgba(0, 255, 153, 0.03) 1px, transparent 1px),
@@ -159,6 +189,13 @@
             mix-blend-mode: screen;
             opacity: 0.18;
             animation: gridFloat 10s linear infinite;
+        }
+
+        body.dark::after {
+            background-image:
+                linear-gradient(rgba(255, 72, 72, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 72, 72, 0.04) 1px, transparent 1px),
+                repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 3px);
         }
 
         .neon-ribbon {
@@ -171,6 +208,10 @@
             box-shadow: 0 0 18px rgba(33, 212, 255, 0.6);
             animation: ribbonGlow 4s linear infinite;
             z-index: 120;
+        }
+
+        body.dark .neon-ribbon {
+            box-shadow: 0 0 18px rgba(255, 59, 59, 0.45);
         }
 
         @keyframes ribbonGlow {
@@ -311,6 +352,10 @@
             pointer-events: none;
         }
 
+        body.dark #topBar::after {
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.09), rgba(120, 10, 18, 0.09), transparent 60%);
+        }
+
         #appTitle {
             font-size: 1.6rem;
             font-weight: 700;
@@ -340,6 +385,12 @@
             border-radius: 6px;
         }
 
+        body.dark #topBarTitle {
+            border: 1px solid rgba(255, 88, 88, 0.24);
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.09), rgba(120, 10, 18, 0.09));
+            box-shadow: 0 0 20px rgba(255, 59, 59, 0.12);
+        }
+
         #statusChip {
             margin-left: 16px;
             padding: 6px 10px;
@@ -351,6 +402,12 @@
             color: var(--text-main);
             border: 1px solid rgba(33, 212, 255, 0.4);
             box-shadow: 0 0 16px rgba(33, 212, 255, 0.3);
+        }
+
+        body.dark #statusChip {
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.18), rgba(120, 10, 18, 0.22));
+            border: 1px solid rgba(255, 88, 88, 0.32);
+            box-shadow: 0 0 16px rgba(255, 59, 59, 0.18);
         }
 
         /* Toggle Switch */
@@ -409,6 +466,10 @@
             color: var(--primary);
             letter-spacing: 1px;
             box-shadow: 0 0 10px var(--primary-dim);
+        }
+
+        body.dark #guardRosterDisplay {
+            background: rgba(36, 8, 10, 0.38);
         }
 
         /* Guard Roster Display */
@@ -560,6 +621,11 @@
             background: rgba(0, 255, 153, 0.05);
         }
 
+        body.dark input:focus,
+        body.dark select:focus {
+            background: rgba(255, 59, 59, 0.05);
+        }
+
         ::placeholder {
             color: rgba(107, 140, 130, 0.5);
         }
@@ -588,6 +654,10 @@
             box-shadow: var(--glow-soft);
         }
 
+        body.dark button {
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.08), rgba(80, 6, 12, 0.14));
+        }
+
         button::after {
             content: "";
             position: absolute;
@@ -604,10 +674,19 @@
             transition: opacity 0.2s ease;
         }
 
+        body.dark button::after {
+            background: linear-gradient(120deg, rgba(255, 72, 72, 0.45), rgba(150, 18, 18, 0.35), rgba(255, 115, 115, 0.28));
+        }
+
         button:hover {
             background: linear-gradient(120deg, rgba(0, 255, 153, 0.9), rgba(0, 204, 255, 0.9));
             color: #000;
             box-shadow: var(--glow-strong);
+        }
+
+        body.dark button:hover {
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.9), rgba(124, 10, 20, 0.92));
+            color: #140203;
         }
 
         button:hover::after {
@@ -678,6 +757,10 @@
             background: rgba(0, 255, 153, 0.08);
         }
 
+        body.dark .shipItem:hover {
+            background: rgba(255, 59, 59, 0.08);
+        }
+
         .shipName {
             color: var(--text-main);
             font-weight: 700;
@@ -714,10 +797,21 @@
             transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
         }
 
+        body.dark .boardWrapper {
+            background:
+                linear-gradient(180deg, rgba(24, 9, 12, 0.56), rgba(8, 4, 5, 0.34)),
+                radial-gradient(circle at 18% 14%, rgba(255, 59, 59, 0.08), transparent 36%);
+        }
+
         .boardWrapper:hover {
             transform: translateY(-2px);
             border-color: rgba(0, 255, 153, 0.4);
             box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 255, 153, 0.2);
+        }
+
+        body.dark .boardWrapper:hover {
+            border-color: rgba(255, 88, 88, 0.4);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 59, 59, 0.16);
         }
 
         .boardWrapper::before {
@@ -729,6 +823,12 @@
                 radial-gradient(circle at 85% 85%, rgba(255, 47, 179, 0.06), transparent 45%);
             opacity: 0.8;
             pointer-events: none;
+        }
+
+        body.dark .boardWrapper::before {
+            background:
+                radial-gradient(circle at 20% 10%, rgba(255, 59, 59, 0.08), transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(110, 10, 18, 0.08), transparent 45%);
         }
 
         .boardHeader {
@@ -813,6 +913,10 @@
             background: linear-gradient(120deg, rgba(0, 255, 153, 0.2), rgba(0, 204, 255, 0.2));
         }
 
+        body.dark #executeBtn {
+            background: linear-gradient(120deg, rgba(255, 59, 59, 0.22), rgba(120, 10, 18, 0.24));
+        }
+
         #executeBtn::before {
             content: "";
             position: absolute;
@@ -823,6 +927,11 @@
             opacity: 0.4;
             filter: blur(8px);
             z-index: -1;
+        }
+
+        body.dark #executeBtn::before {
+            background: radial-gradient(circle at 20% 50%, rgba(255, 59, 59, 0.38), transparent 60%),
+                radial-gradient(circle at 80% 50%, rgba(120, 10, 18, 0.38), transparent 60%);
         }
 
         /* WATERMARK */
@@ -1935,7 +2044,7 @@
                 <div id="flagHSymbol" style="width:70px;height:90px;position:relative;flex-shrink:0;">
                     <svg viewBox="0 0 70 90" width="70" height="90">
                         <rect x="2" y="2" width="30" height="40" fill="#021208" stroke="#4f7d5d" stroke-width="1" />
-                        <rect x="32" y="2" width="30" height="40" fill="#00ff99" stroke="#4f7d5d" stroke-width="1" />
+                        <rect x="32" y="2" width="30" height="40" fill="var(--primary)" stroke="#4f7d5d" stroke-width="1" />
                         <line x1="2" y1="22" x2="62" y2="22" stroke="#4f7d5d" stroke-width="1" />
                         <line x1="32" y1="2" x2="32" y2="42" stroke="#4f7d5d" stroke-width="1" />
                         <line x1="5" y1="2" x2="5" y2="85" stroke="#4f7d5d" stroke-width="2" />
@@ -2911,9 +3020,9 @@
                 return `
                     <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Warning alert">
                         <rect x="0" y="0" width="360" height="220" rx="16" fill="#0d141b"/>
-                        <circle cx="180" cy="110" r="68" fill="#131f29" stroke="#00ff99" stroke-width="8"/>
-                        <path d="M180 70 L180 122" stroke="#00ff99" stroke-width="16" stroke-linecap="round"/>
-                        <circle cx="180" cy="150" r="10" fill="#00ff99"/>
+                        <circle cx="180" cy="110" r="68" fill="#131f29" stroke="var(--primary)" stroke-width="8"/>
+                        <path d="M180 70 L180 122" stroke="var(--primary)" stroke-width="16" stroke-linecap="round"/>
+                        <circle cx="180" cy="150" r="10" fill="var(--primary)"/>
                     </svg>
                 `;
             }
@@ -3814,9 +3923,9 @@
             ctx.clearRect(0, 0, w, h);
 
             const dark = document.body.classList.contains("dark");
-            const ringColor = dark ? "rgba(0, 255, 153, 0.4)" : "rgba(0,0,0,0.15)";
-            const spokeColor = dark ? "rgba(0, 255, 153, 0.25)" : "rgba(0,0,0,0.08)";
-            const textColor = dark ? "rgba(0, 255, 153, 0.85)" : "rgba(120, 255, 155, 0.9)";
+            const ringColor = dark ? "rgba(255, 72, 72, 0.38)" : "rgba(0,0,0,0.15)";
+            const spokeColor = dark ? "rgba(255, 72, 72, 0.22)" : "rgba(0,0,0,0.08)";
+            const textColor = dark ? "rgba(255, 112, 112, 0.86)" : "rgba(120, 255, 155, 0.9)";
 
             const cx = w / 2;
             const cy = h / 2;
@@ -3830,8 +3939,8 @@
 
             if (dark && rad > 0) {
                 const grad = ctx.createRadialGradient(0, 0, rad * 0.1, 0, 0, rad);
-                grad.addColorStop(0, "rgba(0, 20, 10, 0.0)");
-                grad.addColorStop(1, "rgba(0, 50, 30, 0.2)");
+                grad.addColorStop(0, "rgba(24, 0, 0, 0.0)");
+                grad.addColorStop(1, "rgba(70, 0, 10, 0.22)");
                 ctx.fillStyle = grad;
                 ctx.beginPath();
                 ctx.arc(0, 0, rad, 0, Math.PI * 2);
@@ -3849,12 +3958,12 @@
                 ctx.stroke();
 
                 // Ring Labels - More visible
-                ctx.fillStyle = dark ? "rgba(0, 255, 153, 0.9)" : "rgba(120, 255, 155, 0.72)";
+                ctx.fillStyle = dark ? "rgba(255, 112, 112, 0.9)" : "rgba(120, 255, 155, 0.72)";
                 ctx.fillText(String(i) + " NM", 8, -r + 10);
             }
             // Reset line width for boundary 
             ctx.beginPath();
-            ctx.strokeStyle = dark ? "#00ff99" : "#78ff9b";
+            ctx.strokeStyle = dark ? "#ff4d4d" : "#78ff9b";
             ctx.lineWidth = 2;
             ctx.arc(0, 0, rad, 0, Math.PI * 2);
             ctx.stroke();
@@ -3893,7 +4002,7 @@
                 ctx.stroke();
 
                 // Draw Text (Every 10 degrees)
-                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(0, 255, 153, 0.4)") : "rgba(120, 255, 155, 0.82)";
+                ctx.fillStyle = dark ? ((isMajor || b % 30 === 0) ? textColor : "rgba(255, 72, 72, 0.38)") : "rgba(120, 255, 155, 0.82)";
                 ctx.fillText(String(b).padStart(3, "0"), tx, ty);
             }
             ctx.restore();
@@ -3943,10 +4052,10 @@
             const isOwnShip = ownShip === upperName;
             const isLineGuide = isLineGuideShip(upperName, guideName, boardLines, suppressGuides);
 
-            if (isOwnShip) return dark ? "#8cffb5" : "#b8ffca";
-            if (isGuide) return dark ? "#00ff99" : "#78ff9b";
-            if (isLineGuide) return dark ? "#4dff8f" : "#9effbc";
-            return dark ? "#00d97f" : "#5dff97";
+            if (isOwnShip) return dark ? "#ffb0b0" : "#b8ffca";
+            if (isGuide) return dark ? "#ff4d4d" : "#78ff9b";
+            if (isLineGuide) return dark ? "#ff7a7a" : "#9effbc";
+            return dark ? "#d81f2f" : "#5dff97";
         }
 
         function drawShipArrow(board, x, y, hdg, color, name, suppressGuides, LINES) {
