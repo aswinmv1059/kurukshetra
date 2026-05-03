@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preload" as="image" href="assets/navy_intro_bg.png?v=20260503b">
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' 'unsafe-inline' data:; img-src 'self' data: blob:;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -1996,7 +1997,7 @@
     <!-- CINEMATIC INTRO LAYER -->
     <div id="introLayer">
         <!-- Cinematic Elements -->
-        <img id="introBg" src="assets/navy_intro_bg.png" alt="Kurukshetra intro background">
+        <img id="introBg" src="assets/navy_intro_bg.png?v=20260503b" alt="Kurukshetra intro background" loading="eager" decoding="sync">
         <div id="introOverlay"></div>
         <div id="introGrid"></div>
 
@@ -8444,6 +8445,23 @@
             const introBg = document.getElementById("introBg");
             const titleGroup = document.getElementById("titleGroup");
             const bootBtn = document.getElementById("bootBtn");
+            const introFallbacks = [
+                "assets/navy_intro_bg.png?v=20260503b",
+                "assets/navy_intro_bg4.png?v=20260503b",
+                "assets/navy_intro_bg3.png?v=20260503b",
+                "assets/navy_intro_bg2.png?v=20260503b",
+                "assets/navy_intro_bg1.png?v=20260503b"
+            ];
+
+            if (introBg) {
+                let introIndex = 0;
+                introBg.addEventListener("error", function () {
+                    introIndex += 1;
+                    if (introIndex < introFallbacks.length) {
+                        introBg.src = introFallbacks[introIndex];
+                    }
+                });
+            }
 
             setTimeout(() => {
                 if (introBg) {
